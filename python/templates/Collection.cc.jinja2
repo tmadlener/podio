@@ -129,11 +129,15 @@ void {{ collection_type }}::prepareForWrite() {
 {{ macros.prepare_for_write_vector_member(member) }}
 {% endfor %}
   }
-{%- endif %}
+{% endif %}
 
+{% if OneToOneRelations %}
+  for (auto& obj : m_entries) {
 {% for relation in OneToOneRelations %}
 {{ macros.prepare_for_write_single_relation(relation, loop.index0, OneToManyRelations | length) }}
 {% endfor %}
+  }
+{% endif %}
 }
 
 void {{ collection_type }}::prepareAfterRead() {

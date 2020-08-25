@@ -43,13 +43,11 @@ const std::array<{{ member.full_type }}, arraysize> {{ class.bare_type }}Collect
 
 {% macro prepare_for_write_single_relation(relation, index, start_index) %}
 {% set real_index = start_index + index %}
-  for (auto& obj : m_entries) {
     if (obj->m_{{ relation.name }}) {
       m_refCollections[{{ real_index }}]->emplace_back(obj->m_{{ relation.name }}->getObjectID());
     } else {
        m_refCollections[{{ real_index }}]->push_back({podio::ObjectID::invalid, podio::ObjectID::invalid});
     }
-  }
 {% endmacro %}
 
 {% macro _get_collection(type) %}
