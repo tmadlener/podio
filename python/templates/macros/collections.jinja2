@@ -74,7 +74,7 @@ const std::array<{{ member.full_type }}, arraysize> {{ class.bare_type }}Collect
   for (unsigned int i = 0, size = m_entries.size(); i != size; ++i) {
     const auto id = (*m_refCollections[{{ real_index }}])[i];
     if (id.index != podio::ObjectID::invalid) {
-  {{ _get_collection(relation.full_type) }}
+{{ _get_collection(relation.full_type) }}
       m_entries[i]->m_{{ relation.name }} = new Const{{ relation.bare_type }}((*tmp_coll)[id.index]);
     } else {
       m_entries[i]->m_{{ relation.name }} = nullptr;
