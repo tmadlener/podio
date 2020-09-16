@@ -28,10 +28,10 @@ jobs:
     - name: Check different env variables
       run: |
         for var in CLING_STANDARD_PCH CMAKE_PREFIX_PATH LIBPATH JUPYTER_PATH PYTHONPATH ROOTSYS SHLIB_PATH; do
-        declare "__${var}"="${!var}"
+        export "__${var}"="${!var}"
         unset ${var}
         done
-        env
+        env | sort
         for var in CLING_STANDARD_PCH CMAKE_PREFIX_PATH LIBPATH JUPYTER_PATH PYTHONPATH ROOTSYS SHLIB_PATH; do
         dunder_var="__${var}"
         export "${var}"="${!dunder_var}"
@@ -42,6 +42,9 @@ jobs:
         python -c 'import yaml; print("yaml imported")' || echo "yaml failure"
         python -c 'import ROOT; print("ROOT imported")' || echo "ROOT failure"
         unset ${var}
+        done
+        for var in CLING_STANDARD_PCH CMAKE_PREFIX_PATH LIBPATH JUPYTER_PATH PYTHONPATH ROOTSYS SHLIB_PATH; do
+        unset __${var}
         done
     - name: Compile and test
       run: |
