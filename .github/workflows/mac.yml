@@ -7,11 +7,23 @@ jobs:
     runs-on: macos-10.15
     steps:
     - uses: actions/checkout@v2
+    - name: Gather system information (1)
+      run: |
+        env
+        which python
+        python -c 'import sys; print(sys.version)'
     - name: Download ROOT
       run: |
         curl -O https://lcd-data.web.cern.ch/lcd-data/ROOT/root_v6.20.02.macosx64-10.15-clang110_Xcode113_19D76.tar.gz
         tar xf root_v6.20.02.macosx64-10.15-clang110_Xcode113_19D76.tar.gz
         pip install -r requirements.txt
+    - name: Gather system information (2)
+      run: |
+        source root/bin/thisroot.sh
+        env
+        which python
+        python -c 'import sys; print(sys.version)'
+        python -c 'import ROOT'
     - name: Compile and test
       run: |
         source root/bin/thisroot.sh
