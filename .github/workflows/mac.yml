@@ -23,7 +23,26 @@ jobs:
         env
         which python
         python -c 'import sys; print(sys.version)'
-        python -c 'import ROOT'
+        python -c 'import jinja2; print("jinja2 imported")'
+        python -c 'import yaml; print("yaml imported")'
+    - name: Check different env variables
+      run: |
+        for var in CLING_STANDARD_PCH CMAKE_PREFIX_PATH LIBPATH JUPYTER_PATH PYTHONPATH ROOTSYS SHLIB_PATH; do
+        declare "__${var}"="${!var}"
+        unset ${var}
+        done
+        env
+        for var in CLING_STANDARD_PCH CMAKE_PREFIX_PATH LIBPATH JUPYTER_PATH PYTHONPATH ROOTSYS SHLIB_PATH; do
+        dunder_var="__${var}"
+        export "${var}"="${!dunder_var}"
+        echo "set "${var}
+        echo ${var} = ${!var}
+        python -c 'import sys; print(sys.version)' || echo "sys failure"
+        python -c 'import jinja2; print("jinja2 imported")' || echo "jinja2 failure"
+        python -c 'import yaml; print("yaml imported")' || echo "yaml failure"
+        python -c 'import ROOT; print("ROOT imported")' || echo "ROOT failure"
+        unset ${var}
+        done
     - name: Compile and test
       run: |
         source root/bin/thisroot.sh
