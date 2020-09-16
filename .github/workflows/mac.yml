@@ -27,6 +27,7 @@ jobs:
         python -c 'import yaml; print("yaml imported")'
     - name: Check different env variables
       run: |
+        source root/bin/thisroot.sh
         for var in CLING_STANDARD_PCH CMAKE_PREFIX_PATH LIBPATH JUPYTER_PATH PYTHONPATH ROOTSYS SHLIB_PATH; do
         export "__${var}"="${!var}"
         unset ${var}
