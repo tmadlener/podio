@@ -4,3 +4,10 @@ install
 *~
 tests/src
 tests/datamodel
+
+# clangd cache and other LSP related files
+/.clangd/
+compile_commands.json
+
+# spack build artifacts
+spack-*
