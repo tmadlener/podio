@@ -1,10 +1,10 @@
-#ifndef PODIO_ROOT_UTILS_H__
-#define PODIO_ROOT_UTILS_H__
+#ifndef PODIO_ROOT_UTILS_H
+#define PODIO_ROOT_UTILS_H
 
 #include "podio/CollectionBase.h"
+#include "podio/CollectionBranches.h"
 
 #include "TBranch.h"
-#include "TChain.h"
 #include "TClass.h"
 
 #include <vector>
@@ -18,12 +18,6 @@ TBranch* getBranch(Tree* chain, const char* name) {
   return static_cast<TBranch*>(chain->GetListOfBranches()->FindObject(name));
 }
 
-struct CollectionBranches {
-  TBranch* data{nullptr};
-  std::vector<TBranch*> refs{};
-  std::vector<TBranch*> vecs{};
-};
-
 inline std::string refBranch(const std::string& name, size_t index) {
   return name + "#" + std::to_string(index);
 }
@@ -34,18 +28,17 @@ inline std::string vecBranch(const std::string& name, size_t index) {
 
 
 inline void setCollectionAddresses(podio::CollectionBase* collection, const CollectionBranches& branches) {
-  auto refCollections = collection->referenceCollections();
-  auto vecMembers = collection->vectorMembers();
+  if (auto buffer = collection->getBufferAddress()) {
+    branches.data->SetAddress(buffer);
+  }
 
-  branches.data->SetAddress(collection->getBufferAddress());
-
-  if (refCollections) {
+  if (auto refCollections = collection->referenceCollections()) {
     for (size_t i = 0; i < refCollections->size(); ++i) {
       branches.refs[i]->SetAddress(&(*refCollections)[i]);
     }
   }
 
-  if (vecMembers) {
+  if (auto vecMembers = collection->vectorMembers()) {
     for (size_t i = 0; i < vecMembers->size(); ++i) {
       branches.vecs[i]->SetAddress((*vecMembers)[i].second);
     }
