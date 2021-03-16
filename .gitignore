@@ -4,3 +4,4 @@ install
 *~
 tests/src
 tests/datamodel
+/compile_commands.json
