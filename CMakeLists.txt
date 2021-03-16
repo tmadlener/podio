@@ -56,6 +56,9 @@ include(cmake/podioBuild.cmake)
 podio_set_compiler_flags()
 podio_set_rpath()
 
+set(USE_SANITIZER ""
+  CACHE STRING "Compile with a sanitizer. Options are Address, Memory, MemoryWithOrigin, Undefined, Thread, Leak, Address;Undefined")
+ADD_SANITIZER_FLAGS()
 
 option(CLANG_TIDY "Run clang-tidy after compilation." OFF)
 ADD_CLANG_TIDY()
