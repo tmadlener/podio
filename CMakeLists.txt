@@ -57,6 +57,9 @@ podio_set_compiler_flags()
 podio_set_rpath()
 
 
+option(CLANG_TIDY "Run clang-tidy after compilation." OFF)
+ADD_CLANG_TIDY()
+
 #--- Declare options -----------------------------------------------------------
 option(CREATE_DOC "Whether or not to create doxygen doc target." OFF)
 option(ENABLE_SIO "Build SIO I/O support" OFF)
