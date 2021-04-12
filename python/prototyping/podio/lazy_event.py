@@ -16,13 +16,13 @@ class LazyEvent(Event):
     self.raw_data: Optional[EventRawData] = raw_data
 
   def set_raw_data(self, raw_data: EventRawData) -> None:
-    self.logger.info('set_raw_data')
+    self.logger.info(f'set_raw_data, id: {id(self)}')
     self.raw_data = raw_data
 
   def get(self, coll_name: str) -> Optional[CollectionBase]:
     """Get a collection by name."""
     # First check if we have already unpacked it
-    self.logger.info(f'get({coll_name})')
+    self.logger.info(f'get({coll_name}), id: {id(self)}')
     coll = self.unpacked.get(coll_name, None)
     if coll:
       self.logger.debug(f'Collection {coll_name} already unpacked previously')

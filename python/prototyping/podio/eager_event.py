@@ -16,7 +16,7 @@ class EagerEvent(Event):
     self.raw_data: Optional[EventRawData] = raw_data
 
   def set_raw_data(self, raw_data: EventRawData) -> None:
-    self.logger.info('set_raw_data')
+    self.logger.info(f'set_raw_data, id: {id(self)}')
     self.raw_data = raw_data
 
   def get(self, coll_name: str) -> Optional[CollectionBase]:
@@ -24,7 +24,7 @@ class EagerEvent(Event):
     # the set_raw_data call, since that could potentially block the EventStore
     # and we want the unpacking to happen in the "event thread" (if there is
     # one)
-    self.logger.info(f'get({coll_name})')
+    self.logger.info(f'get({coll_name}), id: {id(self)}')
     if not self.unpacked:
       self.unpacked = self._try_unpack()
 

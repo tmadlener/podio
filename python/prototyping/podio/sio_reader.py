@@ -28,7 +28,7 @@ class SioReader(Reader):
 
   def open_file(self, fn: str) -> None:
     """Nothing to do here at the moment"""
-    self.logger.info('Opening file "{fn}")')
+    self.logger.info(f'Opening file "{fn}")')
     pass
 
   def get_unpacking_function(self) -> Callable[[SioRawBuffers], CollectionBuffers]:

@@ -33,7 +33,7 @@ class RootReader(Reader):
 
   def open_file(self, fn: str) -> None:
     """Nothing to do here at the moment, since we do not really read data"""
-    self.logger.info('Opening file "{fn}")')
+    self.logger.info(f'Opening file "{fn}")')
     pass
 
   def get_id_table(self):
