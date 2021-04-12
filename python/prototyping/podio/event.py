@@ -3,7 +3,7 @@
 from typing import Optional, Collection, Tuple, TypeVar, List, Callable, Sequence
 import logging
 
-from collection import CollectionBase, CollectionBuffers
+from .collection import CollectionBase, CollectionBuffers
 
 T = TypeVar('T')
 

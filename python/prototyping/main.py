@@ -6,17 +6,17 @@ logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
 stream_handler = logging.StreamHandler()
-formatter = logging.Formatter('[%(levelname)8s | %(name)25s] | %(message)s',
+formatter = logging.Formatter('[%(levelname)8s | %(name)30s] | %(message)s',
                               datefmt='%d.%m.%Y %H:%M:%S')
 stream_handler.setFormatter(formatter)
 
 logger.addHandler(stream_handler)
 
-from event_store import EventStore
-from lazy_event import LazyEvent
-from eager_event import EagerEvent
-from sio_reader import SioReader
-from root_reader import RootReader
+from podio.event_store import EventStore
+from podio.lazy_event import LazyEvent
+from podio.eager_event import EagerEvent
+from podio.sio_reader import SioReader
+from podio.root_reader import RootReader
 
 def setup_store(use_sio: bool, use_root: bool) -> EventStore:
   """Setup up an event store"""

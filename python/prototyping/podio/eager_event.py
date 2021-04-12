@@ -3,8 +3,8 @@
 from typing import Mapping, Optional
 import logging
 
-from collection import CollectionBase
-from event import EventRawData, Event
+from .collection import CollectionBase
+from .event import EventRawData, Event
 
 class EagerEvent(Event):
   """Event that does all the unpacking up-front and only retrieves the unpacked

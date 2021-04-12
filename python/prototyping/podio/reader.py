@@ -3,8 +3,7 @@
 from typing import TypeVar, Callable, Generic, Sequence
 import logging
 
-
-from collection import CollectionBuffers
+from .collection import CollectionBuffers
 
 T = TypeVar('T')
 

@@ -3,8 +3,8 @@
 from typing import MutableSequence, Optional, Callable
 import logging
 
-from reader import Reader
-from event import Event, EventRawData
+from .reader import Reader
+from .event import Event, EventRawData
 
 
 class EventStore:

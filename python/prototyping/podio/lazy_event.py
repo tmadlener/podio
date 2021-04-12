@@ -3,8 +3,8 @@
 from typing import MutableMapping, Optional
 import logging
 
-from collection import CollectionBase
-from event import EventRawData, Event
+from .collection import CollectionBase
+from .event import EventRawData, Event
 
 class LazyEvent(Event):
   """Event storing raw data, unpacking it on demand and giving access to it"""

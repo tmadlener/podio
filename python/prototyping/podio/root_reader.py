@@ -3,8 +3,8 @@
 from typing import Callable, List
 import logging
 
-from reader import Reader
-from collection import (
+from .reader import Reader
+from .collection import (
    CollectionBuffers, DataBuffer, RefCollBuffers, VecMemBuffers
 )
 
