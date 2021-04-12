@@ -6,11 +6,13 @@ logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
 stream_handler = logging.StreamHandler()
-formatter = logging.Formatter('[%(levelname)8s | %(name)30s] | %(message)s',
+formatter = logging.Formatter('[%(levelname)8s | %(name)35s] | %(message)s',
                               datefmt='%d.%m.%Y %H:%M:%S')
 stream_handler.setFormatter(formatter)
 
 logger.addHandler(stream_handler)
+
+import sys
 
 from podio.event_store import EventStore
 from podio.lazy_event import LazyEvent
@@ -20,6 +22,11 @@ from podio.root_reader import RootReader
 
 def setup_store(use_sio: bool, use_root: bool) -> EventStore:
   """Setup up an event store"""
+  if not (use_sio or use_root):
+    print('Need to specify either a ROOT or SIO reader')
+    sys.exit(1)
+
+  logger.debug(f'Setting up reader: use_sio={use_sio}, use_root={use_root}')
   store = EventStore()
 
   if use_sio:
@@ -75,9 +82,9 @@ def process(event):
 
 def main(args):
   """Main. This corresponds roughly to what the FW would do"""
-  event, create_ev_f = get_create_evt(args.evt_type, args.reuse)
 
   store = setup_store(args.sio_reader, args.root_reader)
+  event, create_ev_f = get_create_evt(args.evt_type, args.reuse)
   logger.info('-------------------- END OF SETUP -------------------------------')
    
 
