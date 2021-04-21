@@ -6,7 +6,7 @@ import logging
 from .writer import Writer
 from .event import Event
 from .collection import CollectionBuffers
-from .sio_reader import SioRawBuffers
+from .sio_reader import SioCompressedEvent
 
 def sio_write(*args):
   """Simple no-op func for exemplary usage below (and silencing unused
@@ -30,7 +30,7 @@ class SioWriter(Writer):
     sio_write(cmp_buffers)
 
   @staticmethod
-  def compress(buffers: Collection[CollectionBuffers]) -> Collection[SioRawBuffers]:
+  def compress(buffers: Collection[CollectionBuffers]) -> SioCompressedEvent:
     """Compress the passed list into something that can be written by the sio
     writer
 
@@ -40,10 +40,10 @@ class SioWriter(Writer):
     in the real world.
     """
     SioWriter.logger.debug(f'Compressing {len(buffers)} buffers')
-    cmp_buffers = []
-    for _ in buffers:
-      cmp_buffers.append(SioRawBuffers())
-    return cmp_buffers
+    cmp_event = SioCompressedEvent()
+    for b in buffers:
+      cmp_event.compressed_data.append([b.data, b.ref_colls, b.vec_mems])
+    return cmp_event
 
   def write_id_table(self, id_table):
     self.logger.info('Writing collection id table')

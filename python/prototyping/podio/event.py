@@ -12,8 +12,8 @@ class EventRawData:
   readers"""
   logger = logging.getLogger(f'{__name__}.EventRawData')
   def __init__(self,
-               reader_buffers: List[Sequence[T]],
-               unpacking_funcs: List[Callable[[T], CollectionBuffers]],
+               reader_buffers: List[T],
+               unpacking_funcs: List[Callable[[T, int], CollectionBuffers]],
                id_table):
     """Take ownership of the reader_buffers. Take a (const) reference to the
     id_table from the EventStore. Maybe a shared_ptr, to make it possible for
@@ -21,9 +21,8 @@ class EventRawData:
     references that events in flight might still have?"""
     self.logger.info(f'__init__(buffers from {len(reader_buffers)} readers)')
     self.id_table = id_table
-    self.raw_buffers: Sequence[Sequence[T]] = reader_buffers
-    self.unpack_funcs: Sequence[Callable[[T], CollectionBuffers]] = unpacking_funcs
-    self.logger.debug(f'{sum(len(b) for b in reader_buffers)} raw buffers total')
+    self.raw_buffers: Sequence[T] = reader_buffers
+    self.unpack_funcs: Sequence[Callable[[T, int], CollectionBuffers]] = unpacking_funcs
 
   def get_buffers(self, name: str) -> Optional[CollectionBuffers]:
     """Check and see if the raw data for the collection of this name is present"""
@@ -31,7 +30,7 @@ class EventRawData:
     for index, table in self.id_table.items():
       coll_idx = table.get(name, -1)
       if coll_idx >= 0:
-        return self.unpack_funcs[index](self.raw_buffers[index][coll_idx])
+        return self.unpack_funcs[index](self.raw_buffers[index], coll_idx)
 
     self.logger.debug(f'No collection with name "{name}" found')
     return None
@@ -44,7 +43,7 @@ class EventRawData:
       ids = self.id_table[ireader]
       for name, index in ids.items():
         colls.append(
-            (name, unpack_func(reader_buffers[index]))
+            (name, unpack_func(reader_buffers, index))
         )
 
     self.logger.debug(f'Unpacked {len(colls)} collections in total')

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from typing import TypeVar, Callable, Generic, Sequence
+from typing import TypeVar, Callable, Generic
 import logging
 
 from .collection import CollectionBuffers
@@ -13,15 +13,15 @@ class Reader(Generic[T]):
   def __init__(self):
     self.logger.info(f'({self.__class__.__name__}) __init__')
 
-  def get_next_event(self) -> Sequence[T]:
+  def get_next_event(self) -> T:
     """Get the next event (raw data) return a collection of arbitrary type
     containing all the necessary buffers to construct a CollectionBuffers
     """
     raise NotImplementedError
 
-  def get_unpacking_function(self) -> Callable[[T], CollectionBuffers]:
+  def get_unpacking_function(self) -> Callable[[T, int], CollectionBuffers]:
     """Get the thread-safe function that is able to unpack the raw buffers returned
-    by read_next_events into a CollectionBuffers"""
+    by read_next_event into a CollectionBuffers"""
     raise NotImplementedError
 
   def open_file(self, fn: str) -> None:

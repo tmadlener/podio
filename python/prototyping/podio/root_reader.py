@@ -27,7 +27,7 @@ class RootReader(Reader):
     self.logger.info('get_next_event')
     return [RootRawBuffers(), RootRawBuffers(), RootRawBuffers()]
 
-  def get_unpacking_function(self) -> Callable[[RootRawBuffers], CollectionBuffers]:
+  def get_unpacking_function(self) -> Callable[[List[RootRawBuffers], int], CollectionBuffers]:
     self.logger.info('get_unpacking_function')
     return RootReader.unpack
 
@@ -41,14 +41,18 @@ class RootReader(Reader):
     return {'ACollection': 0, 'BCollection': 1, 'CCollection': 2}
 
   @staticmethod
-  def unpack(raw_buffers: RootRawBuffers) -> CollectionBuffers:
-    RootReader.logger.info('RootReader.unpack')
+  def unpack(raw_data: List[RootRawBuffers], local_id: int) -> CollectionBuffers:
+    """ROOT can in principle do without stateful unpacking because it basically does
+    everything for us"""
+    RootReader.logger.info(f'RootReader.unpack(local_id={local_id})')
     buffers = CollectionBuffers()
-    buffers.data = raw_buffers.data
+
+    root_buffer = raw_data[local_id]
+    buffers.data = root_buffer.data
     # reference collections and vector members are not necessarily present, we
     # denote invalid CollectionBuffers with None in this case and valid but
     # empty with an empty list
-    buffers.ref_colls = raw_buffers.ref_colls or []
-    buffers.vec_mems = raw_buffers.vec_mems or []
+    buffers.ref_colls = root_buffer.ref_colls or []
+    buffers.vec_mems = root_buffer.vec_mems or []
 
     return buffers

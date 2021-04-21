@@ -6,24 +6,25 @@ logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
 stream_handler = logging.StreamHandler()
-formatter = logging.Formatter('[%(levelname)8s | %(name)35s] | %(message)s',
+formatter = logging.Formatter('[%(levelname)8s | %(name)40s] | %(message)s',
                               datefmt='%d.%m.%Y %H:%M:%S')
 stream_handler.setFormatter(formatter)
 
 logger.addHandler(stream_handler)
 
 from utils import setup_store, process, get_create_evt, setup_writers
-from podio.sio_writer import SioWriter
 
 def main(args):
   """Main. This corresponds roughly to what the FW would do"""
   store = setup_store(args.sio_reader, args.root_reader)
   event, create_ev_f = get_create_evt(args.evt_type, args.reuse)
-  logger.info('-------------------- END OF SETUP -------------------------------')
 
   writers = setup_writers(args.sio_writer, args.root_writer)
   for w in writers:
     w.write_id_table(store.id_table)
+
+
+  logger.info('-------------------- END OF SETUP -------------------------------')
 
   for i in range(args.nevents):
     event = store.get_next_event(create_ev_f, event)
