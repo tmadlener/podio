@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+from typing import List
+
 import logging
 logger = logging.getLogger('root')
 
@@ -10,6 +12,10 @@ from podio.sio_reader import SioReader
 from podio.root_reader import RootReader
 from podio.lazy_event import LazyEvent
 from podio.eager_event import EagerEvent
+from podio.collection import CollectionBase
+from podio.writer import Writer
+from podio.sio_writer import SioWriter
+from podio.root_writer import RootWriter
 
 def setup_store(use_sio: bool, use_root: bool) -> EventStore:
   """Setup up an event store"""
@@ -35,6 +41,17 @@ def setup_store(use_sio: bool, use_root: bool) -> EventStore:
   return store
 
 
+def setup_writers(use_sio: bool, use_root: bool) -> List[Writer]:
+  """Setup writers depending on the arguments"""
+  writers = []
+  if use_sio:
+    writers.append(SioWriter('dummy_output_file.sio'))
+  if use_root:
+    writers.append(RootWriter('dummy_output_file.root'))
+
+  return writers
+
+
 def process(event, ievent):
   """Do some things with the event this is basically in 'user-land'"""
   logger.info(f'-------------------- PROCESSING EVENT {ievent} -------------------------')
@@ -47,6 +64,11 @@ def process(event, ievent):
   for name in colls_to_get:
     coll = event.get(name)
     logger.debug(f'Collection "{name}" is valid and has set refs: {coll and coll.valid and coll.resolved}')
+
+  colls_to_put = ['NewCollection', 'AnotherNewCollection']
+  for name in colls_to_put:
+    coll = CollectionBase()
+    event.put(coll, name)
 
 
 def get_create_evt(evt_type: str, re_use: bool):

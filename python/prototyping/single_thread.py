@@ -12,7 +12,8 @@ stream_handler.setFormatter(formatter)
 
 logger.addHandler(stream_handler)
 
-from utils import setup_store, process, get_create_evt
+from utils import setup_store, process, get_create_evt, setup_writers
+from podio.sio_writer import SioWriter
 
 def main(args):
   """Main. This corresponds roughly to what the FW would do"""
@@ -20,9 +21,19 @@ def main(args):
   event, create_ev_f = get_create_evt(args.evt_type, args.reuse)
   logger.info('-------------------- END OF SETUP -------------------------------')
 
+  writers = setup_writers(args.sio_writer, args.root_writer)
+  for w in writers:
+    w.write_id_table(store.id_table)
+
   for i in range(args.nevents):
     event = store.get_next_event(create_ev_f, event)
     process(event, i)
+
+    for w in writers:
+      w.write_event(event)
+
+  for w in writers:
+    w.write_collection_metadata({'someColl': 'someExampleMetaData'})
 
 
 if __name__ == '__main__':
@@ -32,6 +43,10 @@ if __name__ == '__main__':
   parser.add_argument('--sio-reader', help='Add an SIO example reader', action='store_true',
                       default=False)
   parser.add_argument('--root-reader', help='Add a ROOT example reader', action='store_true',
+                      default=False)
+  parser.add_argument('--sio-writer', help='Add an SIO example writer', action='store_true',
+                      default=False)
+  parser.add_argument('--root-writer', help='Add an ROOT example writer', action='store_true',
                       default=False)
   parser.add_argument('-n', '--nevents', default=1, help='How many events to run', type=int)
 

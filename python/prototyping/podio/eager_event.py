@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-from typing import Mapping, Optional
+from typing import MutableMapping, Optional, Collection, List
 import logging
 
-from .collection import CollectionBase
+from .collection import CollectionBase, CollectionBuffers
 from .event import EventRawData, Event
 
 class EagerEvent(Event):
@@ -12,7 +12,7 @@ class EagerEvent(Event):
   logger = logging.getLogger(f'{__name__}.EagerEvent')
   def __init__(self, raw_data: EventRawData=None):
     super().__init__()
-    self.unpacked: Mapping[str, CollectionBase] = {}
+    self.unpacked: MutableMapping[str, CollectionBase] = {}
     self.raw_data: Optional[EventRawData] = raw_data
 
   def set_raw_data(self, raw_data: EventRawData) -> None:
@@ -31,7 +31,29 @@ class EagerEvent(Event):
     self.logger.debug(f'Collection present: {coll_name in self.unpacked}')
     return self.unpacked.get(coll_name, None)
 
-  def _try_unpack(self) -> Mapping[str, CollectionBase]:
+  def put(self, coll: CollectionBase, name: str):
+    # TODO: Check if already present
+    self.logger.info(f'put({id(coll)}, "{name}"), id: {id(self)}')
+    self.unpacked[name] = coll
+
+  def collections_for_write(self, collections: Collection[str]=[]) -> List[CollectionBuffers]:
+    self.logger.info(f'collections_for_write({len(collections)} collections), id: {id(self)}')
+    # TODO: Handle case for non-present collections?
+    if not collections:
+      self.logger.debug('No collections passed, getting all stored collection names')
+      collections = self.unpacked.keys()
+
+    buffers = []
+    for name in collections:
+      coll = self.unpacked.get(name, None)
+      self.logger.debug(f'Processing collection "{name}" (id={id(coll)})')
+      if coll:
+        coll.prepare_for_write()
+        buffers.append(coll.buffers)
+
+    return buffers
+
+  def _try_unpack(self) -> MutableMapping[str, CollectionBase]:
     """Try to unpack all collections in the raw data"""
     self.logger.info('_try_unpack')
     if not self.raw_data:

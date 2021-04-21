@@ -50,6 +50,15 @@ class EventRawData:
     self.logger.debug(f'Unpacked {len(colls)} collections in total')
     return colls
 
+  def get_all_collection_names(self) -> Collection[str]:
+    """Get all the names of the collections in this raw data"""
+    names = []
+    for _, id_table in self.id_table.items():
+      for name in id_table.keys():
+        names.append(name)
+
+    return names
+
 
 class Event:
   """Abstract event class (type-erased?)"""
@@ -63,4 +72,12 @@ class Event:
 
   def get(self, coll_name: str) -> Optional[CollectionBase]:
     """Get a collection stored under a name (if it exists)"""
+    raise NotImplementedError
+
+  def collections_for_write(self, collections: Collection[str]=[]) -> Collection[CollectionBuffers]:
+    """Get the collection buffers to write for the desired collections (default all)"""
+    raise NotImplementedError
+
+  def put(self, coll: CollectionBase, name: str):
+    """Put the given collection into the event"""
     raise NotImplementedError

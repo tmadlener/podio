@@ -29,5 +29,5 @@ class Reader(Generic[T]):
     raise NotImplementedError
 
   def get_id_table(self):
-    """Get the collection id table from this reade"""
+    """Get the collection id table from this reader"""
     raise NotImplementedError

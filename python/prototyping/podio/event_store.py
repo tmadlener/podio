@@ -48,4 +48,7 @@ class EventStore:
 
   def _update_id_table(self, reader_id: int, entries) -> None:
     self.logger.debug(f'Updating id_table. Adding reader_id {reader_id} with {len(entries)} entries')
+    # TODO: Do an overall dedupliation here and also check and (resolve?)
+    # collissions, so that we can assume afterwards that the id -> name relation
+    # is unique accross the whole event?
     self.id_table[reader_id] = entries
