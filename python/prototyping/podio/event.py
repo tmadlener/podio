@@ -1,28 +1,24 @@
 #!/usr/bin/env python3
 
-from typing import Optional, Collection, Tuple, TypeVar, List, Callable, Sequence
+from typing import Optional, Collection, Tuple, List, Sequence
 import logging
 
 from .collection import CollectionBase, CollectionBuffers
+from .reader import ReaderRawData
 
-T = TypeVar('T')
 
 class EventRawData:
   """Event raw data potentially comprised of inputs from multiple distinct
   readers"""
   logger = logging.getLogger(f'{__name__}.EventRawData')
-  def __init__(self,
-               reader_buffers: List[T],
-               unpacking_funcs: List[Callable[[T, int], CollectionBuffers]],
-               id_table):
+  def __init__(self, reader_buffers: List[ReaderRawData], id_table):
     """Take ownership of the reader_buffers. Take a (const) reference to the
     id_table from the EventStore. Maybe a shared_ptr, to make it possible for
     changing id_table in the EventStore without immediately invalidating all
     references that events in flight might still have?"""
     self.logger.info(f'__init__(buffers from {len(reader_buffers)} readers)')
     self.id_table = id_table
-    self.raw_buffers: Sequence[T] = reader_buffers
-    self.unpack_funcs: Sequence[Callable[[T, int], CollectionBuffers]] = unpacking_funcs
+    self.raw_buffers: Sequence[ReaderRawData] = reader_buffers
 
   def get_buffers(self, name: str) -> Optional[CollectionBuffers]:
     """Check and see if the raw data for the collection of this name is present"""
@@ -30,7 +26,7 @@ class EventRawData:
     for index, table in self.id_table.items():
       coll_idx = table.get(name, -1)
       if coll_idx >= 0:
-        return self.unpack_funcs[index](self.raw_buffers[index], coll_idx)
+        return self.raw_buffers[index].get_buffer(coll_idx)
 
     self.logger.debug(f'No collection with name "{name}" found')
     return None
@@ -39,11 +35,11 @@ class EventRawData:
     """Get all the available buffers"""
     self.logger.info('get_all_buffers')
     colls: List[Tuple[str, CollectionBuffers]] = []
-    for ireader, (reader_buffers, unpack_func) in enumerate(zip(self.raw_buffers, self.unpack_funcs)):
+    for ireader, reader_buffers in enumerate(self.raw_buffers):
       ids = self.id_table[ireader]
       for name, index in ids.items():
         colls.append(
-            (name, unpack_func(reader_buffers, index))
+          (name, reader_buffers.get_buffer(index))
         )
 
     self.logger.debug(f'Unpacked {len(colls)} collections in total')

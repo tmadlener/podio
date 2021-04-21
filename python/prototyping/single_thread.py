@@ -6,7 +6,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
 stream_handler = logging.StreamHandler()
-formatter = logging.Formatter('[%(levelname)8s | %(name)40s] | %(message)s',
+formatter = logging.Formatter('[%(levelname)8s | %(name)35s] | %(message)s',
                               datefmt='%d.%m.%Y %H:%M:%S')
 stream_handler.setFormatter(formatter)
 

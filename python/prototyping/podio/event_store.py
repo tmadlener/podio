@@ -34,14 +34,12 @@ class EventStore:
     """
     self.logger.info('Getting next event')
     reader_buffers = []
-    unpacker_funcs = []
     for reader in self.readers:
       reader_buffers.append(reader.get_next_event())
-      unpacker_funcs.append(reader.get_unpacking_function())
 
     evt = create_evt(evt) # create a new Event or re-use the existing one
 
-    raw_evt = EventRawData(reader_buffers, unpacker_funcs, self.id_table)
+    raw_evt = EventRawData(reader_buffers, self.id_table)
     evt.set_raw_data(raw_evt)
 
     return evt

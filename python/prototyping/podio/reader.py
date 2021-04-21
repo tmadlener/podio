@@ -1,11 +1,20 @@
 #!/usr/bin/env python3
 
-from typing import TypeVar, Callable, Generic
+from typing import TypeVar, Generic
 import logging
 
 from .collection import CollectionBuffers
 
 T = TypeVar('T')
+
+class ReaderRawData:
+  """Abstract type that holds raw data and also knows how to unpack it on
+  demand"""
+  def get_buffer(self, coll_id: int) -> CollectionBuffers:
+    """Get the buffer with the internal coll_id (might be different from the
+    external/global id)"""
+    raise NotImplementedError
+
 
 class Reader(Generic[T]):
   """Base class for reading"""
@@ -13,15 +22,10 @@ class Reader(Generic[T]):
   def __init__(self):
     self.logger.info(f'({self.__class__.__name__}) __init__')
 
-  def get_next_event(self) -> T:
+  def get_next_event(self) -> ReaderRawData:
     """Get the next event (raw data) return a collection of arbitrary type
     containing all the necessary buffers to construct a CollectionBuffers
     """
-    raise NotImplementedError
-
-  def get_unpacking_function(self) -> Callable[[T, int], CollectionBuffers]:
-    """Get the thread-safe function that is able to unpack the raw buffers returned
-    by read_next_event into a CollectionBuffers"""
     raise NotImplementedError
 
   def open_file(self, fn: str) -> None:

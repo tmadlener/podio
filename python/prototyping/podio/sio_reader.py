@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-from typing import Callable, NewType, Tuple, List
+from typing import NewType, Tuple, List
 import logging
 
-from .reader import Reader
+from .reader import Reader, ReaderRawData
 from .collection import (
     CollectionBuffers, DataBuffer, RefCollBuffer, VecMemBuffer
 )
@@ -23,22 +23,22 @@ class SioCompressedEvent:
     ]
 
 
-class SioUnpacker:
+class SioRawData(ReaderRawData):
   """Stateful unpacking is necessary for SIO"""
-  logger = logging.getLogger(f'{__name__}.SioReader.SioUnpacker')
-  def __init__(self, type_infos: List[str]):
+  logger = logging.getLogger(f'{__name__}.SioRawData')
+  def __init__(self, raw_data: SioCompressedEvent, type_infos: List[str]):
     self.logger.debug('__init__')
+    self.raw_data = raw_data
     self.uncompressed_data: List[Tuple[int, List[int], List[int]]] = []
     # Sio needs type information to construct the SioBlocks
     self.type_infos: List[str] = type_infos
 
-  def __call__(self, raw_data: SioCompressedEvent, local_id: int) -> CollectionBuffers:
-    self.logger.info(f'__call__(local_id={local_id})')
+  def get_buffer(self, local_id: int) -> CollectionBuffers:
+    self.logger.info(f'get_buffer(local_id={local_id})')
     if not self.uncompressed_data:
-      self.uncompressed_data = SioUnpacker._uncompress(raw_data)
-
-    # TODO: Can we free the space that is taken by the compressed data somehow
-    # after we have decompressed it in the first call? It is not owned by us!
+      self.uncompressed_data = self._uncompress(self.raw_data)
+      # We no longer need this, since we now have the uncompressed data
+      del self.raw_data
 
     buffers = CollectionBuffers()
     data, refs, vecs = self.uncompressed_data[local_id]
@@ -48,14 +48,15 @@ class SioUnpacker:
 
     return buffers
 
-  @staticmethod
-  def _uncompress(raw_data: SioCompressedEvent) -> List[Tuple[int, List[int], List[int]]]:
+  def _uncompress(self, raw_data: SioCompressedEvent) -> List[Tuple[int, List[int], List[int]]]:
     """Just here to explictly mention this step. In reality this would of course do
       more, but it can also return an arbitrary type since this is not visible
       from the outside
     """
-    SioUnpacker.logger.debug('_uncompress in SioUnpacker.unpacker')
-    # Here we have nothing because of the structure of the compressed data
+    self.logger.debug('_uncompress in SioUnpacker.unpacker')
+    # Here we have nothing because of the structure of the compressed data In
+    # reality we would use the type_info hear to create all the necessary
+    # SioBlocks
     return raw_data.compressed_data
 
 
@@ -65,18 +66,14 @@ class SioReader(Reader):
   def __init__(self):
     super().__init__()
 
-  def get_next_event(self) -> SioCompressedEvent:
+  def get_next_event(self) -> SioRawData:
     self.logger.info('get_next_event')
-    return SioCompressedEvent()
+    return SioRawData(SioCompressedEvent(), self.get_id_table())
 
   def open_file(self, fn: str) -> None:
     """Nothing to do here at the moment"""
     self.logger.info(f'Opening file "{fn}")')
     pass
-
-  def get_unpacking_function(self) -> Callable[[SioCompressedEvent, int], CollectionBuffers]:
-    self.logger.info('get_unpacking_function')
-    return SioUnpacker(self.get_id_table())
 
   def get_id_table(self):
     self.logger.info('get_id_table')
