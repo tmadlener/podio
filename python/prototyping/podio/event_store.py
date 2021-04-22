@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from typing import MutableSequence, Optional, Callable
+from typing import MutableSequence, Optional, Callable, Collection
 import logging
 
 from .reader import Reader
@@ -50,3 +50,15 @@ class EventStore:
     # collissions, so that we can assume afterwards that the id -> name relation
     # is unique accross the whole event?
     self.id_table[reader_id] = entries
+
+  def collection_names(self) -> Collection[str]:
+    """Get the names of all the collections known to the EventStore (i.e. the ones
+    who have been read and the ones who have been newly registered)"""
+    # NOTE: Assuming here that the proper deduplication from reading and
+    # registering new collection has already happened!
+    names = []
+    for reader_id_tables in self.id_table.values():
+      for name in reader_id_tables.keys():
+        names.append(name)
+
+    return names

@@ -12,7 +12,9 @@ stream_handler.setFormatter(formatter)
 
 logger.addHandler(stream_handler)
 
-from utils import setup_store, process, get_create_evt, setup_writers
+from utils import (
+  setup_store, process, get_create_evt, setup_writers, initialize
+)
 
 def main(args):
   """Main. This corresponds roughly to what the FW would do"""
@@ -20,9 +22,11 @@ def main(args):
   event, create_ev_f = get_create_evt(args.evt_type, args.reuse)
 
   writers = setup_writers(args.sio_writer, args.root_writer)
+
+  initialize(store, writers)
+
   for w in writers:
     w.write_id_table(store.id_table)
-
 
   logger.info('-------------------- END OF SETUP -------------------------------')
 

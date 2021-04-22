@@ -33,7 +33,7 @@ class CollectionBase:
     self.buffers: CollectionBuffers = CollectionBuffers()
     self.valid = False
     self.resolved = False
-    self.prepared = True
+    self.prepared = False
 
   def set_buffer(self, data: DataBuffer) -> None:
     """Set the data buffer"""
@@ -58,6 +58,10 @@ class CollectionBase:
   def prepare_for_write(self) -> None:
     """Prepare for write"""
     self.logger.info(f'prepare_for_write, id: {id(self)}')
+    if self.prepared:
+      self.logger.debug('Already prepared')
+      return
+
     self.prepared = True
     # To differentiate them from the unset default init simply fill them with
     # some values or set to the empty list at least

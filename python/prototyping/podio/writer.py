@@ -4,6 +4,7 @@ from typing import TypeVar, Generic, Collection, Mapping
 import logging
 
 from .event import Event
+from .collection import CollectionBase
 
 T = TypeVar('T')
 
@@ -13,8 +14,12 @@ class Writer(Generic[T]):
   def __init__(self, fn: str):
     self.logger.info(f'({self.__class__.__name__}) __init__(file={fn})')
 
-  def write_event(self, event: Event, collections: Collection[str]=[]):
-    """Write the collections to file, potentially filtering them by name first"""
+  def register_for_write(self, coll: CollectionBase, name: str):
+    """Register this collection for writing"""
+    raise NotImplementedError
+
+  def write_event(self, event: Event):
+    """Write the registered collections to file"""
     raise NotImplementedError
 
   def write_id_table(self, id_table):

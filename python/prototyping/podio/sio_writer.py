@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
-from typing import Collection, Mapping
+from typing import Collection, Mapping, List
 import logging
 
 from .writer import Writer
 from .event import Event
-from .collection import CollectionBuffers
+from .collection import CollectionBuffers, CollectionBase
 from .sio_reader import SioCompressedEvent
 
 def sio_write(*args):
@@ -22,10 +22,23 @@ class SioWriter(Writer):
     # In reality open a file to write to, but here we don't write anything, so
     # no need to open one
     self.filename = fn
+    self.collections: List[str] = []
 
-  def write_event(self, event: Event, collections: Collection[str]=[]):
-    self.logger.info(f'write_event(event={id(event)}) storing {len(collections)} collections (0==all)')
-    buffers = event.collections_for_write(collections)
+  def register_for_write(self, coll: CollectionBase, name: str):
+    self.logger.info(f'register_for_write(id={id(coll)}, name={name})')
+    # TODO: check for duplicates
+    self.collections.append(name)
+    # NOTE: For sio we don't have to do anything here, since we can always
+    # extract the necessary type information when writing the event. However, we
+    # can cache it here as well so that we do not have to do the look up for
+    # every event
+
+  def write_event(self, event: Event):
+    self.logger.info(f'write_event(event={id(event)}) storing {len(self.collections)} collections')
+    if not self.collections:
+      return
+
+    buffers = event.collections_for_write(self.collections)
     cmp_buffers = SioWriter.compress(buffers)
     sio_write(cmp_buffers)
 

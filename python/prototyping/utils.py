@@ -52,9 +52,64 @@ def setup_writers(use_sio: bool, use_root: bool) -> List[Writer]:
   return writers
 
 
+def _register_collections(writer: Writer, collections: List[str]):
+  """Register the collections to write for the given writer"""
+  for name in collections:
+    # NOTE: In this toy we can will arbitrary collections into existence, since
+    # they are not used for anything behind the scenes. In reality we need the
+    # following things from the framework:
+    # - An instance of the correct collection at initialization that we can pass
+    #   here. IMPORTANT: We only rely on type information that we can obtain
+    #   from the instance, we do not require that the exact same instance is
+    #   also used for event processing!
+    # - A layer of abstraction that we can hide behind, to first collect all the
+    #   possible collections that can be written and a possibility to filter
+    #   them if we do not want to write all of them
+    # - Additionally, we need to update the collection id table, currently
+    #   stored in the EventStore BEFORE we write it IF the collection we intend
+    #   to write is not already present
+    #
+    # We partially have all this below in initialize, but a full implementation
+    # of all this goes beyond the scope of this toy
+    writer.register_for_write(CollectionBase(), name)
+
+# The collections that are newly created in process
+NEW_COLLECTIONS = [
+  'NewCollection', 'AnotherNewCollection'
+]
+
+# The collections that will be written. NOTE: contains collections that might
+# not be present (i.e. not read)
+WRITE_COLLECTIONS = [
+  'AnotherNewCollection', 'DummyCollection', 'BCollection'
+]
+
+def initialize(store: EventStore, writers: List[Writer]):
+  """Initialize: As in Gaudi. In this toy mainly registering the collections that
+  should be written"""
+  logger.info('---------------------- INITIALIZE ----------------------------------')
+  # First we register the new collections. We use reader_id == -1 here
+  id_table = {n: i for i, n in enumerate(NEW_COLLECTIONS)}
+  store._update_id_table(-1, id_table)
+
+  all_collections = store.collection_names()
+  collections_to_write = [c for c in WRITE_COLLECTIONS if c in all_collections]
+  if len(collections_to_write) != WRITE_COLLECTIONS:
+    miss_colls = [c for c in WRITE_COLLECTIONS if c not in all_collections]
+    logger.debug(f'Not writing collections: {miss_colls} because they are not available in the EventStore')
+
+  for writer in writers:
+    _register_collections(writer, collections_to_write)
+
+
 def process(event, ievent):
   """Do some things with the event this is basically in 'user-land'"""
   logger.info(f'-------------------- PROCESSING EVENT {ievent} -------------------------')
+  # In reality this list might be filtered much earlier, because we have the
+  # necessary tools to declare the inputs and outputs for all algorithms, and
+  # hence we know which collections will be present. Here we just check all
+  # possibilities to highlight, that in principle the Event class design can
+  # handle such non-present collections as well
   colls_to_get = [
       'DummyCollection', 'OtherCollection', # present in sio reader
       'ACollection', 'BCollection', 'CCollection', # present in root reader
@@ -65,8 +120,7 @@ def process(event, ievent):
     coll = event.get(name)
     logger.debug(f'Collection "{name}" is valid and has set refs: {coll and coll.valid and coll.resolved}')
 
-  colls_to_put = ['NewCollection', 'AnotherNewCollection']
-  for name in colls_to_put:
+  for name in NEW_COLLECTIONS:
     coll = CollectionBase()
     event.put(coll, name)
 
