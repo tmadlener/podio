@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from typing import NewType, Tuple, List
+from typing import NewType, Tuple, List, Mapping
 import logging
 
 from .reader import Reader, ReaderRawData
@@ -26,15 +26,15 @@ class SioCompressedEvent:
 class SioRawData(ReaderRawData):
   """Stateful unpacking is necessary for SIO"""
   logger = logging.getLogger(f'{__name__}.SioRawData')
-  def __init__(self, raw_data: SioCompressedEvent, type_infos: List[str]):
+  def __init__(self, raw_data: SioCompressedEvent, type_infos: Mapping[int, str]):
     self.logger.debug('__init__')
     self.raw_data = raw_data
     self.uncompressed_data: List[Tuple[int, List[int], List[int]]] = []
     self.schema_version: int = -1
     # Sio needs type information to construct the SioBlocks
-    self.type_infos: List[str] = type_infos
+    self.type_infos: Mapping[int, str] = type_infos
 
-  def get_buffer(self, local_id: int) -> CollectionBuffers:
+  def get_buffer(self, local_id: int) -> Tuple[str, CollectionBuffers]:
     self.logger.info(f'get_buffer(local_id={local_id})')
     if not self.uncompressed_data:
       self.uncompressed_data = self._uncompress(self.raw_data)
@@ -53,7 +53,7 @@ class SioRawData(ReaderRawData):
     buffers.vec_mems = [VecMemBuffer(r) for r in vecs]
     buffers.schema_version = self.schema_version
 
-    return buffers
+    return self.type_infos[local_id], buffers
 
   def _uncompress(self, raw_data: SioCompressedEvent) -> List[Tuple[int, List[int], List[int]]]:
     """Just here to explictly mention this step. In reality this would of course do
@@ -72,17 +72,26 @@ class SioReader(Reader):
   logger = logging.getLogger(f'{__name__}.SioReader')
   def __init__(self):
     super().__init__()
+    self.type_map: Mapping[int, str] = {}
 
   def get_next_event(self) -> SioRawData:
     self.logger.info('get_next_event')
-    return SioRawData(SioCompressedEvent(), self.get_id_table())
+    return SioRawData(SioCompressedEvent(), self.type_map)
 
   def open_file(self, fn: str) -> None:
     """Nothing to do here at the moment"""
     self.logger.info(f'Opening file "{fn}")')
-    pass
+    # Read id table, read type info
+    #
+    # NOTE: These types here are somewhat taylored to make the schema evolution
+    # work without problems. However, this should only be necessary because of
+    # the toy nature of this example!
+    self.type_map = {
+      1: 'Y',
+      0: 'Z'
+    }
 
-  def get_id_table(self):
+  def get_id_table(self) -> Mapping[str, int]:
     self.logger.info('get_id_table')
     # really just a dummy return here
     return {'DummyCollection': 0, 'OtherCollection': 1}

@@ -1,22 +1,20 @@
 #!/usr/bin/env python3
 
-from typing import TypeVar, Generic
+from typing import Tuple
 import logging
 
 from .collection import CollectionBuffers
 
-T = TypeVar('T')
-
 class ReaderRawData:
   """Abstract type that holds raw data and also knows how to unpack it on
   demand"""
-  def get_buffer(self, coll_id: int) -> CollectionBuffers:
+  def get_buffer(self, coll_id: int) -> Tuple[str, CollectionBuffers]:
     """Get the buffer with the internal coll_id (might be different from the
     external/global id)"""
     raise NotImplementedError
 
 
-class Reader(Generic[T]):
+class Reader:
   """Base class for reading"""
   logger = logging.getLogger(f'{__name__}.Reader')
   def __init__(self):

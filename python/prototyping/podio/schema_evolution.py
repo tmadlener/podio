@@ -56,16 +56,18 @@ def evolve_schema(datatype: str, buffers: CollectionBuffers) -> CollectionBuffer
     logger.debug('No schema evolution necessary')
     return buffers
 
-  # TODO: Can we exlude that this ever happens? What do we do in these cases if
-  # we cannot exlcude this?
+  # Now we check if we have to do something for this datatype
   evo_funcs_type = EVOLUTION_TABLE.get(datatype, None)
   if not evo_funcs_type:
-    logger.error(f'No schema evolution function available for datatype {datatype}. Skipping evolution')
+    logger.info(f'No schema evolution function available for datatype {datatype}. No evolution necessary')
+    buffers.schema_version = CURRENT_SCHEMA_VERSION
     return buffers
 
+  # And if so if we have to do it for the version the datatype arrives in
   evolution_f = evo_funcs_type.get(buffer_version, None)
   if not evolution_f:
-    logger.error(f'No schema evolution function available from version {buffer_version} to {CURRENT_SCHEMA_VERSION} for datatype {datatype}. Skipping evolution')
+    logger.info(f'No schema evolution function available from version {buffer_version} to {CURRENT_SCHEMA_VERSION} for datatype {datatype}. No evolution necessary')
+    buffers.schema_version = CURRENT_SCHEMA_VERSION
     return buffers
 
   return evolution_f(buffers)

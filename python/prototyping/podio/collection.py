@@ -90,6 +90,7 @@ class CollectionBase:
     coll.set_buffer(buffers.data)
     coll.set_ref_colls(buffers.ref_colls)
     coll.set_vec_mems(buffers.vec_mems)
+    coll.buffers.schema_version = buffers.schema_version
     coll.prepare_after_read()
     coll.set_references()
 

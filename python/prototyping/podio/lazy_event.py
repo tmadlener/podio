@@ -31,10 +31,11 @@ class LazyEvent(Event):
 
     # By this point we need to have raw_data otherwise we fail
     if self.raw_data:
-      buffers = self.raw_data.get_buffers(coll_name)
-      if buffers:
+      type_buffers = self.raw_data.get_buffers(coll_name)
+      if type_buffers:
+        datatype, buffers = type_buffers
         # Do the schema evolution
-        buffers = evolve_schema('Y', buffers)
+        buffers = evolve_schema(datatype, buffers)
 
         # Construct and fully unpack the collection
         coll = CollectionBase.from_buffers(buffers)
@@ -79,7 +80,7 @@ class LazyEvent(Event):
         if self.raw_data:
           buff = self.raw_data.get_buffers(name)
           if buff:
-            buffers.append(buff)
+            buffers.append(buff[1])
 
     return buffers
 

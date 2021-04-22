@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from typing import List
+from typing import List, Tuple
 import logging
 
 from .reader import Reader, ReaderRawData
@@ -22,12 +22,17 @@ class RootRawData(ReaderRawData):
   """ROOT would not necessarily need a stateful unpacking mechanism, but we need
   a common interface"""
   logger = logging.getLogger(f'{__name__}.RootRawData')
-  def __init__(self, raw_data: List[RootRawBuffers], schema_version: int):
+  def __init__(self, raw_data: List[RootRawBuffers],
+               type_info: List[str],
+               schema_version: int):
     self.logger.debug('__init__')
     self.raw_data = raw_data
     self.schema_version = schema_version
+    # Need type information also for root for succesfull schema evolution and
+    # also for easier construction of collections ouside
+    self.type_info: List[str] = type_info
 
-  def get_buffer(self, local_id: int) -> CollectionBuffers:
+  def get_buffer(self, local_id: int) -> Tuple[str, CollectionBuffers]:
     root_buffer = self.raw_data[local_id]
 
     buffers = CollectionBuffers()
@@ -39,23 +44,29 @@ class RootRawData(ReaderRawData):
     buffers.vec_mems = root_buffer.vec_mems or []
     buffers.schema_version = self.schema_version
 
-    return buffers
+    return self.type_info[local_id], buffers
 
 class RootReader(Reader):
   """RootReader"""
   logger = logging.getLogger(f'{__name__}.RootReader')
   def __init__(self):
     super().__init__()
+    # Again the cached type info is of rather arbitrary type here (in comparison
+    # to reality) because we just need it for the interfaces in this toy. In
+    # reality root is very flexible here and we probably do not have too many
+    # restrictions. These would probably also be (re-)populated when a file is
+    # opened
+    self.type_info = ['X', 'X', 'Z']
 
   def get_next_event(self) -> RootRawData:
     self.logger.info('get_next_event')
     return RootRawData([RootRawBuffers(), RootRawBuffers(), RootRawBuffers()],
+                       self.type_info,
                        schema_version=1)
 
   def open_file(self, fn: str) -> None:
     """Nothing to do here at the moment, since we do not really read data"""
     self.logger.info(f'Opening file "{fn}")')
-    pass
 
   def get_id_table(self):
     self.logger.info('get_id_table')

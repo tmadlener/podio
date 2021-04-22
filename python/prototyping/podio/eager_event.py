@@ -61,9 +61,9 @@ class EagerEvent(Event):
       raise ValueError('No raw data to unpack')
 
     colls = {}
-    for name, buffers in self.raw_data.get_all_buffers():
+    for name, (datatype, buffers) in self.raw_data.get_all_buffers():
       self.logger.debug(f'creating collection "{name}"')
-      buffers = evolve_schema('X', buffers)
+      buffers = evolve_schema(datatype, buffers)
       coll = CollectionBase.from_buffers(buffers)
       colls[name] = coll
 
