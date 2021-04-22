@@ -5,6 +5,7 @@ import logging
 
 from .collection import CollectionBase, CollectionBuffers
 from .event import EventRawData, Event
+from .schema_evolution import evolve_schema
 
 class EagerEvent(Event):
   """Event that does all the unpacking up-front and only retrieves the unpacked
@@ -62,6 +63,7 @@ class EagerEvent(Event):
     colls = {}
     for name, buffers in self.raw_data.get_all_buffers():
       self.logger.debug(f'creating collection "{name}"')
+      buffers = evolve_schema('X', buffers)
       coll = CollectionBase.from_buffers(buffers)
       colls[name] = coll
 

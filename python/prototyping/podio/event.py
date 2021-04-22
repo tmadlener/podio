@@ -66,7 +66,9 @@ class Event:
     raise NotImplementedError
 
   def get(self, coll_name: str) -> Optional[CollectionBase]:
-    """Get a collection stored under a name (if it exists)"""
+    """Get a collection stored under a name (if it exists) with the desired
+    datatype.
+    """
     raise NotImplementedError
 
   def collections_for_write(self, collections: Collection[str]=[]) -> Collection[CollectionBuffers]:

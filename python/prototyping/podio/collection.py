@@ -4,9 +4,12 @@ from typing import NewType, Collection
 import logging
 
 # Define a few helper types to string things together
+# DataBuffers, i.e. vector<Data>, but for type reasons maybe void*?
 DataBuffer = NewType('DataBuffer', int)
+# RefCollBuffers, i.e vector<ObjectID>, resp. vectors of those
 RefCollBuffer = NewType('RefCollBuffer', int)
 RefCollBuffers = Collection[RefCollBuffer]
+# VecMemBuffers, i.e. pair<string, void*>, resp. vectors of those
 VecMemBuffer = NewType('VecMemBuffer', int)
 VecMemBuffers = Collection[VecMemBuffer]
 
@@ -18,11 +21,16 @@ class CollectionBuffers:
     self.data: DataBuffer = None
     self.ref_colls: RefCollBuffers = None
     self.vec_mems: VecMemBuffers = None
+    self.schema_version: int = -1
 
   def valid_buffers(self) -> bool:
     """Are all buffers valid, i.e. read correctly"""
-    return self.data is not None and self.ref_colls is not None and self.vec_mems is not None
-
+    return (
+      self.data is not None and
+      self.ref_colls is not None and
+      self.vec_mems is not None and
+      self.schema_version >= 0
+      )
 
 class CollectionBase:
   """Simple class that resembles the c++ collection"""

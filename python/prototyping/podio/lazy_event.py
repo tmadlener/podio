@@ -5,6 +5,7 @@ import logging
 
 from .collection import CollectionBase, CollectionBuffers
 from .event import EventRawData, Event
+from .schema_evolution import evolve_schema
 
 class LazyEvent(Event):
   """Event storing raw data, unpacking it on demand and giving access to it"""
@@ -20,7 +21,7 @@ class LazyEvent(Event):
     self.raw_data = raw_data
 
   def get(self, coll_name: str) -> Optional[CollectionBase]:
-    """Get a collection by name."""
+    """Get a collection by name"""
     # First check if we have already unpacked it
     self.logger.info(f'get({coll_name}), id: {id(self)}')
     coll = self.unpacked.get(coll_name, None)
@@ -32,6 +33,9 @@ class LazyEvent(Event):
     if self.raw_data:
       buffers = self.raw_data.get_buffers(coll_name)
       if buffers:
+        # Do the schema evolution
+        buffers = evolve_schema('Y', buffers)
+
         # Construct and fully unpack the collection
         coll = CollectionBase.from_buffers(buffers)
 

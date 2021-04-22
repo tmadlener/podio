@@ -30,6 +30,7 @@ class SioRawData(ReaderRawData):
     self.logger.debug('__init__')
     self.raw_data = raw_data
     self.uncompressed_data: List[Tuple[int, List[int], List[int]]] = []
+    self.schema_version: int = -1
     # Sio needs type information to construct the SioBlocks
     self.type_infos: List[str] = type_infos
 
@@ -37,7 +38,12 @@ class SioRawData(ReaderRawData):
     self.logger.info(f'get_buffer(local_id={local_id})')
     if not self.uncompressed_data:
       self.uncompressed_data = self._uncompress(self.raw_data)
-      # We no longer need this, since we now have the uncompressed data
+      # The schema version is part of the SioBlocks that are now available, and
+      # we can extract this information. Here we just assign an arbitrary
+      # version
+      self.schema_version = 2
+      # We no longer need this, since we now have the
+      # uncompressed data
       del self.raw_data
 
     buffers = CollectionBuffers()
@@ -45,6 +51,7 @@ class SioRawData(ReaderRawData):
     buffers.data = DataBuffer(data)
     buffers.ref_colls = [RefCollBuffer(r) for r in refs]
     buffers.vec_mems = [VecMemBuffer(r) for r in vecs]
+    buffers.schema_version = self.schema_version
 
     return buffers
 

@@ -22,9 +22,10 @@ class RootRawData(ReaderRawData):
   """ROOT would not necessarily need a stateful unpacking mechanism, but we need
   a common interface"""
   logger = logging.getLogger(f'{__name__}.RootRawData')
-  def __init__(self, raw_data: List[RootRawBuffers]):
+  def __init__(self, raw_data: List[RootRawBuffers], schema_version: int):
     self.logger.debug('__init__')
     self.raw_data = raw_data
+    self.schema_version = schema_version
 
   def get_buffer(self, local_id: int) -> CollectionBuffers:
     root_buffer = self.raw_data[local_id]
@@ -36,6 +37,7 @@ class RootRawData(ReaderRawData):
     # empty with an empty list
     buffers.ref_colls = root_buffer.ref_colls or []
     buffers.vec_mems = root_buffer.vec_mems or []
+    buffers.schema_version = self.schema_version
 
     return buffers
 
@@ -47,7 +49,8 @@ class RootReader(Reader):
 
   def get_next_event(self) -> RootRawData:
     self.logger.info('get_next_event')
-    return RootRawData([RootRawBuffers(), RootRawBuffers(), RootRawBuffers()])
+    return RootRawData([RootRawBuffers(), RootRawBuffers(), RootRawBuffers()],
+                       schema_version=1)
 
   def open_file(self, fn: str) -> None:
     """Nothing to do here at the moment, since we do not really read data"""
