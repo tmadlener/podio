@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
 
-from typing import TypeVar, Generic, Collection, Mapping
+from typing import Mapping
 import logging
 
 from .event import Event
 from .collection import CollectionBase
 
-T = TypeVar('T')
-
-class Writer(Generic[T]):
+class Writer:
   """Base class for writers"""
   logger = logging.getLogger(f'{__name__}.Writer')
   def __init__(self, fn: str):
