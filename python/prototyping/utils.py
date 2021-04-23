@@ -29,21 +29,21 @@ def setup_store(use_sio: bool, use_root: bool) -> EventStore:
   if use_sio:
     # Usually we would first set the reader up and then add it, but here we
     # really do not have to do any setup
-    reader = SioReader()
-    reader.open_file('dummy_input_file.sio')
-    store.add_reader(reader)
+    sreader = SioReader()
+    sreader.open_file('dummy_input_file.sio')
+    store.add_reader(sreader)
 
   if use_root:
-    reader = RootReader()
-    reader.open_file('dummy_input_file.root')
-    store.add_reader(reader)
+    rreader = RootReader()
+    rreader.open_file('dummy_input_file.root')
+    store.add_reader(rreader)
 
   return store
 
 
 def setup_writers(use_sio: bool, use_root: bool) -> List[Writer]:
   """Setup writers depending on the arguments"""
-  writers = []
+  writers: List[Writer] = []
   if use_sio:
     writers.append(SioWriter('dummy_output_file.sio'))
   if use_root:
