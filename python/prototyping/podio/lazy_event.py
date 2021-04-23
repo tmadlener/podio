@@ -80,7 +80,12 @@ class LazyEvent(Event):
         if self.raw_data:
           buff = self.raw_data.get_buffers(name)
           if buff:
-            buffers.append(buff[1])
+            datatype, buffers = buff
+            # We still have to do the schema evolution for these unpacked
+            # buffers, otherwise we cannot guarantee that the written output
+            # file has one GLOBAL schema version for the EDM
+            buffers = evolve_schema(datatype, buffers)
+            buffers.append(buffers)
 
     return buffers
 
