@@ -128,21 +128,24 @@ namespace podio {
     m_stream.close() ;
   }
 
-  void SIOWriter::registerForWrite(const std::string& name){
+  bool SIOWriter::registerForWrite(const std::string& name){
 
     const podio::CollectionBase* colB(nullptr) ;
     m_store->get( name , colB );
-
-    if( !colB ){
-      throw std::runtime_error( std::string("no such collection to write: ")+name ) ;
+    if( !colB ) {
+      std::cerr << "No collection \'" << name << "\' to write" << std::endl;
+      return false;
     }
+
     // Check if we can instantiate the blocks here so that we can skip the checks later
     if (auto blk = podio::SIOBlockFactory::instance().createBlock( colB, name ); !blk) {
       const auto typName = colB->getValueTypeName();
+      // This is a bigger problem than simply a collection that is not present!
       throw std::runtime_error( std::string("could not create SIOBlock for type: ")+typName ) ;
     }
 
     m_collectionsToWrite.push_back(name);
+    return true;
   }
 
   void SIOWriter::writeCollectionIDTable() {

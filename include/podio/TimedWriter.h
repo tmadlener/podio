@@ -32,23 +32,24 @@ public:
     m_recorder.Fill("setup_times");
   }
 
-  void registerForWrite(const std::string& name) {
+  bool registerForWrite(const std::string& name) {
     // summing up the times it takes for all the collections to be registered
     // here, since we do not know in advance how many collections there will be
     // in the end
-    const auto duration = benchmark::run_void_member_timed(m_writer, &WrappedWriter::registerForWrite, name);
+    const auto [success, duration] = benchmark::run_member_timed(m_writer, &WrappedWriter::registerForWrite, name);
     m_registerTime += duration;
+    return success;
   }
 
   void writeEvent() {
     m_perEventTree.recordTime("write_event",
-                              benchmark::run_void_member_timed(m_writer, &WrappedWriter::writeEvent));
+                              benchmark::run_member_timed(m_writer, &WrappedWriter::writeEvent));
     m_perEventTree.Fill();
   }
 
   void finish() {
     m_recorder.recordTime("setup_times", "finish",
-                          benchmark::run_void_member_timed(m_writer, &WrappedWriter::finish));
+                          benchmark::run_member_timed(m_writer, &WrappedWriter::finish));
   }
 
 private:

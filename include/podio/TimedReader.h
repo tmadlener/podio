@@ -125,7 +125,7 @@ private:
 
   template<typename FuncT, typename ...Args>
   inline void runVoidTimed(bool perEvent, const std::string& step, FuncT func, Args&&... args) {
-    const auto duration = benchmark::run_void_member_timed(m_reader, func, std::forward<Args>(args)...);
+    const auto duration = benchmark::run_member_timed(m_reader, func, std::forward<Args>(args)...);
 
     recordTime(perEvent, step, duration);
   }

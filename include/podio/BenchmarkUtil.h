@@ -4,39 +4,46 @@
 #include <chrono>
 #include <functional>
 #include <utility>
+#include <type_traits>
 
 namespace podio::benchmark {
- using ClockT = std::chrono::high_resolution_clock;
+using ClockT = std::chrono::high_resolution_clock;
 
 /**
- * Run a member function and record the duration. Return the result and the
- * duration in a pair.
+ * Run a function and record the duration. Return the result and the duration
+ * in a pair unless the return type is void, then only return the duration.
  */
-template<class Obj, typename MemberFunc, typename ...Args>
-inline std::pair<std::invoke_result_t<MemberFunc, Obj, Args...>,
-                 ClockT::duration>
-run_member_timed(Obj& obj, MemberFunc func, Args&&... args) {
+template<class Func, typename ...Args>
+decltype(auto) run_timed(Func&& func, Args&&... args) {
   const auto start = ClockT::now();
-  const auto retval = std::invoke(func, obj, std::forward<Args>(args)...);
-  const auto end = ClockT::now();
 
-  return std::make_pair(retval, end - start);
+  // Have to special case here because std::invoke doesn't handle void and
+  // non-void return types on equal footing (at least for now).
+  // A bit of code duplication is not really avoidable in this case
+  if constexpr(std::is_same_v<std::invoke_result_t<Func, Args...>, void>) {
+    std::invoke(std::forward<Func>(func), std::forward<Args>(args)...);
+    const auto end = ClockT::now();
+    return end - start;
+  } else {
+    const auto retval = std::invoke(std::forward<Func>(func), std::forward<Args>(args)...);
+    const auto end = ClockT::now();
+    return std::make_pair(retval, end - start);
+  }
 }
 
 /**
- * Run a member function without return value and record the duration. Return
- * the duration and only use the side-effects of the member function. Can't get
- * this to work in the above version with a void return value, so that is why we
- * have a dedicated function for void functions here.
+ * Run a member function and record the duration. Return the result and the
+ * duration in a pair if the return type of the member function is non-void,
+ * otherwise only the duration.
+ *
+ * Simply delegates to run_timed while taking care of passing all the parameters
+ * in the right order.
  */
 template<class Obj, typename MemberFunc, typename ...Args>
-inline ClockT::duration
-run_void_member_timed(Obj& obj, MemberFunc func, Args&&... args) {
-  const auto start = ClockT::now();
-  std::invoke(func, obj, std::forward<Args>(args)...);
-  const auto end = ClockT::now();
-
-  return end - start;
+decltype(auto) run_member_timed(Obj&& obj, MemberFunc&& func, Args&&... args) {
+  return run_timed(std::forward<MemberFunc>(func),
+                   obj,
+                   std::forward<Args>(args)...);
 }
 
 } // namespace podio::benchmark

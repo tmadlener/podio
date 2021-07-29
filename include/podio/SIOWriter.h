@@ -28,7 +28,7 @@ namespace podio {
     SIOWriter(const SIOWriter&) = delete;
     SIOWriter& operator=(const SIOWriter&) = delete;
 
-    void registerForWrite(const std::string& name);
+    bool registerForWrite(const std::string& name);
     void writeEvent();
     void finish();
 
