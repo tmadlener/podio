@@ -79,3 +79,30 @@ types might be different on different platforms. E.g.
 static_assert(std::is_same_v<unsigned long, uint64_t>);
 ```
 might work on some platforms, but might not work on others.
+
+
+
+```cpp
+#include "podio/UserDataCollection.h"
+// ...
+
+const auto& jets = store.get<ReconstructedParticleCollection>("Jets");
+
+// Store different tags for each jet in a bitfield
+auto& jetTags = store.create<podio::UserDataCollection<uint16_t>>("JetTags");
+
+for (const auto jet : jets) {
+    auto jetTag = doFancyJetTagging(jet);
+    jetTags.push_back(jetTag);
+}
+
+
+// Use like a usual vector, e.g.
+for (const auto tag : jetTags) {/* looping */}
+auto firstTag = jetTags[0]; // indexed access
+auto nTags = jetTags.size(); // number of elements
+
+// For more advanced use cases can also get a 
+// (const) reference to the underlying vector
+auto& tagVector = jetTags.vec();
+```
