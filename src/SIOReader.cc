@@ -119,12 +119,16 @@ namespace podio {
   }
   
   void SIOReader::goToEvent(unsigned eventNumber) {
-    //can only go to forward events for the moment
-    if((int)eventNumber<m_eventNumber)return;
-    
+    // If we are already past the desired event number, rewind to the start first
+    if (eventNumber < (unsigned)m_eventNumber) {
+      m_stream.clear();
+      m_stream.seekg(0);
+      m_eventNumber = 0;
+    }
+
     sio::api::go_to_record(m_stream, "event_record");
-    sio::api::skip_n_records(m_stream, eventNumber-m_eventNumber);
-    m_eventNumber=eventNumber-m_eventNumber;
+    sio::api::skip_n_records(m_stream, eventNumber - m_eventNumber);
+    m_eventNumber = eventNumber - m_eventNumber;
   }
   
   void SIOReader::createBlocks() {
