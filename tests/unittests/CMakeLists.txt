@@ -26,11 +26,17 @@ else()
   set(CMAKE_CXX_FLAGS ${CXX_FLAGS_CMAKE_USED})
 endif()
 
-CREATE_PODIO_TEST(unittest.cpp "Catch2::Catch2;Catch2::Catch2WithMain")
-
+add_executable(unittests unittest.cpp)
+target_link_libraries(unittests PUBLIC TestDataModel PRIVATE Catch2::Catch2WithMain)
 if(NOT USE_SANITIZER MATCHES "Memory(WithOrigin)?")
-   # This can fail with memory sanitizer because it actually runs an executable.
-   # Hence, we enable this only for non memory-sanitizer runs
-   include(Catch)
-   catch_discover_tests(unittest WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
+  # This can fail with memory sanitizer because it actually runs an executable.
+  # Hence, we enable this only for non memory-sanitizer runs
+  include(Catch)
+  catch_discover_tests(unittests WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
+else()
+  add_test(NAME unittests COMMAND unittests)
+  set_property(TEST unittests
+    PROPERTY ENVIRONMENT
+    LD_LIBRARY_PATH=$<TARGET_FILE_DIR:TestDataModel>:$<TARGET_FILE_DIR:podio::podio>:$ENV{LD_LIBRARY_PATH}
+    )
 endif()
