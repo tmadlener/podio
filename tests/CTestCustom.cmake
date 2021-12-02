@@ -2,9 +2,12 @@
 # for now (but report that they have been ignored). This allows us to still run
 # this in CI
 
+# See: https://gitlab.kitware.com/cmake/community/-/wikis/doc/ctest/Testing-With-CTest#customizing-ctest
+
 # "Integration style tests" pretty much all have problems at the moment with any
 # sanitizer
-if (NOT "@USE_SANITIZER@" STREQUAL "")
+
+if ((NOT "@FORCE_RUN_ALL_TESTS@" STREQUAL "ON") AND (NOT "@USE_SANITIZER@" STREQUAL ""))
   set(CTEST_CUSTOM_TESTS_IGNORE
     ${CTEST_CUSTOM_TESTS_IGNORE}
 
@@ -29,5 +32,5 @@ if (NOT "@USE_SANITIZER@" STREQUAL "")
     relation_range
 
     pyunittest
-    )
+  )
 endif()

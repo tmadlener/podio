@@ -32,12 +32,14 @@ target_link_libraries(unittests PUBLIC TestDataModel PRIVATE Catch2::Catch2WithM
 # The unittests are a bit better and they are labelled so we can put together a
 # list of labels that we want to ignore
 set(filter_tests "")
-if(USE_SANITIZER MATCHES "Address")
-  set(filter_tests "~[LEAK-FAIL]~[ASAN-FAIL]")
-elseif(USE_SANITIZER MATCHES "Leak")
-  set(filter_tests "~[LEAK-FAIL]")
-elseif(USE_SANITIZER MATCHES "Thread")
-  set(filter_tests "~[THREAD-FAIL]")
+if (NOT FORCE_RUN_ALL_TESTS)
+  if(USE_SANITIZER MATCHES "Address")
+    set(filter_tests "~[LEAK-FAIL]~[ASAN-FAIL]")
+  elseif(USE_SANITIZER MATCHES "Leak")
+    set(filter_tests "~[LEAK-FAIL]")
+  elseif(USE_SANITIZER MATCHES "Thread")
+    set(filter_tests "~[THREAD-FAIL]")
+  endif()
 endif()
 
 include(Catch)
