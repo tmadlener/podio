@@ -32,7 +32,10 @@ if(NOT USE_SANITIZER MATCHES "Memory(WithOrigin)?")
   # This can fail with memory sanitizer because it actually runs an executable.
   # Hence, we enable this only for non memory-sanitizer runs
   include(Catch)
-  catch_discover_tests(unittests WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
+  catch_discover_tests(unittests
+    WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+    TEST_PREFIX "UT_" # make it possible to filter easily with -R ^UT
+    )
 else()
   add_test(NAME unittests COMMAND unittests)
   set_property(TEST unittests
