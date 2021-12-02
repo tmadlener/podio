@@ -28,6 +28,16 @@ endif()
 
 add_executable(unittests unittest.cpp)
 target_link_libraries(unittests PUBLIC TestDataModel PRIVATE Catch2::Catch2WithMain)
+
+# Put together a list of labels for filtering tests depending no different
+# settings which are known to lead to problems
+set(filter_tests "")
+if(USE_SANITIZER MATCHES "Address")
+  set(filter_tests "~[LEAK-FAIL]~[ASAN-FAIL]")
+elseif(USE_SANITIZER MATCHES "Leak")
+  set(filter_tests "~[LEAK-FAIL]")
+endif()
+
 if(NOT USE_SANITIZER MATCHES "Memory(WithOrigin)?")
   # This can fail with memory sanitizer because it actually runs an executable.
   # Hence, we enable this only for non memory-sanitizer runs
@@ -35,6 +45,7 @@ if(NOT USE_SANITIZER MATCHES "Memory(WithOrigin)?")
   catch_discover_tests(unittests
     WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
     TEST_PREFIX "UT_" # make it possible to filter easily with -R ^UT
+    TEST_SPEC ${filter_tests} # discover only tests that are known to not fail
     )
 else()
   add_test(NAME unittests COMMAND unittests)
