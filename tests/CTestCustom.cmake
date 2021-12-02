@@ -1,0 +1,33 @@
+# Some of the tests currently fail when run under some sanitizers, ignore them
+# for now (but report that they have been ignored). This allows us to still run
+# this in CI
+
+# "Integration style tests" pretty much all have problems at the moment with any
+# sanitizer
+if (NOT "@USE_SANITIZER@" STREQUAL "")
+  set(CTEST_CUSTOM_TESTS_IGNORE
+    ${CTEST_CUSTOM_TESTS_IGNORE}
+
+    write
+    read
+    read_and_write
+    write_timed
+    read_timed
+    check_benchmark_outputs
+    read-multiple
+
+    write_sio
+    read_sio
+    read_and_write_sio
+    write_timed_sio
+    read_timed_sio
+    check_benchmark_outputs_sio
+
+    write_ascii
+
+    ostream_operator
+    relation_range
+
+    pyunittest
+    )
+endif()

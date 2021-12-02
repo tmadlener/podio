@@ -78,3 +78,6 @@ set_property(TEST pyunittest
 set_property(TEST pyunittest PROPERTY DEPENDS write)
 
 add_subdirectory(unittests)
+
+# Customize CTest to potentially disable some of the tests with known problems
+configure_file(CTestCustom.cmake ${CMAKE_BINARY_DIR}/CTestCustom.cmake)
