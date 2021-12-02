@@ -42,9 +42,21 @@ if (NOT FORCE_RUN_ALL_TESTS)
   endif()
 endif()
 
-include(Catch)
-catch_discover_tests(unittests
-    WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
-    TEST_PREFIX "UT_" # make it possible to filter easily with -R ^UT
-    TEST_SPEC ${filter_tests} # discover only tests that are known to not fail
-)
+if (USE_SANITIZER MATCHES "Memory(WithOrigin)?")
+  # Automatic test discovery fails with Memory sanitizers due to some issues in
+  # Catch2. So in that case we skip the discovery step and simply run the thing
+  # directly in the tests.
+  if (FORCE_RUN_ALL_TESTS)
+    # Unfortunately Memory sanitizer seems to be really unhappy with Catch2 and
+    # it fails to succesfully launch the executable and execute any test. Here
+    # we just include them in order to have them show up as failing
+    add_test(NAME unittests COMMAND unittests ${filter_tests})
+  endif()
+else()
+  include(Catch)
+  catch_discover_tests(unittests
+      WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+      TEST_PREFIX "UT_" # make it possible to filter easily with -R ^UT
+      TEST_SPEC ${filter_tests} # discover only tests that are known to not fail
+  )
+endif()

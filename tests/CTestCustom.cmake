@@ -33,4 +33,9 @@ if ((NOT "@FORCE_RUN_ALL_TESTS@" STREQUAL "ON") AND (NOT "@USE_SANITIZER@" STREQ
 
     pyunittest
   )
+
+  # ostream_operator is working with Memory sanitizer
+  if("@USE_SANITIZER@" MATCHES "Memory(WithOrigin)?")
+    list(REMOVE_ITEM CTEST_CUSTOM_TESTS_IGNORE ostream_operator)
+  endif()
 endif()
