@@ -2,12 +2,14 @@
 #include <iostream>
 #include <map>
 #include <stdexcept>
+#include <tuple>
 #include <type_traits>
 #include <vector>
 
 #include "catch2/catch_test_macros.hpp"
 
 // podio specific includes
+#include "datamodel/ExampleWithVectorMemberCollection.h"
 #include "podio/EventStore.h"
 
 // Test data types
@@ -516,4 +518,146 @@ TEST_CASE("Subset collection only handles tracked objects", "[subset-colls]") {
 
   REQUIRE_THROWS_AS(clusterRefs.push_back(cluster), std::invalid_argument);
   REQUIRE_THROWS_AS(clusterRefs.create(), std::logic_error);
+}
+
+// Helper functionality to keep the tests below with a common setup a bit shorter
+std::tuple<ExampleHitCollection, ExampleClusterCollection, ExampleWithVectorMemberCollection>
+createCollections(const size_t nElements = 3u) {
+  auto colls = std::make_tuple(ExampleHitCollection(), ExampleClusterCollection(), ExampleWithVectorMemberCollection());
+  auto& [hitColl, clusterColl, vecMemColl] = colls;
+
+  for (auto i = 0u; i < nElements; ++i) {
+    auto hit = hitColl.create();
+    auto cluster = clusterColl.create();
+    // create a few relations as well
+    cluster.addHits(hit);
+
+    auto vecMem = vecMemColl.create();
+    vecMem.addcount(i);
+    vecMem.addcount(2 * i);
+  }
+
+  return colls;
+}
+
+// Helper functionality to keep the tests below with a common setup a bit shorter
+void checkCollections(const ExampleHitCollection& hits, const ExampleClusterCollection& clusters,
+                      const ExampleWithVectorMemberCollection& vectors, const size_t nElements = 3u) {
+  // Basics
+  REQUIRE(hits.size() == nElements);
+  REQUIRE(clusters.size() == nElements);
+  REQUIRE(vectors.size() == nElements);
+
+  int i = 0;
+  for (auto cluster : clusters) {
+    REQUIRE(cluster.Hits(0) == hits[i++]);
+  }
+
+  i = 0;
+  for (const auto vec : vectors) {
+    const auto counts = vec.count();
+    REQUIRE(counts.size() == 2);
+    REQUIRE(counts[0] == i);
+    REQUIRE(counts[1] == i * 2);
+    i++;
+  }
+}
+
+TEST_CASE("Move-only collections", "[collections][move-semantics]") {
+  // Setup a few collections that will be used throughout below
+  auto [hitColl, clusterColl, vecMemColl] = createCollections(3);
+
+  // Define a quick check function here for checking collections below
+  // Hopefully redundant check for setup
+  checkCollections(hitColl, clusterColl, vecMemColl);
+
+  SECTION("Move constructor") {
+    // Move-construct collections and make sure the size is as expected
+    auto newHits = std::move(hitColl);
+    auto newClusters = std::move(clusterColl);
+    auto newVecMems = std::move(vecMemColl);
+
+    checkCollections(newHits, newClusters, newVecMems);
+  }
+
+  SECTION("Move assignment") {
+    // Move assign collections and make sure everything is as expected
+    auto newHits = ExampleHitCollection();
+    newHits = std::move(hitColl);
+
+    auto newClusters = ExampleClusterCollection();
+    newClusters = std::move(clusterColl);
+
+    auto newVecMems = ExampleWithVectorMemberCollection();
+    newVecMems = std::move(vecMemColl);
+
+    checkCollections(newHits, newClusters, newVecMems);
+  }
+
+  SECTION("Prepared collections can be move constructed") {
+    hitColl.prepareForWrite();
+    auto newHits = std::move(hitColl);
+
+    clusterColl.prepareForWrite();
+    auto newClusters = std::move(clusterColl);
+
+    vecMemColl.prepareForWrite();
+    auto newVecMems = std::move(vecMemColl);
+
+    checkCollections(newHits, newClusters, newVecMems);
+  }
+
+  SECTION("Prepared collections can be move assigned") {
+    hitColl.prepareForWrite();
+    clusterColl.prepareForWrite();
+    vecMemColl.prepareForWrite();
+
+    auto newHits = ExampleHitCollection();
+    newHits = std::move(hitColl);
+
+    auto newClusters = ExampleClusterCollection();
+    newClusters = std::move(clusterColl);
+
+    auto newVecMems = ExampleWithVectorMemberCollection();
+    newVecMems = std::move(vecMemColl);
+
+    checkCollections(newHits, newClusters, newVecMems);
+  }
+
+  SECTION("Subset collections can be moved") {
+    auto subsetHits = ExampleHitCollection();
+    subsetHits.setSubsetCollection();
+    for (auto hit : hitColl) {
+      subsetHits.push_back(hit);
+    }
+    checkCollections(subsetHits, clusterColl, vecMemColl);
+
+    auto newSubsetHits = std::move(subsetHits);
+    REQUIRE(newSubsetHits.isSubsetCollection());
+    checkCollections(newSubsetHits, clusterColl, vecMemColl);
+
+    auto subsetClusters = ExampleClusterCollection();
+    subsetClusters.setSubsetCollection();
+    for (auto cluster : clusterColl) {
+      subsetClusters.push_back(cluster);
+    }
+    checkCollections(newSubsetHits, subsetClusters, vecMemColl);
+
+    // Test move-assignment here as well
+    auto newSubsetClusters = ExampleClusterCollection();
+    newSubsetClusters = std::move(subsetClusters);
+    REQUIRE(newSubsetClusters.isSubsetCollection());
+    checkCollections(newSubsetHits, newSubsetClusters, vecMemColl);
+
+    auto subsetVecs = ExampleWithVectorMemberCollection();
+    subsetVecs.setSubsetCollection();
+    for (auto vec : vecMemColl) {
+      subsetVecs.push_back(vec);
+    }
+    checkCollections(newSubsetHits, newSubsetClusters, subsetVecs);
+
+    auto newSubsetVecs = std::move(subsetVecs);
+    REQUIRE(newSubsetVecs.isSubsetCollection());
+    checkCollections(hitColl, clusterColl, newSubsetVecs);
+  }
 }
