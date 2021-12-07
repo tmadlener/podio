@@ -65,7 +65,7 @@ void ROOTWriter::createBranches(const std::vector<StoreCollection>& collections)
       int i = 0;
       for (auto& c : (*refColls)) {
         const auto brName = root_utils::refBranch(name, i);
-        branches.refs.push_back(m_datatree->Branch(brName.c_str(), c));
+        branches.refs.push_back(m_datatree->Branch(brName.c_str(), c.get()));
         ++i;
       }
     }
