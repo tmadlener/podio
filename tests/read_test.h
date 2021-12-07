@@ -26,6 +26,7 @@
 #include <iostream>
 #include <limits>
 #include <sstream>
+#include <stdexcept>
 #include <vector>
 
 template <typename FixedWidthT>
@@ -82,6 +83,14 @@ void processEvent(podio::EventStore& store, int eventNum) {
     std::cout << " meta data from collection 'hits' with id = " << hits.getID() << " read CellIDEncodingString: " << es
               << " - expected : system:8,barrel:3,layer:6,slice:5,x:-16,y:-16" << std::endl;
     throw std::runtime_error("Couldn't read event meta data parameters 'CellIDEncodingString'");
+  }
+
+  auto& hitRefs = store.get<ExampleHitCollection>("hitRefs");
+  if (hitRefs.size() != hits.size()) {
+    throw std::runtime_error("hit and subset hit collection do not have the same size");
+  }
+  if (!(hits[1] == hitRefs[0] && hits[0] == hitRefs[1])) {
+    throw std::runtime_error("hit subset collections do not have the expected contents");
   }
 
   auto& clusters = store.get<ExampleClusterCollection>("clusters");
