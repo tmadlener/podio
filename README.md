@@ -42,7 +42,7 @@ Using the `-DUSE_EXTERNAL_CATCH2=OFF` to configure CMake will instead fetch an a
 Podio works with both python 2 and python3. Check your python version by doing:
 
     python --version
-    
+
 #### python packages
 
 Podio requires the `yaml` and `jinja2` python modules.
@@ -55,8 +55,8 @@ Check that the `yaml` and `jinja2` python modules are available
 If the import goes fine (no message), you're all set. If not, the necessary modules need to be installed. This is most easily done via (first install pip if you don't have it yet)
 
     pip install -r requirements.txt
-    
-In order for the `yaml` module to be working it might also be necessary to install the C++ yaml library. On Mac OS, The easiest way to do that is to use homebrew (install homebrew if you don't have it yet): 
+
+In order for the `yaml` module to be working it might also be necessary to install the C++ yaml library. On Mac OS, The easiest way to do that is to use homebrew (install homebrew if you don't have it yet):
 
     brew install libyaml
 

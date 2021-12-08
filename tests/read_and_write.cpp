@@ -24,7 +24,7 @@ int main(){
     processEvent(store, i);
 
     writer.writeEvent() ;
-    
+
     store.clear();
     reader.endOfEvent();
   }

@@ -319,7 +319,7 @@ TEST_CASE("AssociativeContainer") {
   cMap[ clu5 ] = 5  ;
 
   REQUIRE( cMap[ clu3 ]  == 3 );
-  
+
   cMap[ clu3 ] = 42  ;
 
   REQUIRE( cMap[ clu3 ]  == 42 );
@@ -361,7 +361,7 @@ TEST_CASE("const correct indexed access to collections", "[const-correctness]") 
   static_assert(std::is_same_v<decltype(collection), ExampleHitCollection&>, "collection created by store should not be const");
 
   static_assert(std::is_same_v<decltype(collection[0]), MutableExampleHit>,"non-const collections should have indexed access to mutable objects");
- 
+
   static_assert(std::is_same_v<
                 decltype(std::declval<ExampleClusterCollection>()[0]),
                 MutableExampleCluster>,
