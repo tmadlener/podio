@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# Thin wrapper around clang-format for easier to parse output from the
+# pre-commit hook
+
+file=${1}
+if ! $(clang-format --style=file --Werror --dry-run ${file} > /dev/null 2>&1); then
+    echo "Necessary changes for: '${file}'"
+    diff --color=always -u ${file} <(clang-format --style=file ${file}) | tail -n +3
+    exit 1
+fi
