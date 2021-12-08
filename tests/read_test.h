@@ -1,5 +1,5 @@
-#ifndef PODIO_TESTS_READ_TEST_H_
-#define PODIO_TESTS_READ_TEST_H_
+#ifndef PODIO_TESTS_READ_TEST_H // NOLINT(llvm-header-guard): folder structure not suitable
+#define PODIO_TESTS_READ_TEST_H // NOLINT(llvm-header-guard): folder structure not suitable
 // test data model
 #include "datamodel/ExampleClusterCollection.h"
 #include "datamodel/ExampleHitCollection.h"
@@ -98,8 +98,9 @@ void processEvent(podio::EventStore& store, int eventNum) {
   // Test this before the MCParticle collection to make sure it actually loads
   // the referenced collection(s) if they are not already present
   auto& mcpRefs = store.get<ExampleMCCollection>("mcParticleRefs");
-  if (!mcpRefs.isValid())
+  if (!mcpRefs.isValid()) {
     throw std::runtime_error("Collection 'mcParticleRefs' should be present");
+  }
 
   for (auto p : mcpRefs) {
     if ((unsigned)p.getObjectID().collectionID == mcpRefs.getID()) {
@@ -164,14 +165,18 @@ void processEvent(podio::EventStore& store, int eventNum) {
     auto d2 = p.daughters(2);
     auto d3 = p.daughters(3);
 
-    if (!(d0 == mcps[2]))
+    if (!(d0 == mcps[2])) {
       throw std::runtime_error(" error: 1. daughter of particle 0 is not particle 2 ");
-    if (!(d1 == mcps[3]))
+    }
+    if (!(d1 == mcps[3])) {
       throw std::runtime_error(" error: 2. daughter of particle 0 is not particle 3 ");
-    if (!(d2 == mcps[4]))
+    }
+    if (!(d2 == mcps[4])) {
       throw std::runtime_error(" error: 3. daughter of particle 0 is not particle 4 ");
-    if (!(d3 == mcps[5]))
+    }
+    if (!(d3 == mcps[5])) {
       throw std::runtime_error(" error: 4. daughter of particle 0 is not particle 5 ");
+    }
 
     // particle 3 has particles 6,7,8 and 9 as daughters:
     p = mcps[3];
@@ -181,14 +186,18 @@ void processEvent(podio::EventStore& store, int eventNum) {
     d2 = p.daughters(2);
     d3 = p.daughters(3);
 
-    if (!(d0 == mcps[6]))
+    if (!(d0 == mcps[6])) {
       throw std::runtime_error(" error: 1. daughter of particle 3 is not particle 6 ");
-    if (!(d1 == mcps[7]))
+    }
+    if (!(d1 == mcps[7])) {
       throw std::runtime_error(" error: 2. daughter of particle 3 is not particle 7 ");
-    if (!(d2 == mcps[8]))
+    }
+    if (!(d2 == mcps[8])) {
       throw std::runtime_error(" error: 3. daughter of particle 3 is not particle 8 ");
-    if (!(d3 == mcps[9]))
+    }
+    if (!(d3 == mcps[9])) {
       throw std::runtime_error(" error: 4. daughter of particle 3 is not particle 9 ");
+    }
 
   } else {
     throw std::runtime_error("Collection 'mcparticles' should be present");
@@ -233,10 +242,11 @@ void processEvent(podio::EventStore& store, int eventNum) {
                                "collection do not have the expected values");
     }
 
-    for (auto item : vecs)
+    for (auto item : vecs) {
       for (auto c = item.count_begin(), end = item.count_end(); c != end; ++c) {
         std::cout << "  Counter value " << (*c) << std::endl;
       }
+    }
   } else {
     throw std::runtime_error("Collection 'WithVectorMember' should be present");
   }
@@ -339,23 +349,24 @@ void processEvent(podio::EventStore& store, int eventNum) {
   auto& uivec = usrInts.vec() ;
   int myInt = 0 ;
   for( int iu : uivec ){
-    if( iu != myInt++ )
+    if( iu != myInt++ ) {
       throw std::runtime_error("Couldn't read userInts properly"); ;
+    }
   }
 #else // access in direct range based for loop
   int myInt = 0;
   for (int iu : usrInts) {
-    if (iu != myInt++)
+    if (iu != myInt++) {
       throw std::runtime_error("Couldn't read userInts properly");
-    ;
+    }
   }
 #endif
 
   auto& usrDbl = store.get<podio::UserDataCollection<double>>("userDoubles");
   for (double d : usrDbl) {
-    if (d != 42.)
+    if (d != 42.) {
       throw std::runtime_error("Couldn't read userDoubles properly");
-    ;
+    }
   }
 }
 
@@ -379,8 +390,9 @@ void run_read_test(podio::IReader& reader) {
 
   for (unsigned i = 0; i < nEvents; ++i) {
 
-    if (i % 1000 == 0)
+    if (i % 1000 == 0) {
       std::cout << "reading event " << i << std::endl;
+    }
 
     processEvent(store, correctIndex(i));
     store.clear();
@@ -388,4 +400,4 @@ void run_read_test(podio::IReader& reader) {
   }
 }
 
-#endif // PODIO_TESTS_READ_TEST_H__
+#endif // PODIO_TESTS_READ_TEST_H

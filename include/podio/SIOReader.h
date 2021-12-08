@@ -1,5 +1,5 @@
-#ifndef SIOReader_H
-#define SIOReader_H
+#ifndef PODIO_SIOREADER_H
+#define PODIO_SIOREADER_H
 
 #include <algorithm>
 #include <iostream>
@@ -32,7 +32,7 @@ class SIOReader : public IReader {
 
 public:
   SIOReader();
-  ~SIOReader();
+  ~SIOReader() = default;
 
   // make non-copyable
   SIOReader(const SIOReader&) = delete;
@@ -45,7 +45,7 @@ public:
   void readEvent();
 
   /// Read CollectionIDTable from SIO file
-  CollectionIDTable* getCollectionIDTable() override final {
+  CollectionIDTable* getCollectionIDTable() override {
     return m_table;
   }
 
@@ -54,22 +54,22 @@ public:
   }
 
   /// Check if file is valid
-  virtual bool isValid() const override final;
+  bool isValid() const override;
 
   void endOfEvent() override;
 
 private:
   /// Implementation for collection reading
-  CollectionBase* readCollection(const std::string& name) override final;
+  CollectionBase* readCollection(const std::string& name) override;
 
   /// read event meta data for current event
-  GenericParameters* readEventMetaData() override final;
+  GenericParameters* readEventMetaData() override;
 
   /// read the collection meta data
-  std::map<int, GenericParameters>* readCollectionMetaData() override final;
+  std::map<int, GenericParameters>* readCollectionMetaData() override;
 
   /// read the run meta data
-  std::map<int, GenericParameters>* readRunMetaData() override final;
+  std::map<int, GenericParameters>* readRunMetaData() override;
 
   /// read the TOC record
   bool readFileTOCRecord();
@@ -79,7 +79,7 @@ private:
 
 private:
   void readCollectionIDTable();
-  void readMetaDataRecord(std::shared_ptr<SIONumberedMetaDataBlock> mdBlock);
+  void readMetaDataRecord(const std::shared_ptr<SIONumberedMetaDataBlock>& mdBlock);
   void createBlocks();
 
   typedef std::pair<CollectionBase*, std::string> Input;

@@ -1,5 +1,5 @@
-#ifndef PODIO_TESTS_WRITE_TEST_H_
-#define PODIO_TESTS_WRITE_TEST_H_
+#ifndef PODIO_TESTS_WRITE_TEST_H // NOLINT(llvm-header-guard): folder structure not suitable
+#define PODIO_TESTS_WRITE_TEST_H // NOLINT(llvm-header-guard): folder structure not suitable
 
 // Data model
 #include "datamodel/EventInfoCollection.h"
@@ -274,8 +274,8 @@ void write(podio::EventStore& store, WriterT& writer) {
       }
       namesprels.push_back(rel);
     }
-    for (size_t j = 0; j < namesprels.size(); ++j) {
-      cpytest.push_back(namesprels.at(j).clone());
+    for (auto&& namesprel : namesprels) {
+      cpytest.push_back(namesprel.clone());
     }
 
     auto string = ExampleWithString("SomeString");
@@ -341,4 +341,4 @@ void write(podio::EventStore& store, WriterT& writer) {
   writer.finish();
 }
 
-#endif // __WRITE_TEST_H_
+#endif // PODIO_TESTS_WRITE_TEST_H

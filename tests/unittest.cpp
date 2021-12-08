@@ -40,8 +40,9 @@ TEST_CASE("Basics") {
   const ExampleHitCollection* coll2(nullptr);
   bool success = store.get("name", coll2);
   const ExampleHitCollection* coll3(nullptr);
-  if (store.get("wrongName", coll3) != false)
+  if (store.get("wrongName", coll3) != false) {
     success = false;
+  }
   REQUIRE(success);
 }
 
@@ -85,8 +86,9 @@ TEST_CASE("Clearing") {
     oneRels.push_back(oneRel);
   }
   hits.clear();
-  if (hits.size() != 0)
+  if (hits.size() != 0) {
     success = false;
+  }
   REQUIRE(success);
 }
 
@@ -96,8 +98,9 @@ TEST_CASE("Cloning") {
   hit.energy(30);
   auto hit2 = hit.clone();
   hit2.energy(20);
-  if (hit.energy() == hit2.energy())
+  if (hit.energy() == hit2.energy()) {
     success = false;
+  }
   auto cluster = MutableExampleCluster();
   cluster.addHits(hit);
   auto cluster2 = cluster.clone();
@@ -154,9 +157,9 @@ TEST_CASE("Looping") {
   auto& coll = store.create<ExampleHitCollection>("name");
   auto hit1 = coll.create(0xbadULL, 0., 0., 0., 0.);
   auto hit2 = coll.create(0xcaffeeULL, 1., 1., 1., 1.);
-  for (auto i = coll.begin(), end = coll.end(); i != end; ++i) {
-    i->energy(42); // make sure that we can indeed change the energy here for
-                   // non-const collections
+  for (auto&& i : coll) {
+    i.energy(42); // make sure that we can indeed change the energy here for
+                  // non-const collections
   }
   REQUIRE(hit1.energy() == 42);
   REQUIRE(hit2.energy() == 42);
@@ -186,8 +189,9 @@ TEST_CASE("Notebook") {
   auto energies = hits.energy<10>();
   int index = 0;
   for (auto energy : energies) {
-    if (double(index) != energy)
+    if (double(index) != energy) {
       success = false;
+    }
     ++index;
   }
   REQUIRE(success);
@@ -230,8 +234,9 @@ TEST_CASE("Referencing") {
   cluster.addHits(hit2);
   int index = 0;
   for (auto i = cluster.Hits_begin(), end = cluster.Hits_end(); i != end; ++i) {
-    if (i->energy() != index)
+    if (i->energy() != index) {
       success = false;
+    }
     ++index;
   }
   REQUIRE(success);
@@ -470,8 +475,9 @@ TEST_CASE("Collection iterators work with subset collections", "[subset-colls]")
 
   auto hitRefs = ExampleHitCollection();
   hitRefs.setSubsetCollection();
-  for (const auto h : hits)
+  for (const auto h : hits) {
     hitRefs.push_back(h);
+  }
 
   // index-based looping / access
   for (size_t i = 0; i < hitRefs.size(); ++i) {
