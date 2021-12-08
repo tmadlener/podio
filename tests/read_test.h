@@ -1,18 +1,18 @@
 #ifndef PODIO_TESTS_READ_TEST_H_
 #define PODIO_TESTS_READ_TEST_H_
 // test data model
-#include "datamodel/ExampleHitCollection.h"
 #include "datamodel/ExampleClusterCollection.h"
+#include "datamodel/ExampleHitCollection.h"
 #include "datamodel/ExampleMCCollection.h"
 #include "datamodel/ExampleReferencingTypeCollection.h"
-#include "datamodel/ExampleWithOneRelationCollection.h"
-#include "datamodel/ExampleWithVectorMemberCollection.h"
-#include "datamodel/ExampleWithComponentCollection.h"
 #include "datamodel/ExampleWithARelationCollection.h"
-#include "datamodel/ExampleWithStringCollection.h"
-#include "datamodel/ExampleWithNamespace.h"
 #include "datamodel/ExampleWithArrayCollection.h"
+#include "datamodel/ExampleWithComponentCollection.h"
 #include "datamodel/ExampleWithFixedWidthIntegersCollection.h"
+#include "datamodel/ExampleWithNamespace.h"
+#include "datamodel/ExampleWithOneRelationCollection.h"
+#include "datamodel/ExampleWithStringCollection.h"
+#include "datamodel/ExampleWithVectorMemberCollection.h"
 
 // podio specific includes
 #include "podio/EventStore.h"
@@ -21,14 +21,14 @@
 #include "podio/UserDataCollection.h"
 
 // STL
-#include <limits>
-#include <vector>
-#include <iostream>
-#include <exception>
 #include <cassert>
+#include <exception>
+#include <iostream>
+#include <limits>
 #include <sstream>
+#include <vector>
 
-template<typename FixedWidthT>
+template <typename FixedWidthT>
 bool check_fixed_width_value(FixedWidthT actual, FixedWidthT expected, const std::string& type) {
   if (actual != expected) {
     std::stringstream msg{};
@@ -40,33 +40,32 @@ bool check_fixed_width_value(FixedWidthT actual, FixedWidthT expected, const std
 
 void processEvent(podio::EventStore& store, int eventNum) {
 
-  auto evtMD = store.getEventMetaData() ;
-  float evtWeight = evtMD.getFloatVal( "UserEventWeight" ) ;
-  if( evtWeight != (float) 100.*eventNum ){
-    std::cout << " read UserEventWeight: " << evtWeight << " - expected : " << (float) 100.*eventNum << std::endl ;
+  auto evtMD = store.getEventMetaData();
+  float evtWeight = evtMD.getFloatVal("UserEventWeight");
+  if (evtWeight != (float)100. * eventNum) {
+    std::cout << " read UserEventWeight: " << evtWeight << " - expected : " << (float)100. * eventNum << std::endl;
     throw std::runtime_error("Couldn't read event meta data parameters 'UserEventWeight'");
   }
-  std::stringstream ss ; ss << " event_number_" << eventNum ;
-  const auto& evtName = evtMD.getStringVal( "UserEventName" ) ;
-  if( evtName != ss.str() ){
-    std::cout << " read UserEventName: " << evtName << " - expected : " << ss.str() << std::endl ;
+  std::stringstream ss;
+  ss << " event_number_" << eventNum;
+  const auto& evtName = evtMD.getStringVal("UserEventName");
+  if (evtName != ss.str()) {
+    std::cout << " read UserEventName: " << evtName << " - expected : " << ss.str() << std::endl;
     throw std::runtime_error("Couldn't read event meta data parameters 'UserEventName'");
   }
-
 
   try {
     // not assigning to a variable, because it will remain unused, we just want
     // the exception here
     store.get<ExampleClusterCollection>("notthere");
-  } catch(const std::runtime_error& err) {
+  } catch (const std::runtime_error& err) {
     if (std::string(err.what()) != "No collection \'notthere\' is present in the EventStore") {
       throw std::runtime_error("Trying to get non present collection \'notthere' should throw an exception");
     }
   }
 
-
   auto& strings = store.get<ExampleWithStringCollection>("strings");
-  if(strings.isValid()){
+  if (strings.isValid()) {
     auto string = strings[0];
     if (string.theString() != "SomeString") {
       throw std::runtime_error("Couldn't read string properly");
@@ -77,20 +76,18 @@ void processEvent(podio::EventStore& store, int eventNum) {
 
   // read collection meta data
   auto& hits = store.get<ExampleHitCollection>("hits");
-  auto colMD = store.getCollectionMetaData( hits.getID() );
-  const auto& es = colMD.getStringVal("CellIDEncodingString") ;
-  if( es != std::string("system:8,barrel:3,layer:6,slice:5,x:-16,y:-16") ){
-    std::cout << " meta data from collection 'hits' with id = " <<  hits.getID()
-              << " read CellIDEncodingString: " << es << " - expected : system:8,barrel:3,layer:6,slice:5,x:-16,y:-16"
-              << std::endl ;
+  auto colMD = store.getCollectionMetaData(hits.getID());
+  const auto& es = colMD.getStringVal("CellIDEncodingString");
+  if (es != std::string("system:8,barrel:3,layer:6,slice:5,x:-16,y:-16")) {
+    std::cout << " meta data from collection 'hits' with id = " << hits.getID() << " read CellIDEncodingString: " << es
+              << " - expected : system:8,barrel:3,layer:6,slice:5,x:-16,y:-16" << std::endl;
     throw std::runtime_error("Couldn't read event meta data parameters 'CellIDEncodingString'");
   }
 
-
   auto& clusters = store.get<ExampleClusterCollection>("clusters");
-  if(clusters.isValid()){
+  if (clusters.isValid()) {
     auto cluster = clusters[0];
-    for (auto i = cluster.Hits_begin(), end = cluster.Hits_end(); i!=end; ++i){
+    for (auto i = cluster.Hits_begin(), end = cluster.Hits_end(); i != end; ++i) {
       std::cout << "  Referenced hit has an energy of " << i->energy() << std::endl;
     }
   } else {
@@ -101,16 +98,18 @@ void processEvent(podio::EventStore& store, int eventNum) {
   // Test this before the MCParticle collection to make sure it actually loads
   // the referenced collection(s) if they are not already present
   auto& mcpRefs = store.get<ExampleMCCollection>("mcParticleRefs");
-  if (!mcpRefs.isValid()) throw std::runtime_error("Collection 'mcParticleRefs' should be present");
+  if (!mcpRefs.isValid())
+    throw std::runtime_error("Collection 'mcParticleRefs' should be present");
 
   for (auto p : mcpRefs) {
     if ((unsigned)p.getObjectID().collectionID == mcpRefs.getID()) {
-      throw std::runtime_error("objects of a reference collection should have a different collectionID than the reference collection");
+      throw std::runtime_error(
+          "objects of a reference collection should have a different collectionID than the reference collection");
     }
   }
 
   // Now we can do some more tests actually comparing the references to the MC Particles
-  auto& mcps =  store.get<ExampleMCCollection>("mcparticles");
+  auto& mcps = store.get<ExampleMCCollection>("mcparticles");
   auto& moreMCs = store.get<ExampleMCCollection>("moreMCs");
   // First check that the two mc collections that we store are the same
   if (mcps.size() != moreMCs.size()) {
@@ -125,7 +124,7 @@ void processEvent(podio::EventStore& store, int eventNum) {
     }
   }
 
-  if( mcps.isValid() ){
+  if (mcps.isValid()) {
     if (mcpRefs.size() != mcps.size()) {
       throw std::runtime_error("'mcParticleRefs' collection has wrong size");
     }
@@ -145,93 +144,99 @@ void processEvent(podio::EventStore& store, int eventNum) {
     // check that we can retrieve the correct parent daughter relation
     // set in write_test.h :
     //-------- print relations for debugging:
-    for( auto p : mcps ){
-      std::cout << " particle " << p.getObjectID().index << " has daughters: " ;
-      for(auto it = p.daughters_begin(), end = p.daughters_end() ; it!=end ; ++it ){
-        std::cout << " " << it->getObjectID().index ;
+    for (auto p : mcps) {
+      std::cout << " particle " << p.getObjectID().index << " has daughters: ";
+      for (auto it = p.daughters_begin(), end = p.daughters_end(); it != end; ++it) {
+        std::cout << " " << it->getObjectID().index;
       }
-      std::cout << "  and parents: " ;
-      for(auto it = p.parents_begin(), end = p.parents_end() ; it!=end ; ++it ){
-        std::cout << " " << it->getObjectID().index ;
+      std::cout << "  and parents: ";
+      for (auto it = p.parents_begin(), end = p.parents_end(); it != end; ++it) {
+        std::cout << " " << it->getObjectID().index;
       }
-      std::cout << std::endl ;
+      std::cout << std::endl;
     }
 
     // particle 0 has particles 2,3,4 and 5 as daughters:
-    auto p = mcps[0] ;
+    auto p = mcps[0];
 
-    auto d0 = p.daughters(0) ;
-    auto d1 = p.daughters(1) ;
-    auto d2 = p.daughters(2) ;
-    auto d3 = p.daughters(3) ;
+    auto d0 = p.daughters(0);
+    auto d1 = p.daughters(1);
+    auto d2 = p.daughters(2);
+    auto d3 = p.daughters(3);
 
-    if( ! ( d0 == mcps[2] ) )  throw std::runtime_error(" error: 1. daughter of particle 0 is not particle 2 ");
-    if( ! ( d1 == mcps[3] ) )  throw std::runtime_error(" error: 2. daughter of particle 0 is not particle 3 ");
-    if( ! ( d2 == mcps[4] ) )  throw std::runtime_error(" error: 3. daughter of particle 0 is not particle 4 ");
-    if( ! ( d3 == mcps[5] ) )  throw std::runtime_error(" error: 4. daughter of particle 0 is not particle 5 ");
-
+    if (!(d0 == mcps[2]))
+      throw std::runtime_error(" error: 1. daughter of particle 0 is not particle 2 ");
+    if (!(d1 == mcps[3]))
+      throw std::runtime_error(" error: 2. daughter of particle 0 is not particle 3 ");
+    if (!(d2 == mcps[4]))
+      throw std::runtime_error(" error: 3. daughter of particle 0 is not particle 4 ");
+    if (!(d3 == mcps[5]))
+      throw std::runtime_error(" error: 4. daughter of particle 0 is not particle 5 ");
 
     // particle 3 has particles 6,7,8 and 9 as daughters:
-    p = mcps[3] ;
+    p = mcps[3];
 
-    d0 = p.daughters(0) ;
-    d1 = p.daughters(1) ;
-    d2 = p.daughters(2) ;
-    d3 = p.daughters(3) ;
+    d0 = p.daughters(0);
+    d1 = p.daughters(1);
+    d2 = p.daughters(2);
+    d3 = p.daughters(3);
 
-    if( ! ( d0 == mcps[6] ) )  throw std::runtime_error(" error: 1. daughter of particle 3 is not particle 6 ");
-    if( ! ( d1 == mcps[7] ) )  throw std::runtime_error(" error: 2. daughter of particle 3 is not particle 7 ");
-    if( ! ( d2 == mcps[8] ) )  throw std::runtime_error(" error: 3. daughter of particle 3 is not particle 8 ");
-    if( ! ( d3 == mcps[9] ) )  throw std::runtime_error(" error: 4. daughter of particle 3 is not particle 9 ");
+    if (!(d0 == mcps[6]))
+      throw std::runtime_error(" error: 1. daughter of particle 3 is not particle 6 ");
+    if (!(d1 == mcps[7]))
+      throw std::runtime_error(" error: 2. daughter of particle 3 is not particle 7 ");
+    if (!(d2 == mcps[8]))
+      throw std::runtime_error(" error: 3. daughter of particle 3 is not particle 8 ");
+    if (!(d3 == mcps[9]))
+      throw std::runtime_error(" error: 4. daughter of particle 3 is not particle 9 ");
 
   } else {
     throw std::runtime_error("Collection 'mcparticles' should be present");
   }
 
-
-  //std::cout << "Fetching collection 'refs'" << std::endl;
+  // std::cout << "Fetching collection 'refs'" << std::endl;
   auto& refs = store.get<ExampleReferencingTypeCollection>("refs");
-  if(refs.isValid()){
+  if (refs.isValid()) {
     auto ref = refs[0];
     for (auto cluster : ref.Clusters()) {
       for (auto hit : cluster.Hits()) {
-        //std::cout << "  Referenced object has an energy of " << hit.energy() << std::endl;
+        // std::cout << "  Referenced object has an energy of " << hit.energy() << std::endl;
       }
     }
   } else {
     throw std::runtime_error("Collection 'refs' should be present");
   }
-  //std::cout << "Fetching collection 'OneRelation'" << std::endl;
+  // std::cout << "Fetching collection 'OneRelation'" << std::endl;
   auto& rels = store.get<ExampleWithOneRelationCollection>("OneRelation");
-  if(rels.isValid()) {
-    //std::cout << "Referenced object has an energy of " << (*rels)[0].cluster().energy() << std::endl;
+  if (rels.isValid()) {
+    // std::cout << "Referenced object has an energy of " << (*rels)[0].cluster().energy() << std::endl;
   } else {
     throw std::runtime_error("Collection 'OneRelation' should be present");
   }
 
-//  std::cout << "Fetching collection 'WithVectorMember'" << std::endl;
+  //  std::cout << "Fetching collection 'WithVectorMember'" << std::endl;
   auto& vecs = store.get<ExampleWithVectorMemberCollection>("WithVectorMember");
-  if(vecs.isValid()) {
+  if (vecs.isValid()) {
     if (vecs.size() != 2) {
       throw std::runtime_error("Collection 'WithVectorMember' should have two elements'");
     }
 
     for (auto vec : vecs) {
       if (vec.count().size() != 2) {
-        throw std::runtime_error("Element of 'WithVectorMember' collection should have two elements in its 'count' vector");
+        throw std::runtime_error(
+            "Element of 'WithVectorMember' collection should have two elements in its 'count' vector");
       }
     }
-    if (vecs[0].count(0) != eventNum ||
-        vecs[0].count(1) != eventNum + 10 ||
-        vecs[1].count(0) != eventNum + 1 ||
+    if (vecs[0].count(0) != eventNum || vecs[0].count(1) != eventNum + 10 || vecs[1].count(0) != eventNum + 1 ||
         vecs[1].count(1) != eventNum + 11) {
-        throw std::runtime_error("Element values of the 'count' vector in an element of the 'WithVectorMember' collection do not have the expected values");
+      throw std::runtime_error("Element values of the 'count' vector in an element of the 'WithVectorMember' "
+                               "collection do not have the expected values");
     }
 
-    for( auto item : vecs )
-      for (auto c = item.count_begin(), end = item.count_end(); c!=end; ++c){
-          std::cout << "  Counter value " << (*c) << std::endl;
-    }
+    for (auto item : vecs)
+      for (auto c = item.count_begin(), end = item.count_end(); c != end; ++c) {
+        std::cout << "  Counter value " << (*c) << std::endl;
+      }
   } else {
     throw std::runtime_error("Collection 'WithVectorMember' should be present");
   }
@@ -239,7 +244,7 @@ void processEvent(podio::EventStore& store, int eventNum) {
   auto& comps = store.get<ExampleWithComponentCollection>("Component");
   if (comps.isValid()) {
     auto comp = comps[0];
-    int a[[maybe_unused]] = comp.component().data.x + comp.component().data.z;
+    int a [[maybe_unused]] = comp.component().data.x + comp.component().data.z;
   }
 
   auto& arrays = store.get<ExampleWithArrayCollection>("arrays");
@@ -248,7 +253,7 @@ void processEvent(podio::EventStore& store, int eventNum) {
     if (array.myArray(1) != eventNum) {
       throw std::runtime_error("Array not properly set.");
     }
-    if (array.arrayStruct().data.p.at(2) != 2*eventNum) {
+    if (array.arrayStruct().data.p.at(2) != 2 * eventNum) {
       throw std::runtime_error("Array not properly set.");
     }
     if (array.structArray(0).x != eventNum) {
@@ -267,7 +272,8 @@ void processEvent(podio::EventStore& store, int eventNum) {
       auto cpy = copies[j];
       cpytest.push_back(nmsp.clone());
       if (nmsp.ref().isAvailable()) {
-        if (nmsp.ref().component().x != cpy.ref().component().x || nmsp.ref().component().y != cpy.ref().component().y) {
+        if (nmsp.ref().component().x != cpy.ref().component().x ||
+            nmsp.ref().component().y != cpy.ref().component().y) {
           throw std::runtime_error("Copied item has differing component in OneToOne referenced item.");
         }
         // check direct accessors of POD sub members
@@ -327,11 +333,9 @@ void processEvent(podio::EventStore& store, int eventNum) {
   check_fixed_width_value(arbComps.fixedInteger32, std::int32_t{-1234567890}, "int32");
   check_fixed_width_value(arbComps.fixedUnsigned16, std::uint16_t{12345}, "uint16");
 
+  auto& usrInts = store.get<podio::UserDataCollection<uint64_t>>("userInts");
 
-
-  auto& usrInts = store.get<podio::UserDataCollection<uint64_t> >("userInts");
-
-#if 0 //access via vector
+#if 0 // access via vector
   auto& uivec = usrInts.vec() ;
   int myInt = 0 ;
   for( int iu : uivec ){
@@ -339,19 +343,20 @@ void processEvent(podio::EventStore& store, int eventNum) {
       throw std::runtime_error("Couldn't read userInts properly"); ;
   }
 #else // access in direct range based for loop
-  int myInt = 0 ;
-  for( int iu : usrInts ){
-    if( iu != myInt++ )
-      throw std::runtime_error("Couldn't read userInts properly"); ;
+  int myInt = 0;
+  for (int iu : usrInts) {
+    if (iu != myInt++)
+      throw std::runtime_error("Couldn't read userInts properly");
+    ;
   }
 #endif
 
-  auto& usrDbl = store.get<podio::UserDataCollection<double> >("userDoubles");
-  for( double d : usrDbl ){
-    if( d != 42. )
-      throw std::runtime_error("Couldn't read userDoubles properly"); ;
+  auto& usrDbl = store.get<podio::UserDataCollection<double>>("userDoubles");
+  for (double d : usrDbl) {
+    if (d != 42.)
+      throw std::runtime_error("Couldn't read userDoubles properly");
+    ;
   }
-
 }
 
 void run_read_test(podio::IReader& reader) {
@@ -372,10 +377,10 @@ void run_read_test(podio::IReader& reader) {
     return index;
   };
 
-  for(unsigned i=0; i<nEvents; ++i) {
+  for (unsigned i = 0; i < nEvents; ++i) {
 
-    if(i%1000==0)
-      std::cout<<"reading event "<<i<<std::endl;
+    if (i % 1000 == 0)
+      std::cout << "reading event " << i << std::endl;
 
     processEvent(store, correctIndex(i));
     store.clear();

@@ -7,7 +7,6 @@
 #include <utility>
 #include <vector>
 
-
 namespace podio {
 
 using CollRefCollection = std::vector<std::vector<podio::ObjectID>*>;
@@ -22,13 +21,13 @@ struct CollectionBuffers {
   CollRefCollection* references{nullptr};
   VectorMembersInfo* vectorMembers{nullptr};
 
-  template<typename DataT>
+  template <typename DataT>
   std::vector<DataT>* dataAsVector() {
     // Are we at a beach? I can almost smell the C...
     return *static_cast<std::vector<DataT>**>(data);
   }
 };
 
-}
+} // namespace podio
 
 #endif // PODIO_COLLECTIONBUFFERS_H
