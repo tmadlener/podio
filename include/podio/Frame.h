@@ -104,7 +104,10 @@ const CollT& Frame::get(const std::string& name) const {
 template <typename RawDataT, typename UnpackingPolicy>
 Frame::FrameModel<RawDataT, UnpackingPolicy>::FrameModel(std::unique_ptr<RawDataT> rawData) :
     m_rawData(std::move(rawData)) {
-  UnpackingPolicy::initCollections(m_collections, m_rawData.get());
+  auto buffers = UnpackingPolicy::getCollectionBuffers(m_rawData.get());
+  for (auto& b : buffers) {
+    // TODO: schema evolution, emplacing in collection map
+  }
 }
 
 template <typename RawDataT, typename UnpackingPolicy>

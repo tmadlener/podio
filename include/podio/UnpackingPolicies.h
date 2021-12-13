@@ -13,8 +13,8 @@
 // interface is the following
 //
 //     struct UnpackingPolicy {
-//       template <typename RawDataT, typename CollectionMapT>
-//       static void initCollections(CollectionMapT&, RawDataT*);
+//       template <typename RawDataT>
+//       std::vector<podio::CollectionBuffers> getCollectionBuffers(RawDataT*);
 //
 //       template <typename RawDataT>
 //       static std::optional<podio::CollectionBuffers> unpack(RawDataT*, const std::string&);
@@ -30,16 +30,14 @@ namespace podio {
  * for later.
  */
 struct EagerUnpacking {
-  template <typename RawDataT, typename CollectionMapT>
-  static void initCollections(CollectionMapT& collections, RawDataT* rawData) {
+  template <typename RawDataT>
+  static std::vector<podio::CollectionBuffers> getCollectionBuffers(RawDataT* rawData) {
+    std::vector<podio::CollectionBuffers> allBuffers;
     for (const auto& name : rawData->getAvailableCollections()) {
       auto buffers = rawData->getCollectionBuffers(name);
-      // TODO: schema evolution
-
-      // TODO: check return value of emplace? (Filtering duplicates should not
-      // be necessary at this point)
-      collections.emplace(name, buffers->createCollection());
+      allBuffers.push_back(buffers.value()); // Can safely get the value here
     }
+    return allBuffers;
   }
 
   template <typename RawDataT>
@@ -57,9 +55,9 @@ struct EagerUnpacking {
  * "lazily" on demand when a collection is first requested.
  */
 struct LazyUnpacking {
-  template <typename RawDataT, typename CollectionMapT>
-  static void initCollections(CollectionMapT&, RawDataT*) {
-    // nothing to do here
+  template <typename RawDataT>
+  static std::vector<podio::CollectionBuffers> getCollectionBuffers(RawDataT*) {
+    return {};
   }
 
   template <typename RawDataT>
