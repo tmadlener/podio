@@ -13,7 +13,7 @@ TEST_CASE("Frame", "[event][basics]") {
   auto event2 = podio::Frame(podio::LazyUnpacking{});
 
   auto d2 = std::make_unique<podio::ROOTRawData>();
-  auto event3 = podio::Frame(std::move(d2), podio::EagerUnpacking{});
+  auto event3 = podio::Frame(std::move(d2));
 
   REQUIRE(true);
 }

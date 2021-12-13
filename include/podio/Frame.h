@@ -5,7 +5,7 @@
 #include "podio/CollectionBuffers.h"
 #include "podio/CollectionIDTable.h"
 #include "podio/ICollectionProvider.h"
-#include "podio/ReaderRawData.h"
+#include "podio/UnpackingPolicies.h"
 
 #include <memory>
 #include <string>
@@ -72,12 +72,12 @@ class Frame {
 
 public:
   /// Construct an empty Frame (without any data)
-  template <typename UnpackingPolicy>
-  Frame(UnpackingPolicy);
+  template <typename UnpackingPolicy = EagerUnpacking>
+  Frame(UnpackingPolicy = UnpackingPolicy{});
 
   /// Construct a Frame from some raw data
-  template <typename RawDataT, typename UnpackingPolicy>
-  Frame(std::unique_ptr<RawDataT> rawData, UnpackingPolicy);
+  template <typename RawDataT, typename UnpackingPolicy = EagerUnpacking>
+  Frame(std::unique_ptr<RawDataT> rawData, UnpackingPolicy = UnpackingPolicy{});
 
   /// Get a collection of a given type via its name
   template <typename CollT>
