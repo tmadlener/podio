@@ -52,7 +52,10 @@ class Frame {
     /// Constructor from some raw data
     FrameModel(std::unique_ptr<RawDataT> rawData);
 
-    /// Get the corresponding
+    /// Destructor
+    ~FrameModel() = default;
+
+    /// Get the corresponding collection
     const podio::CollectionBase* get(const std::string& name) const final;
 
     // TODO: locking
@@ -93,10 +96,12 @@ template <typename CollT>
 const CollT& Frame::get(const std::string& name) const {
   const auto* coll = static_cast<const CollT*>(m_self->get(name));
   if (coll) {
-    return &coll;
+    return *coll;
   }
   // TODO: less happy case via policy?
-  static auto& defaultColl = CollT();
+  static auto defaultColl = CollT();
+  return defaultColl;
+}
   return defaultColl;
 }
 
