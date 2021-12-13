@@ -9,6 +9,7 @@
 
 #include <memory>
 #include <string>
+#include <type_traits>
 #include <unordered_map>
 #include <vector>
 
@@ -36,6 +37,7 @@ class Frame {
   struct FrameConcept {
     virtual ~FrameConcept() = default;
     virtual const podio::CollectionBase* get(const std::string& name) const = 0;
+    virtual const podio::CollectionBase* put(std::unique_ptr<podio::CollectionBase> coll, const std::string& name) = 0;
   };
 
   /**
@@ -58,6 +60,9 @@ class Frame {
     /// Get the corresponding collection
     const podio::CollectionBase* get(const std::string& name) const final;
 
+    /// Put a collection into the Frame (and return a const ref to it for further usage)
+    const podio::CollectionBase* put(std::unique_ptr<podio::CollectionBase> coll, const std::string& name) final;
+
     // TODO: locking
     mutable CollectionMapT m_collections{};
     std::unique_ptr<RawDataT> m_rawData{nullptr};
@@ -77,6 +82,10 @@ public:
   /// Get a collection of a given type via its name
   template <typename CollT>
   const CollT& get(const std::string& name) const;
+
+  /// Put a collection into the Frame and get a const reference for further use back
+  template <typename CollT, typename = std::enable_if_t<!std::is_lvalue_reference_v<CollT>, bool>>
+  const CollT& put(CollT&& coll, const std::string& name);
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -102,6 +111,17 @@ const CollT& Frame::get(const std::string& name) const {
   static auto defaultColl = CollT();
   return defaultColl;
 }
+
+template <typename CollT, typename>
+const CollT& Frame::put(CollT&& coll, const std::string& name) {
+  auto collPtr = std::make_unique<CollT>(std::move(coll));
+  const auto* retColl = static_cast<const CollT*>(m_self->put(std::move(collPtr), name));
+  if (retColl) {
+    return *retColl;
+  }
+
+  // TODO: less happy case via policy?
+  static auto defaultColl = CollT();
   return defaultColl;
 }
 
@@ -133,6 +153,18 @@ const podio::CollectionBase* Frame::FrameModel<RawDataT, UnpackingPolicy>::get(c
   }
 
   return nullptr;
+}
+
+template <typename RawDataT, typename UnpackingPolicy>
+const podio::CollectionBase*
+Frame::FrameModel<RawDataT, UnpackingPolicy>::put(std::unique_ptr<podio::CollectionBase> coll,
+                                                  const std::string& name) {
+  const auto [it, success] = m_collections.emplace(name, std::move(coll));
+  if (!success) {
+    // TODO: How to handle collisions? Another policy?
+    return nullptr; // Or something else?
+  }
+  return it->second.get();
 }
 
 } // namespace podio
