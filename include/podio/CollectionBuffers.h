@@ -3,14 +3,17 @@
 
 #include "podio/ObjectID.h"
 
+#include <functional>
+#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
-#include <memory>
 
 namespace podio {
 
-template<typename T>
+class CollectionBase;
+
+template <typename T>
 using UVecPtr = std::unique_ptr<std::vector<T>>;
 
 using CollRefCollection = std::vector<UVecPtr<podio::ObjectID>>;
@@ -30,6 +33,8 @@ struct CollectionBuffers {
     // Are we at a beach? I can almost smell the C...
     return *static_cast<std::vector<DataT>**>(data);
   }
+
+  std::function<std::unique_ptr<podio::CollectionBase>()> createCollection{};
 };
 
 } // namespace podio
