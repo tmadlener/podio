@@ -5,7 +5,10 @@
 #include "podio/CollectionBuffers.h"
 #include "podio/CollectionIDTable.h"
 #include "podio/ICollectionProvider.h"
+// Some policies
+#include "podio/CollisionPolicies.h"
 #include "podio/UnpackingPolicies.h"
+#include "podio/UserDataCollection.h"
 
 #include <memory>
 #include <string>
@@ -15,6 +18,9 @@
 
 namespace podio {
 namespace detail {
+  /**
+   * An empty raw data stub that is used as default for Frames that are created empty
+   */
   struct EmptyRawData {
     const std::vector<std::string>& getAvailableCollections() const {
       static auto emptyVec = std::vector<std::string>();
@@ -25,7 +31,61 @@ namespace detail {
       return std::nullopt;
     }
   };
+
+  // TODO: Is there a better way for checking the presence of different policies
+  // in a type? The approach below is not rocket science and basically can be
+  // copy - pasted easily, but it is quite a bit of boiler plate, and I have the
+  // feeling it should be possible to get something where adding a new policy
+  // should only be declaring one additional struct inheriting from another one.
+  // However, I haven't found one yet and I am not entirely sure we will need
+  // such fine grained checks in the end, since we basically just want to SFINAE
+  // out a few constructor signatures below to make sure that the default
+  // constructors always do the "sensible" thing for the users.
+
+  /**
+   * Helper struct to determine whether a type has an UnpackingPolicy
+   */
+  template <typename T, typename = void>
+  struct HasUnpackingPolicyT : std::false_type {};
+
+  template <typename T>
+  struct HasUnpackingPolicyT<T, std::void_t<typename T::UnpackingPolicy>> : std::true_type {};
+
+  template <typename T>
+  constexpr bool HasUnpackingPolicy = HasUnpackingPolicyT<T>::value;
+
+  /**
+   * Helper struct to determine whetehr a type has a CollissionPolicy
+   */
+  template <typename T, typename = void>
+  struct HasCollisionPolicyT : std::false_type {};
+
+  template <typename T>
+  struct HasCollisionPolicyT<T, std::void_t<typename T::CollisionPolicy>> : std::true_type {};
+
+  template <typename T>
+  constexpr bool HasCollisionPolicy = HasCollisionPolicyT<T>::value;
+
+  /**
+   * Alias template to be used for enabling/disabling certain constructors below
+   * to make sure that the arguments match their types (and avoid trying to call
+   * mismatching constructors with the same number of arguments)
+   */
+  template <typename T>
+  using EnableIfValidFramePolicies = std::enable_if<HasUnpackingPolicy<T> && HasCollisionPolicy<T>>;
+
 } // namespace detail
+
+/**
+ * The default frame policies. Defines typedefs for policies that will then be
+ * used in the frame where necessary. The main purpose of this is to not have
+ * tons of policies, that have to be passed everywhere, but to rather collect
+ * them in one place and pass that.
+ */
+struct FrameDefaultPolicies {
+  using UnpackingPolicy = EagerUnpacking;
+  using CollisionPolicy = ThrowOnCollision;
+};
 
 /**
  * The Frame class that serves as a container of collections and meta data
@@ -44,7 +104,7 @@ class Frame {
    * The templated frame model that implements the concept and that is
    * constructed in the Frame constructor
    */
-  template <typename RawDataT, typename UnpackingPolicy>
+  template <typename RawDataT, typename FramePolicies>
   struct FrameModel final : FrameConcept {
     using CollectionMapT = std::unordered_map<std::string, std::unique_ptr<podio::CollectionBase>>;
 
@@ -72,12 +132,13 @@ class Frame {
 
 public:
   /// Construct an empty Frame (without any data)
-  template <typename UnpackingPolicy = EagerUnpacking>
-  Frame(UnpackingPolicy = UnpackingPolicy{});
+  template <typename FramePolicies = FrameDefaultPolicies,
+            typename = typename detail::EnableIfValidFramePolicies<FramePolicies>::type>
+  Frame(FramePolicies = FramePolicies{});
 
   /// Construct a Frame from some raw data
-  template <typename RawDataT, typename UnpackingPolicy = EagerUnpacking>
-  Frame(std::unique_ptr<RawDataT> rawData, UnpackingPolicy = UnpackingPolicy{});
+  template <typename RawDataT, typename FramePolicies = FrameDefaultPolicies>
+  Frame(std::unique_ptr<RawDataT> rawData, FramePolicies = FramePolicies{});
 
   /// Get a collection of a given type via its name
   template <typename CollT>
@@ -92,13 +153,13 @@ public:
 // IMPLEMENTATIONS BELOW (move to a .tpp file or siilar and include here?) //
 /////////////////////////////////////////////////////////////////////////////
 // =================== Frame implementations ==============================
-template <typename UnpackingPolicy>
-Frame::Frame(UnpackingPolicy) : m_self(std::make_unique<FrameModel<detail::EmptyRawData, UnpackingPolicy>>()) {
+template <typename FramePolicies, typename>
+Frame::Frame(FramePolicies) : m_self(std::make_unique<FrameModel<detail::EmptyRawData, FramePolicies>>()) {
 }
 
-template <typename RawDataT, typename UnpackingPolicy>
-Frame::Frame(std::unique_ptr<RawDataT> rawData, UnpackingPolicy) :
-    m_self(std::make_unique<FrameModel<RawDataT, UnpackingPolicy>>(std::move(rawData))) {
+template <typename RawDataT, typename FramePolicies>
+Frame::Frame(std::unique_ptr<RawDataT> rawData, FramePolicies) :
+    m_self(std::make_unique<FrameModel<RawDataT, FramePolicies>>(std::move(rawData))) {
 }
 
 template <typename CollT>
@@ -126,23 +187,24 @@ const CollT& Frame::put(CollT&& coll, const std::string& name) {
 }
 
 // =================== FrameModel implementations =========================
-template <typename RawDataT, typename UnpackingPolicy>
-Frame::FrameModel<RawDataT, UnpackingPolicy>::FrameModel(std::unique_ptr<RawDataT> rawData) :
+template <typename RawDataT, typename FramePolicies>
+Frame::FrameModel<RawDataT, FramePolicies>::FrameModel(std::unique_ptr<RawDataT> rawData) :
     m_rawData(std::move(rawData)) {
-  auto buffers = UnpackingPolicy::getCollectionBuffers(m_rawData.get());
+  auto buffers = FramePolicies::UnpackingPolicy::getCollectionBuffers(m_rawData.get());
   for (auto& b : buffers) {
     // TODO: schema evolution, emplacing in collection map
+    (void)b; // silence unused warning
   }
 }
 
-template <typename RawDataT, typename UnpackingPolicy>
-const podio::CollectionBase* Frame::FrameModel<RawDataT, UnpackingPolicy>::get(const std::string& name) const {
+template <typename RawDataT, typename FramePolicies>
+const podio::CollectionBase* Frame::FrameModel<RawDataT, FramePolicies>::get(const std::string& name) const {
   if (const auto it = m_collections.find(name); it != m_collections.end()) {
     return it->second.get();
   }
 
   if (m_rawData) {
-    auto buffers = UnpackingPolicy::unpack(m_rawData.get(), name);
+    auto buffers = FramePolicies::UnpackingPolicy::unpack(m_rawData.get(), name);
     // TODO: schema evolution
     //
     // TODO; check return value of emplace? (At this point it is possible
@@ -155,11 +217,11 @@ const podio::CollectionBase* Frame::FrameModel<RawDataT, UnpackingPolicy>::get(c
   return nullptr;
 }
 
-template <typename RawDataT, typename UnpackingPolicy>
+template <typename RawDataT, typename FramePolicies>
 const podio::CollectionBase*
-Frame::FrameModel<RawDataT, UnpackingPolicy>::put(std::unique_ptr<podio::CollectionBase> coll,
-                                                  const std::string& name) {
+Frame::FrameModel<RawDataT, FramePolicies>::put(std::unique_ptr<podio::CollectionBase> coll, const std::string& name) {
   const auto [it, success] = m_collections.emplace(name, std::move(coll));
+
   if (!success) {
     // TODO: How to handle collisions? Another policy?
     return nullptr; // Or something else?
