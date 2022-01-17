@@ -231,12 +231,20 @@ const podio::CollectionBase* Frame::FrameModel<RawDataT, FramePolicies>::get(con
 template <typename RawDataT, typename FramePolicies>
 const podio::CollectionBase*
 Frame::FrameModel<RawDataT, FramePolicies>::put(std::unique_ptr<podio::CollectionBase> coll, const std::string& name) {
-  const auto [it, success] = m_collections.emplace(name, std::move(coll));
-
+  auto [it, success] = m_collections.try_emplace(name, std::move(coll));
   if (!success) {
-    // TODO: How to handle collisions? Another policy?
-    return nullptr; // Or something else?
+    // TODO: handle collision
+    // Should policy also decide what to return in this case, or do we simply
+    // treat collisions as "hard errors" and the policy only sets how "hard"
+    // that error is going to be?
+    //
+    // Major question when doing more than just erroring out: How to handle
+    // collection lifetime? All collections managed by the Frame have a clearly
+    // defined lifetime, but failed inserts not so much.
+
+    FramePolicies::CollisionPolicy::handleCollision(it->first, it->second, coll);
   }
+
   return it->second.get();
 }
 

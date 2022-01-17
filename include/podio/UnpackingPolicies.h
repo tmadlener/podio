@@ -14,7 +14,7 @@
 //
 //     struct UnpackingPolicy {
 //       template <typename RawDataT>
-//       std::vector<podio::CollectionBuffers> getCollectionBuffers(RawDataT*);
+//       static std::vector<podio::CollectionBuffers> getCollectionBuffers(RawDataT*);
 //
 //       template <typename RawDataT>
 //       static std::optional<podio::CollectionBuffers> unpack(RawDataT*, const std::string&);
