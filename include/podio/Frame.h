@@ -98,6 +98,7 @@ class Frame {
     virtual ~FrameConcept() = default;
     virtual const podio::CollectionBase* get(const std::string& name) const = 0;
     virtual const podio::CollectionBase* put(std::unique_ptr<podio::CollectionBase> coll, const std::string& name) = 0;
+    virtual bool contains(const std::string& name) const = 0;
   };
 
   /**
@@ -123,6 +124,9 @@ class Frame {
     /// Put a collection into the Frame (and return a const ref to it for further usage)
     const podio::CollectionBase* put(std::unique_ptr<podio::CollectionBase> coll, const std::string& name) final;
 
+    /// Check whether the Frame contains a collection with this name
+    bool contains(const std::string& name) const final;
+
     // TODO: locking
     mutable CollectionMapT m_collections{};
     std::unique_ptr<RawDataT> m_rawData{nullptr};
@@ -147,6 +151,9 @@ public:
   /// Put a collection into the Frame and get a const reference for further use back
   template <typename CollT, typename = std::enable_if_t<!std::is_lvalue_reference_v<CollT>, bool>>
   const CollT& put(CollT&& coll, const std::string& name);
+
+  /// Check whether the Frame contains a collection with this name
+  bool contains(const std::string& name) const;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -184,6 +191,10 @@ const CollT& Frame::put(CollT&& coll, const std::string& name) {
   // TODO: less happy case via policy?
   static auto defaultColl = CollT();
   return defaultColl;
+}
+
+bool Frame::contains(const std::string& name) const {
+  return m_self->contains(name);
 }
 
 // =================== FrameModel implementations =========================
@@ -227,6 +238,11 @@ Frame::FrameModel<RawDataT, FramePolicies>::put(std::unique_ptr<podio::Collectio
     return nullptr; // Or something else?
   }
   return it->second.get();
+}
+
+template <typename RawDataT, typename FramePolicies>
+bool Frame::FrameModel<RawDataT, FramePolicies>::contains(const std::string& name) const {
+  return m_collections.find(name) != m_collections.end();
 }
 
 } // namespace podio

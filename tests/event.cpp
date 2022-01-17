@@ -31,7 +31,10 @@ TEST_CASE("Frame::put", "[event][basics]") {
     auto hit = hitColl.create();
     hit.energy(i);
   }
+
+  REQUIRE_FALSE(event.contains("hits"));
   auto& hits = event.put(std::move(hitColl), "hits");
+  REQUIRE(event.contains("hits"));
   for (size_t i = 0; i < 10; ++i) {
     REQUIRE(hits[i].energy() == i);
   }
