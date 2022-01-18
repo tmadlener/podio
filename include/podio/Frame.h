@@ -5,12 +5,9 @@
 #include "podio/CollectionBuffers.h"
 #include "podio/CollectionIDTable.h"
 #include "podio/ICollectionProvider.h"
-// Some policies
-#include "podio/CollisionPolicies.h"
-#include "podio/UnpackingPolicies.h"
-#include "podio/UserDataCollection.h"
 
 #include <memory>
+#include <shared_mutex>
 #include <string>
 #include <type_traits>
 #include <unordered_map>
@@ -76,6 +73,10 @@ namespace detail {
 
 } // namespace detail
 
+// Forward declarations for default policies
+struct EagerUnpacking;
+struct ThrowOnCollision;
+
 /**
  * The default frame policies. Defines typedefs for policies that will then be
  * used in the frame where necessary. The main purpose of this is to not have
@@ -127,8 +128,12 @@ class Frame {
     /// Check whether the Frame contains a collection with this name
     bool contains(const std::string& name) const final;
 
-    // TODO: locking
+    mutable std::shared_mutex m_mapMutex{}; ///< Mutex for protecting the collection map
+    /// The collection map that stores already unpacked, resp. available
+    /// collections Needs to be mtuable, because unpacking might populate this
+    /// in calls to get
     mutable CollectionMapT m_collections{};
+    /// The raw data from which collections can be unpacked
     std::unique_ptr<RawDataT> m_rawData{nullptr};
   };
 
@@ -210,9 +215,18 @@ Frame::FrameModel<RawDataT, FramePolicies>::FrameModel(std::unique_ptr<RawDataT>
 
 template <typename RawDataT, typename FramePolicies>
 const podio::CollectionBase* Frame::FrameModel<RawDataT, FramePolicies>::get(const std::string& name) const {
-  if (const auto it = m_collections.find(name); it != m_collections.end()) {
-    return it->second.get();
+  {
+    // First go and look if we already have this collection available
+    std::shared_lock readLock{m_mapMutex};
+    if (const auto it = m_collections.find(name); it != m_collections.end()) {
+      return it->second.get();
+    }
   }
+
+  // TODO: Can we take the lock already here? Do we have to take it here? In
+  // principle we would only need to guard the map, but I am not entirely sure
+  // about the "semantics" of the locking process here
+  std::unique_lock writeLock{m_mapMutex};
 
   if (m_rawData) {
     auto buffers = FramePolicies::UnpackingPolicy::unpack(m_rawData.get(), name);
@@ -231,6 +245,7 @@ const podio::CollectionBase* Frame::FrameModel<RawDataT, FramePolicies>::get(con
 template <typename RawDataT, typename FramePolicies>
 const podio::CollectionBase*
 Frame::FrameModel<RawDataT, FramePolicies>::put(std::unique_ptr<podio::CollectionBase> coll, const std::string& name) {
+  std::unique_lock writeLock{m_mapMutex};
   auto [it, success] = m_collections.try_emplace(name, std::move(coll));
   if (!success) {
     // TODO: handle collision
@@ -250,6 +265,7 @@ Frame::FrameModel<RawDataT, FramePolicies>::put(std::unique_ptr<podio::Collectio
 
 template <typename RawDataT, typename FramePolicies>
 bool Frame::FrameModel<RawDataT, FramePolicies>::contains(const std::string& name) const {
+  std::shared_lock readLock{m_mapMutex};
   return m_collections.find(name) != m_collections.end();
 }
 

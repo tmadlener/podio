@@ -16,13 +16,15 @@ LIST(FILTER sources EXCLUDE REGEX SIO.*)
 LIST(FILTER sources EXCLUDE REGEX ROOT.*|PythonEventStore.*|root.* )
 LIST(FILTER root_sources INCLUDE REGEX ROOT.*|PythonEventStore.*|root.* )
 
+find_package(Threads)
+
 # Main Library, no external dependencies
 add_library(podio SHARED ${sources})
 add_library(podio::podio ALIAS podio)
 target_include_directories(podio PUBLIC
   $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
-target_compile_options(podio PRIVATE -pthread)
+target_link_libraries(podio PUBLIC Threads::Threads)
 
 # Root dependency, mostly IO
 add_library(podioRootIO SHARED ${root_sources})
