@@ -4,7 +4,8 @@
 #include "podio/CollectionBase.h"
 #include "podio/CollectionBuffers.h"
 #include "podio/CollectionIDTable.h"
-#include "podio/ICollectionProvider.h"
+#include "podio/GenericParameters.h"
+#include "podio/UserDataCollection.h"
 
 #include <memory>
 #include <shared_mutex>
@@ -71,6 +72,22 @@ namespace detail {
   template <typename T>
   using EnableIfValidFramePolicies = std::enable_if<HasUnpackingPolicy<T> && HasCollisionPolicy<T>>;
 
+  /**
+   * Check if type T is the same as any of the passed other Ts
+   */
+  template <typename T, typename... Ts>
+  constexpr bool isAnyOf() {
+    return (std::is_same_v<T, Ts> || ...);
+  }
+
+  /**
+   * Alias template too be used for enabling/disabling overloads below for
+   * metadata handling to make sure that only templates with supported metadata
+   * types are valid.
+   */
+  template <typename T>
+  using EnableIfValidMetaDataType = std::enable_if<isAnyOf<T, int, float, std::string>()>;
+
 } // namespace detail
 
 // Forward declarations for default policies
@@ -134,6 +151,7 @@ class Frame {
     /// Check whether the Frame contains a collection with this name
     bool contains(const std::string& name) const final;
 
+  private:
     mutable std::shared_mutex m_mapMutex{}; ///< Mutex for protecting the collection map
     /// The collection map that stores already unpacked, resp. available
     /// collections Needs to be mtuable, because unpacking might populate this
@@ -141,6 +159,8 @@ class Frame {
     mutable CollectionMapT m_collections{};
     /// The raw data from which collections can be unpacked
     std::unique_ptr<RawDataT> m_rawData{nullptr};
+    /// The metadata map
+    podio::GenericParameters m_metaData{};
   };
 
   std::unique_ptr<FrameConcept> m_self;
@@ -175,6 +195,20 @@ public:
 
   /// Check whether the Frame contains a collection with this name
   bool contains(const std::string& name) const;
+
+  /// Add metadata
+  template <typename T, typename = typename detail::EnableIfValidMetaDataType<T>::type>
+  void putMetaData(const std::string& key, T value);
+
+  template <typename T, typename = typename detail::EnableIfValidMetaDataType<T>::type>
+  void putMetaData(const std::string& key, std::vector<T> values);
+
+  template <typename T, typename = typename detail::EnableIfValidMetaDataType<T>::type>
+  void putMetaData(const std::string& key, std::initializer_list<T> values);
+
+  /// Get metadata
+  template <typename T, typename = typename detail::EnableIfValidMetaDataType<T>::type>
+  T getMetaData(const std::string& key) const;
 };
 
 /////////////////////////////////////////////////////////////////////////////

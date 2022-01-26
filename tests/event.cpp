@@ -96,3 +96,11 @@ TEST_CASE("Frame::put collision", "[event]") {
     }
   }
 }
+
+TEST_CASE("Metadata", "[event]") {
+  auto event = podio::Frame();
+  event.putMetaData("someVal", 1);
+  event.putMetaData("someOtherVal", {3.14f, 42.0f});
+
+  auto val = event.getMetaData<int>("someVal");
+}
