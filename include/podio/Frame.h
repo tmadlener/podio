@@ -116,6 +116,12 @@ class Frame {
     /// Constructor from some raw data
     FrameModel(std::unique_ptr<RawDataT> rawData);
 
+    /// Move-only type
+    FrameModel(const FrameModel&) = delete;
+    FrameModel& operator=(const FrameModel&) = delete;
+    FrameModel(FrameModel&&) = default;
+    FrameModel& operator=(FrameModel&&) = default;
+
     /// Destructor
     ~FrameModel() = default;
 
@@ -148,6 +154,16 @@ public:
   /// Construct a Frame from some raw data
   template <typename RawDataT, typename FramePolicies = FrameDefaultPolicies>
   Frame(std::unique_ptr<RawDataT> rawData, FramePolicies = FramePolicies{});
+
+  /// Non-copyable
+  Frame(const Frame&) = delete;
+  Frame& operator=(const Frame&) = delete;
+
+  /// Move constructor and assignment operator
+  Frame(Frame&&) = default;
+  Frame& operator=(Frame&&) = default;
+
+  ~Frame() = default;
 
   /// Get a collection of a given type via its name
   template <typename CollT>
