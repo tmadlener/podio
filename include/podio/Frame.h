@@ -71,23 +71,6 @@ namespace detail {
    */
   template <typename T>
   using EnableIfValidFramePolicies = std::enable_if<HasUnpackingPolicy<T> && HasCollisionPolicy<T>>;
-
-  /**
-   * Check if type T is the same as any of the passed other Ts
-   */
-  template <typename T, typename... Ts>
-  constexpr bool isAnyOf() {
-    return (std::is_same_v<T, Ts> || ...);
-  }
-
-  /**
-   * Alias template too be used for enabling/disabling overloads below for
-   * metadata handling to make sure that only templates with supported metadata
-   * types are valid.
-   */
-  template <typename T>
-  using EnableIfValidMetaDataType = std::enable_if<isAnyOf<T, int, float, std::string>()>;
-
 } // namespace detail
 
 // Forward declarations for default policies
@@ -126,9 +109,6 @@ class Frame {
   template <typename RawDataT, typename FramePolicies>
   struct FrameModel final : FrameConcept {
     using CollectionMapT = std::unordered_map<std::string, std::unique_ptr<podio::CollectionBase>>;
-
-    /// Constructor for an empty event
-    FrameModel() = default;
 
     /// Constructor from some raw data
     FrameModel(std::unique_ptr<RawDataT> rawData);
@@ -197,17 +177,17 @@ public:
   bool contains(const std::string& name) const;
 
   /// Add metadata
-  template <typename T, typename = typename detail::EnableIfValidMetaDataType<T>::type>
+  template <typename T, typename = typename EnableIfValidGenericDataType<T>::type>
   void putMetaData(const std::string& key, T value);
 
-  template <typename T, typename = typename detail::EnableIfValidMetaDataType<T>::type>
+  template <typename T, typename = typename EnableIfValidGenericDataType<T>::type>
   void putMetaData(const std::string& key, std::vector<T> values);
 
-  template <typename T, typename = typename detail::EnableIfValidMetaDataType<T>::type>
+  template <typename T, typename = typename EnableIfValidGenericDataType<T>::type>
   void putMetaData(const std::string& key, std::initializer_list<T> values);
 
   /// Get metadata
-  template <typename T, typename = typename detail::EnableIfValidMetaDataType<T>::type>
+  template <typename T, typename = typename EnableIfValidGenericDataType<T>::type>
   T getMetaData(const std::string& key) const;
 };
 
@@ -216,7 +196,9 @@ public:
 /////////////////////////////////////////////////////////////////////////////
 // =================== Frame implementations ==============================
 template <typename FramePolicies, typename>
-Frame::Frame(FramePolicies) : m_self(std::make_unique<FrameModel<detail::EmptyRawData, FramePolicies>>()) {
+Frame::Frame(FramePolicies) :
+    m_self(
+        std::make_unique<FrameModel<detail::EmptyRawData, FramePolicies>>(std::make_unique<detail::EmptyRawData>())) {
 }
 
 template <typename RawDataT, typename FramePolicies>

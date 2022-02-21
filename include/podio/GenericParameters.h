@@ -2,11 +2,18 @@
 #ifndef PODIO_GENERICPARAMETERS_H
 #define PODIO_GENERICPARAMETERS_H 1
 
+#include "podio/utilities/TypeHelpers.h"
+
 #include <map>
 #include <string>
 #include <vector>
 
 namespace podio {
+
+using SupportedGenericDataTypes = std::tuple<int, float, std::string>;
+
+template <typename T>
+using EnableIfValidGenericDataType = std::enable_if<detail::isAnyOrVectorOf<T, SupportedGenericDataTypes>>;
 
 typedef std::vector<int> IntVec;
 typedef std::vector<float> FloatVec;
