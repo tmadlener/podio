@@ -1,6 +1,7 @@
 #ifndef PODIO_UTILITIES_TYPEHELPERS_H
 #define PODIO_UTILITIES_TYPEHELPERS_H
 
+#include <string>
 #include <tuple>
 #include <type_traits>
 #include <vector>
@@ -65,6 +66,46 @@ namespace detail {
    */
   template <typename T, typename Tuple>
   static constexpr bool isAnyOrVectorOf = isInTuple<T, TupleCatType<Tuple, TupleOfVector<Tuple>>>;
+
+  /**
+   * Helper struct to extract the type from a std::vector or return the
+   * original type if it is not a vector. Works only for "simple" types and does
+   * not strip const-ness
+   */
+  template <typename T>
+  struct GetVectorTypeHelper {
+    using type = T;
+  };
+
+  template <typename T>
+  struct GetVectorTypeHelper<std::vector<T>> {
+    using type = T;
+  };
+
+  template <>
+  struct GetVectorTypeHelper<const char*> {
+    // Dedicated overload for catching const char* and converting it to
+    // std::string
+    using type = std::string;
+  };
+
+  template <typename T>
+  using GetVectorType = typename GetVectorTypeHelper<T>::type;
+
+  /**
+   * Helper struct to detect whether a type is a std::vector
+   */
+  template <typename T>
+  struct IsVectorHelper : std::false_type {};
+
+  template <typename T>
+  struct IsVectorHelper<std::vector<T>> : std::true_type {};
+
+  /**
+   * Alias template for deciding whether the passed type T is a vector or not
+   */
+  template <typename T>
+  static constexpr bool isVector = IsVectorHelper<T>::value;
 
 } // namespace detail
 } // namespace podio

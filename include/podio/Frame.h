@@ -177,17 +177,17 @@ public:
   bool contains(const std::string& name) const;
 
   /// Add metadata
-  template <typename T, typename = typename EnableIfValidGenericDataType<T>::type>
+  template <typename T, typename = EnableIfValidGenericDataType<T>>
   void putMetaData(const std::string& key, T value);
 
-  template <typename T, typename = typename EnableIfValidGenericDataType<T>::type>
+  template <typename T, typename = EnableIfValidGenericDataType<T>>
   void putMetaData(const std::string& key, std::vector<T> values);
 
-  template <typename T, typename = typename EnableIfValidGenericDataType<T>::type>
+  template <typename T, typename = EnableIfValidGenericDataType<T>>
   void putMetaData(const std::string& key, std::initializer_list<T> values);
 
   /// Get metadata
-  template <typename T, typename = typename EnableIfValidGenericDataType<T>::type>
+  template <typename T, typename = EnableIfValidGenericDataType<T>>
   T getMetaData(const std::string& key) const;
 };
 

@@ -26,15 +26,15 @@ const std::string& getValFromMap(const GenericParameters::MapType<std::string>& 
 }
 
 int GenericParameters::getIntVal(const std::string& key) const {
-  return getValFromMap(_intMap, key);
+  return getValue<int>(key);
 }
 
 float GenericParameters::getFloatVal(const std::string& key) const {
-  return getValFromMap(_floatMap, key);
+  return getValue<float>(key);
 }
 
 const std::string& GenericParameters::getStringVal(const std::string& key) const {
-  return getValFromMap(_stringMap, key);
+  return getValue<std::string>(key);
 }
 
 template <typename T>
@@ -66,15 +66,15 @@ const StringVec& getKeys(const GenericParameters::MapType<T>& map, StringVec& ke
 }
 
 const StringVec& GenericParameters::getIntKeys(StringVec& keys) const {
-  return getKeys(_intMap, keys);
+  return podio::getKeys(_intMap, keys);
 }
 
 const StringVec& GenericParameters::getFloatKeys(StringVec& keys) const {
-  return getKeys(_floatMap, keys);
+  return podio::getKeys(_floatMap, keys);
 }
 
 const StringVec& GenericParameters::getStringKeys(StringVec& keys) const {
-  return getKeys(_stringMap, keys);
+  return podio::getKeys(_stringMap, keys);
 }
 
 template <typename T>
@@ -87,48 +87,27 @@ int getStoredElements(const GenericParameters::MapType<T>& map, const std::strin
 }
 
 int GenericParameters::getNInt(const std::string& key) const {
-  return getStoredElements(_intMap, key);
+  return getN<int>(key);
 }
 
 int GenericParameters::getNFloat(const std::string& key) const {
-  return getStoredElements(_floatMap, key);
+  return getN<float>(key);
 }
 
 int GenericParameters::getNString(const std::string& key) const {
-  return getStoredElements(_stringMap, key);
-}
-
-void GenericParameters::setValue(const std::string& key, int value) {
-
-  _intMap[key].clear();
-  _intMap[key].push_back(value);
-}
-
-void GenericParameters::setValue(const std::string& key, float value) {
-
-  _floatMap[key].clear();
-  _floatMap[key].push_back(value);
-}
-
-void GenericParameters::setValue(const std::string& key, const std::string& value) {
-
-  _stringMap[key].clear();
-  _stringMap[key].push_back(value);
+  return getN<std::string>(key);
 }
 
 void GenericParameters::setValues(const std::string& key, const IntVec& values) {
-
-  _intMap[key].assign(values.begin(), values.end());
+  setValue(key, values);
 }
 
 void GenericParameters::setValues(const std::string& key, const FloatVec& values) {
-
-  _floatMap[key].assign(values.begin(), values.end());
+  setValue(key, values);
 }
 
 void GenericParameters::setValues(const std::string& key, const StringVec& values) {
-
-  _stringMap[key].assign(values.begin(), values.end());
+  setValue(key, values);
 }
 
 } // namespace podio
