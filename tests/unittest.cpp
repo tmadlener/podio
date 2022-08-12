@@ -34,6 +34,8 @@
 #include "datamodel/MutableExampleWithComponent.h"
 #include "podio/UserDataCollection.h"
 
+#include "utilities/assert_compile_failure.h"
+
 TEST_CASE("AutoDelete", "[basics][memory-management]") {
   auto store = podio::EventStore();
   auto hit1 = MutableEventInfo();
@@ -503,7 +505,11 @@ TEST_CASE("const correct iterators on collections", "[const-correctness]") {
                                                           // objects
 }
 
-TEST_CASE("Iterator dereferencing", "[!shouldfail][iterators]") {
+namespace std {
+void fill(std::vector<int>::iterator, std::vector<int>::iterator, const int&) = delete;
+}
+
+TEST_CASE("Iterator dereferencing", "[iterators]") {
   // a collection to play with
   auto collection = ExampleHitCollection();
 
@@ -518,8 +524,16 @@ TEST_CASE("Iterator dereferencing", "[!shouldfail][iterators]") {
   collection.clear();
   collection.create();
   auto mutable_hit = MutableExampleHit(0x42ULL, 0., 0., 0., 0.);
-  std::fill(collection.begin(), collection.end(), mutable_hit);
-  REQUIRE(collection.begin()->cellID() == 0x42ULL);
+
+  STATIC_REQUIRE_FALSE(test_utils::fill_compiles<decltype(collection.begin()), decltype(mutable_hit)>);
+
+  STATIC_REQUIRE_FALSE(test_utils::fill_compiles<ExampleHitMutableCollectionIterator, ExampleHit>);
+  STATIC_REQUIRE_FALSE(test_utils::fill_compiles<ExampleHitCollectionIterator, ExampleHit>);
+
+  // This fails to compile
+  // std::fill(collection.begin(), collection.end(), mutable_hit);
+
+  // REQUIRE(collection.begin()->cellID() == 0x42ULL);
 }
 
 TEST_CASE("Iterator concepts", "[iterator-concepts][iterators]") {

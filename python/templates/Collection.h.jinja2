@@ -1,7 +1,6 @@
 {% import "macros/utils.jinja2" as utils %}
 {% import "macros/collections.jinja2" as macros %}
-{% from "macros/iterator.jinja2" import iterator_declaration %}
-{% from "macros/iterator.jinja2" import reverse_iterator_declaration %}
+{% import "macros/iterator.jinja2" as iter_macros %}
 // AUTOMATICALLY GENERATED FILE - DO NOT EDIT
 
 #ifndef {{ package_name.upper() }}_{{ class.bare_type }}Collection_H
@@ -34,11 +33,11 @@
 {{ utils.namespace_open(class.namespace) }}
 
 
-{{ iterator_declaration(class) }}
-{{ reverse_iterator_declaration(class) }}
+{{ iter_macros.iterator_declaration(class) }}
+{{ iter_macros.reverse_iterator_declaration(class) }}
 
-{{ iterator_declaration(class, prefix='Mutable') }}
-{{ reverse_iterator_declaration(class, prefix='Mutable') }}
+{{ iter_macros.iterator_declaration(class, prefix='Mutable') }}
+{{ iter_macros.reverse_iterator_declaration(class, prefix='Mutable') }}
 
 /**
 A Collection is identified by an ID.
@@ -219,5 +218,7 @@ Mutable{{ class.bare_type }} {{ class.bare_type }}Collection::create(Args&&... a
 {% endfor %}
 
 {{ utils.namespace_close(class.namespace) }}
+
+{{ iter_macros.iterator_delete_invalid_algo_overloads(class, ['fill']) }}
 
 #endif

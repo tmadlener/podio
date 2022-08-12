@@ -139,3 +139,18 @@ private:
 }
 {% endwith %}
 {% endmacro %}
+
+{% macro iterator_delete_invalid_algo_overloads(class, algos) %}
+// Open namespace std and expliclitly mark some of the algorithms using iterators as delete.
+// This removes them from overload resolution and makes compilation fail for cases, where
+// the podio iterators are not behaving as expected with these algorithms.
+namespace std {
+{% for algo in algos %}
+{% for iter in ['Collection', 'CollectionReverse', 'MutableCollection', 'MutableCollectionReverse'] %}
+template<typename T>
+void fill({{ class.full_type }}{{ iter }}Iterator, {{ class.full_type }}{{ iter }}Iterator, const T&) = delete;
+
+{% endfor %}
+{% endfor %}
+}
+{% endmacro %}
