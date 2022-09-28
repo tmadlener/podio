@@ -17,6 +17,7 @@ jobs:
         with:
           release-platform: ${{ matrix.LCG }}
           run: |
+            STARTDIR=$(pwd)
             echo "::group::Build Catch2"
             cd /home/runner/work/podio/
             git clone --branch v3.1.0 --depth 1 https://github.com/catchorg/Catch2
