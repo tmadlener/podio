@@ -24,6 +24,7 @@ jobs:
             git clone --depth 1 --branch v3.1.0 https://github.com/catchorg/Catch2
             cd Catch2
             mkdir build && cd build
+            echo $(pwd)
             cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_INSTALL_PREFIX=../install -G Ninja ..
             ninja -k0 install
             cd ..
