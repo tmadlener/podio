@@ -27,8 +27,8 @@ jobs:
           release-platform: ${{ matrix.LCG }}
           run: |
             set -x
-            echo ${{ GITHUB_WORKSPACE }}
-            echo "${GITHUB_WORKSPACE}"
+            echo "$GITHUB_WORKSPACE"
+            echo ${GITHUB_WORKSPACE}
             ls /home/runner/work
             ls /home/runner/work/podio
             # echo "::group::Build Catch2"
