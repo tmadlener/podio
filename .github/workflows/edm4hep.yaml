@@ -12,25 +12,31 @@ jobs:
               "LCG_102/x86_64-ubuntu2004-gcc9-opt"]
     steps:
       - uses: actions/checkout@v2
+        with:
+          repository: catchorg/Catch2
+          ref: v3.1.0
+          path: Catch2
+      - uses: actions/checkout@v2
+        with:
+          repository: key4hep/EDM4hep
+          path: EDM4hep
+      - uses: actions/checkout@v2
       - uses: cvmfs-contrib/github-action-cvmfs@v3
       - uses: aidasoft/run-lcg-view@v4
         with:
           release-platform: ${{ matrix.LCG }}
           run: |
-            set -x
-            export CDPATH=
-            STARTDIR=$(pwd)
-            echo "::group::Build Catch2 v3"
-            git clone --depth 1 --branch v3.1.0 https://github.com/catchorg/Catch2
-            cd Catch2
+            echo "${GITHUB_WORKSPACE}"
+            echo "::group::Build Catch2"
+            cd /home/runner/work/Catch2
             mkdir build && cd build
-            echo $(pwd)
             cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_INSTALL_PREFIX=../install -G Ninja ..
             ninja -k0 install
             cd ..
             export CMAKE_PREFIX_PATH=$(pwd)/install:$CMAKE_PREFIX_PATH
             echo "::endgroup::"
             echo "::group::Build podio"
+            cd ${GITHUB_WORKSPACE}
             mkdir build install
             cd build
             cmake -DENABLE_SIO=${{ matrix.sio }} \
@@ -51,9 +57,7 @@ jobs:
             export LD_LIBRARY_PATH=$(pwd)/install/lib:$(pwd)/install/lib64:$LD_LIBRARY_PATH
             echo "::endgroup::"
             echo "::group::Build and test EDM4hep"
-            cd $STARTDIR
-            git clone --depth 1 https://github.com/key4hep/EDM4hep
-            cd EDM4hep
+            cd /home/runner/work/EDM4hep
             mkdir build
             cd build
             cmake -DCMAKE_CXX_STANDARD=17 \
