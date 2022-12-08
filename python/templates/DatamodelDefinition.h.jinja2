@@ -8,9 +8,16 @@ namespace {{ package_name }}::meta {
  */
 static constexpr auto {{ package_name }}__JSONDefinition = R"EDMDEFINITION({{ edm_definition }})EDMDEFINITION";
 
-/**
- * The index of the definition in the registry
- */
-static const auto definitionRegistryIndex =  podio::EDMDefinitionRegistry::instance().registerEDM("{{ package_edm_edm_name }}", {{ package_name }}__JSONDefinition);
+class RegistryIndex {
+public:
+  static size_t value() {
+    static auto index = RegistryIndex(podio::EDMDefinitionRegistry::instance().registerEDM("{{ package_name }}", {{ package_name }}__JSONDefinition));
+    return index.m_value;
+  }
+
+private:
+  RegistryIndex(size_t v) : m_value(v) {}
+  size_t m_value{podio::EDMDefinitionRegistry::NoDefinitionAvailable};
+};
 
 } // namespace {{ package_name }}::meta
