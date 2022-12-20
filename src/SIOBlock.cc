@@ -49,38 +49,16 @@ void SIOCollectionIDTableBlock::write(sio::write_device& device) {
   device.data(_isSubsetColl);
 }
 
-template <typename MappedT>
-void writeParamMap(sio::write_device& device, const GenericParameters::MapType<MappedT>& map) {
-  device.data((int)map.size());
-  for (const auto& [key, value] : map) {
-    device.data(key);
-    device.data(value);
-  }
-}
-
-template <typename MappedT>
-void readParamMap(sio::read_device& device, GenericParameters::MapType<MappedT>& map) {
-  int size;
-  device.data(size);
-  while (size--) {
-    std::string key;
-    device.data(key);
-    std::vector<MappedT> values;
-    device.data(values);
-    map.emplace(std::move(key), std::move(values));
-  }
-}
-
 void writeGenericParameters(sio::write_device& device, const GenericParameters& params) {
-  writeParamMap(device, params.getIntMap());
-  writeParamMap(device, params.getFloatMap());
-  writeParamMap(device, params.getStringMap());
+  writeMapLike(device, params.getIntMap());
+  writeMapLike(device, params.getFloatMap());
+  writeMapLike(device, params.getStringMap());
 }
 
 void readGenericParameters(sio::read_device& device, GenericParameters& params) {
-  readParamMap(device, params.getIntMap());
-  readParamMap(device, params.getFloatMap());
-  readParamMap(device, params.getStringMap());
+  readMapLike(device, params.getIntMap());
+  readMapLike(device, params.getFloatMap());
+  readMapLike(device, params.getStringMap());
 }
 
 void SIOEventMetaDataBlock::read(sio::read_device& device, sio::version_type) {

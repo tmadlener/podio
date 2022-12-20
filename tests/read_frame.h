@@ -140,8 +140,6 @@ int read_frames(const std::string& filename) {
     }
   }
 
-  std::cout << reader.getEDMDefinition("datamodel") << std::endl;
-
   return 0;
 }
 
