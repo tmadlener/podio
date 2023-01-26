@@ -51,6 +51,7 @@ SET(core_sources
   EventStore.cc
   DatamodelRegistry.cc
   DatamodelRegistryIOHelpers.cc
+  CollectionBufferRegistry.cc
   )
 
 SET(core_headers
