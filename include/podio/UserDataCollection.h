@@ -2,6 +2,7 @@
 #define PODIO_USERDATACOLLECTION_H
 
 #include "podio/CollectionBase.h"
+#include "podio/CollectionBufferRegistry.h"
 #include "podio/CollectionBuffers.h"
 #include "podio/DatamodelRegistry.h"
 #include "podio/utilities/TypeHelpers.h"
@@ -106,16 +107,6 @@ public:
   podio::CollectionWriteBuffers getBuffers() override {
     _vecPtr = &_vec; // Set the pointer to the correct internal vector
     return {&_vecPtr, &m_refCollections, &m_vecmem_info};
-  }
-
-  podio::CollectionReadBuffers createBuffers() /*const*/ final {
-    return {nullptr, nullptr, nullptr,
-            [](podio::CollectionReadBuffers buffers, bool) {
-              return std::make_unique<UserDataCollection<BasicType>>(std::move(*buffers.dataAsVector<BasicType>()));
-            },
-            [](podio::CollectionReadBuffers& buffers) {
-              buffers.data = podio::CollectionWriteBuffers::asVector<BasicType>(buffers.data);
-            }};
   }
 
   podio::CollectionReadBuffers createSchemaEvolvableBuffers(__attribute__((unused)) int readSchemaVersion,

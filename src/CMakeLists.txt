@@ -52,6 +52,7 @@ SET(core_sources
   DatamodelRegistry.cc
   DatamodelRegistryIOHelpers.cc
   CollectionBufferRegistry.cc
+  UserDataCollection.cc
   )
 
 SET(core_headers
