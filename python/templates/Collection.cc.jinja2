@@ -6,6 +6,8 @@
 #include "{{ incfolder }}{{ class.bare_type }}Collection.h"
 #include "{{ incfolder }}DatamodelDefinition.h"
 
+#include "podio/CollectionBufferRegistry.h"
+
 {% for include in includes_coll_cc %}
 {{ include }}
 {% endfor %}
@@ -150,19 +152,52 @@ podio::CollectionWriteBuffers {{ collection_type }}::getBuffers() {
   return m_storage.getCollectionBuffers(m_isSubsetColl);
 }
 
-podio::CollectionReadBuffers {{ collection_type }}::createBuffers() /*const*/ {
-  // Very cumbersome way at the moment. We get the actual buffers to have the
-  // references and vector members sized appropriately (we will use this
-  // information to create new buffers outside)
-  auto collBuffers = m_storage.getCollectionBuffers(m_isSubsetColl);
+podio::CollectionReadBuffers {{ collection_type }}::createSchemaEvolvableBuffers(int readSchemaVersion, podio::Backend /*backend*/) /*const*/ {
+  // no version difference -> no-op
+  if (readSchemaVersion == {{ class.schema_version }}) {
+    return createBuffers();
+  }
+  // default is no-op as well
+  return createBuffers();
+}
+
+{% for member in Members %}
+{{ macros.vectorized_access(class, member) }}
+{% endfor %}
+
+#ifdef PODIO_JSON_OUTPUT
+void to_json(nlohmann::json& j, const {{ collection_type }}& collection) {
+  j = nlohmann::json::array();
+  for (auto&& elem : collection) {
+    j.emplace_back(elem);
+  }
+}
+#endif
+
+namespace {
+podio::CollectionReadBuffers createBuffers(bool isSubset) {
   auto readBuffers = podio::CollectionReadBuffers{};
-  readBuffers.references = collBuffers.references;
-  readBuffers.vectorMembers = collBuffers.vectorMembers;
-  readBuffers.createCollection = [](podio::CollectionReadBuffers buffers, bool isSubsetColl) {
-      {{ collection_type }}Data data(buffers, isSubsetColl);
-      return std::make_unique<{{ collection_type }}>(std::move(data), isSubsetColl);
-  };
-  readBuffers.recast = [](podio::CollectionReadBuffers& buffers) {
+  readBuffers.data = isSubset ? nullptr : new {{ class.bare_type }}DataContainer;
+
+  // The number of ObjectID vectors is either 1 or the sum of OneToMany and
+  // OneToOne relations
+  const auto nRefs = isSubset ? 1 : {{ OneToManyRelations | length }} + {{ OneToOneRelations | length }};
+  readBuffers.references = new podio::CollRefCollection(nRefs);
+
+  readBuffers.vectorMembers = new podio::VectorMembersInfo();
+  if (!isSubset) {
+    readBuffers.vectorMembers->reserve({{ VectorMembers | length }});
+{% for member in VectorMembers %}
+    readBuffers.vectorMembers->emplace_back("{{ member.full_type }}", new std::vector<{{ member.full_type }}>);
+{% endfor %}
+  }
+
+  readBuffers.createCollection = std::move([](podio::CollectionReadBuffers buffers, bool isSubsetColl) {
+    {{ collection_type }}Data data(buffers, isSubsetColl);
+    return std::make_unique<{{ collection_type }}>(std::move(data), isSubsetColl);
+  });
+
+  readBuffers.recast = std::move([](podio::CollectionReadBuffers& buffers) {
     if (buffers.data) {
       buffers.data = podio::CollectionWriteBuffers::asVector<{{ class.full_type }}Data>(buffers.data);
     }
@@ -171,17 +206,9 @@ podio::CollectionReadBuffers {{ collection_type }}::createBuffers() /*const*/ {
     (*buffers.vectorMembers)[{{ loop.index0 }}].second = podio::CollectionWriteBuffers::asVector<{{ member.full_type }}>((*buffers.vectorMembers)[{{ loop.index0 }}].second);
 {% endfor %}
 {% endif %}
-  };
-  return readBuffers;
-}
+  });
 
-podio::CollectionReadBuffers {{ collection_type }}::createSchemaEvolvableBuffers(int readSchemaVersion, podio::Backend /*backend*/) /*const*/ {
-  // no version difference -> no-op
-  if (readSchemaVersion == {{ class.schema_version }}) {
-    return createBuffers();
-  }
-  // default is no-op as well
-  return createBuffers();
+  return readBuffers;
 }
 
 
@@ -193,14 +220,17 @@ size_t {{ collection_type }}::getDatamodelRegistryIndex() const {
   return {{ package_name }}::meta::DatamodelRegistryIndex::value();
 }
 
-#ifdef PODIO_JSON_OUTPUT
-void to_json(nlohmann::json& j, const {{ collection_type }}& collection) {
-  j = nlohmann::json::array();
-  for (auto&& elem : collection) {
-    j.emplace_back(elem);
-  }
+bool registerCollection() {
+  const static auto reg = []() {
+    auto& registry = podio::CollectionBufferRegistry::mutInstance();
+    registry.registerCollType("{{ collection_type }}", createBuffers);
+    return true;
+  }();
+  return reg;
 }
-#endif
+
+const auto registeredCollection = registerCollection();
+} // namespace
 
 {% endwith %}
 
