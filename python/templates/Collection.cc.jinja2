@@ -223,7 +223,7 @@ size_t {{ collection_type }}::getDatamodelRegistryIndex() const {
 bool registerCollection() {
   const static auto reg = []() {
     auto& registry = podio::CollectionBufferRegistry::mutInstance();
-    registry.registerCollType("{{ collection_type }}", createBuffers);
+    registry.registerCollType("{{ class.full_type }}Collection", createBuffers);
     return true;
   }();
   return reg;

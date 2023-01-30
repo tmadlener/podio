@@ -13,9 +13,9 @@ CollectionBufferRegistry& CollectionBufferRegistry::mutInstance() {
 }
 
 void CollectionBufferRegistry::registerCollType(const std::string& collType, FunctionT createFunc) {
-  const auto& [_, inserted] = m_functionMap.emplace(collType, std::move(createFunc));
+  const auto& [it, inserted] = m_functionMap.emplace(collType, std::move(createFunc));
   if (!inserted) {
-    // Handle collisions how?
+    // TODO: what do we actually want to do here? What can we do?
   }
 }
 
