@@ -1,4 +1,5 @@
 #include "podio/SIOBlock.h"
+#include "podio/CollectionBufferRegistry.h"
 
 #include <algorithm>
 #include <cstdlib>
@@ -27,7 +28,7 @@ SIOCollectionIDTableBlock::SIOCollectionIDTableBlock(podio::EventStore* store) :
           << id << ", name: " << table->name(id) << ")" << std::endl;
     }
 
-    _types.push_back(tmp->getValueTypeName());
+    _types.push_back(tmp->getTypeName());
     _isSubsetColl.push_back(tmp->isSubsetCollection());
   }
 }
@@ -100,7 +101,11 @@ std::shared_ptr<SIOBlock> SIOBlockFactory::createBlock(const std::string& typeSt
 
   if (it != _map.end()) {
     auto blk = std::shared_ptr<SIOBlock>(it->second->create(name));
-    blk->createBuffers(isSubsetColl);
+    const auto& bReg = podio::CollectionBufferRegistry::instance();
+    auto createFunc = bReg.createBuffers(typeStr, isSubsetColl);
+
+    // TODO: Error handling of empty optional
+    blk->setBuffers(createFunc.value_or(podio::CollectionReadBuffers{}), isSubsetColl);
     return blk;
   } else {
     return nullptr;
@@ -109,7 +114,7 @@ std::shared_ptr<SIOBlock> SIOBlockFactory::createBlock(const std::string& typeSt
 
 std::shared_ptr<SIOBlock> SIOBlockFactory::createBlock(const podio::CollectionBase* col,
                                                        const std::string& name) const {
-  const std::string typeStr = col->getValueTypeName();
+  const std::string typeStr = col->getTypeName();
   const auto it = _map.find(typeStr);
 
   if (it != _map.end()) {

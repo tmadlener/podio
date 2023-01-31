@@ -52,7 +52,7 @@ namespace sio_utils {
     for (const auto& [name, coll] : collections) {
       names.emplace_back(name);
       ids.emplace_back(collIdTable.collectionID(name));
-      types.emplace_back(coll->getValueTypeName());
+      types.emplace_back(coll->getTypeName());
       subsetColl.emplace_back(coll->isSubsetCollection());
     }
 

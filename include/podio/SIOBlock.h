@@ -74,6 +74,11 @@ public:
     return m_buffers;
   }
 
+  void setBuffers(podio::CollectionReadBuffers&& buffers, bool subsetColl) {
+    m_buffers = std::move(buffers);
+    m_subsetColl = subsetColl;
+  }
+
   std::string name() {
     return sio::block::name();
   }
@@ -84,9 +89,6 @@ public:
   }
 
   virtual SIOBlock* create(const std::string& name) const = 0;
-
-  // create a new collection for this block
-  virtual void createBuffers(const bool subsetCollection = false) = 0;
 
 protected:
   bool m_subsetColl{false};

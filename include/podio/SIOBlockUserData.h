@@ -31,7 +31,7 @@ class SIOBlockUserData : public podio::SIOBlock {
 public:
   SIOBlockUserData() : SIOBlock(::sio_name<BasicType>(), sio::version::encode_version(0, 1)) {
 
-    podio::SIOBlockFactory::instance().registerBlockForCollection(podio::userDataTypeName<BasicType>(), this);
+    podio::SIOBlockFactory::instance().registerBlockForCollection(podio::userDataCollTypeName<BasicType>(), this);
   }
 
   SIOBlockUserData(const std::string& name) : SIOBlock(name, sio::version::encode_version(0, 1)) {
@@ -51,17 +51,6 @@ public:
     unsigned size = dataVec->size();
     device.data(size);
     podio::handlePODDataSIO(device, &(*dataVec)[0], size);
-  }
-
-  void createBuffers(bool) override {
-
-    m_buffers.references = new podio::CollRefCollection();
-    m_buffers.vectorMembers = new podio::VectorMembersInfo();
-
-    // Nothing to do here since UserDataCollections cannot be subset collections
-    m_buffers.createCollection = [](podio::CollectionReadBuffers buffers, bool) {
-      return std::make_unique<UserDataCollection<BasicType>>(std::move(*buffers.dataAsVector<BasicType>()));
-    };
   }
 
   SIOBlock* create(const std::string& name) const override {

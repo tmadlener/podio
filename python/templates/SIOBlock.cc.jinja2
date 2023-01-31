@@ -19,8 +19,8 @@ void {{ block_class }}::read(sio::read_device& device, sio::version_type) {
   if (not m_subsetColl) {
     unsigned size(0);
     device.data( size );
-    m_buffers.data = new std::vector<{{ class.full_type }}Data>(size);
     auto* dataVec = m_buffers.dataAsVector<{{ class.full_type }}Data>();
+    dataVec->resize(size);
     podio::handlePODDataSIO(device, dataVec->data(), size);
   }
 
@@ -69,16 +69,6 @@ void {{ block_class }}::write(sio::write_device& device) {
 {{ macros.vector_member_write(member, loop.index0) }}
 {% endfor %}
 {% endif %}
-}
-
-void {{ block_class }}::createBuffers(bool subsetColl) {
-  m_subsetColl = subsetColl;
-
-  const auto& bReg = podio::CollectionBufferRegistry::instance();
-  auto createFunc = bReg.createBuffers("{{ class.full_type }}Collection", subsetColl);
-
-  // TODO: Error handling of empty optional
-  m_buffers = createFunc.value_or(podio::CollectionReadBuffers{});
 }
 {% endwith %}
 

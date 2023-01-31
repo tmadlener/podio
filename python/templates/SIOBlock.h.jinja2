@@ -24,7 +24,7 @@ class {{ block_class }}: public podio::SIOBlock {
 public:
   {{ block_class }}() :
   SIOBlock("{{ class.bare_type }}", sio::version::encode_version(0, 1)) {
-    podio::SIOBlockFactory::instance().registerBlockForCollection("{{class.full_type}}", this);
+    podio::SIOBlockFactory::instance().registerBlockForCollection("{{ class.full_type }}Collection", this);
   }
 
   {{ block_class }}(const std::string& name) :
@@ -37,12 +37,7 @@ public:
   // Write the collection data to the device
   void write(sio::write_device& device) override;
 
-  void createBuffers(bool isSubsetColl) override;
-
   SIOBlock* create(const std::string& name) const override { return new {{ block_class }}(name); }
-
-private:
-  // podio::CollectionReadBuffers createBuffers() const;
 };
 
 static {{ block_class }} _dummy{{ block_class }};
