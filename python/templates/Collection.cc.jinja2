@@ -192,12 +192,12 @@ podio::CollectionReadBuffers createBuffers(bool isSubset) {
 {% endfor %}
   }
 
-  readBuffers.createCollection = std::move([](podio::CollectionReadBuffers buffers, bool isSubsetColl) {
+  readBuffers.createCollection = [](podio::CollectionReadBuffers buffers, bool isSubsetColl) {
     {{ collection_type }}Data data(buffers, isSubsetColl);
     return std::make_unique<{{ collection_type }}>(std::move(data), isSubsetColl);
-  });
+  };
 
-  readBuffers.recast = std::move([](podio::CollectionReadBuffers& buffers) {
+  readBuffers.recast = [](podio::CollectionReadBuffers& buffers) {
     if (buffers.data) {
       buffers.data = podio::CollectionWriteBuffers::asVector<{{ class.full_type }}Data>(buffers.data);
     }
@@ -206,7 +206,7 @@ podio::CollectionReadBuffers createBuffers(bool isSubset) {
     (*buffers.vectorMembers)[{{ loop.index0 }}].second = podio::CollectionWriteBuffers::asVector<{{ member.full_type }}>((*buffers.vectorMembers)[{{ loop.index0 }}].second);
 {% endfor %}
 {% endif %}
-  });
+  };
 
   return readBuffers;
 }
