@@ -71,7 +71,7 @@ void ROOTFrameWriter::initBranches(CategoryInfo& catInfo, const std::vector<Stor
 
     // data buffer branch, only for non-subset collections
     if (buffers.data) {
-      auto bufferDataType = "vector<" + coll->getDataTypeName() + ">";
+      const auto bufferDataType = "vector<" + std::string(coll->getDataTypeName()) + ">";
       branches.data = catInfo.tree->Branch(name.c_str(), bufferDataType.c_str(), buffers.data);
     }
 
