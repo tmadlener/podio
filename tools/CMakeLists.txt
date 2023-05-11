@@ -11,14 +11,9 @@ if(BUILD_TESTING)
   function(CREATE_DUMP_TEST name depends_on)
     add_test(NAME ${name} COMMAND ./podio-dump ${ARGN})
 
-    set(SIO_LD_PATH "")
-    if (ENABLE_SIO)
-      set(SIO_LD_PATH $<TARGET_FILE_DIR:SIO::sio>)
-    endif()
-
     set_property(TEST ${name}
       PROPERTY ENVIRONMENT
-      LD_LIBRARY_PATH=${CMAKE_BINARY_DIR}/tests:${CMAKE_BINARY_DIR}/src:$<TARGET_FILE_DIR:ROOT::Tree>:${SIO_LD_PATH}:$ENV{LD_LIBRARY_PATH}
+      LD_LIBRARY_PATH=${CMAKE_BINARY_DIR}/tests:${CMAKE_BINARY_DIR}/src:$<TARGET_FILE_DIR:ROOT::Tree>:$<$<TARGET_EXISTS:SIO::sio:$<TARGET_FILE_DIR:SIO::sio>
       PYTHONPATH=${CMAKE_SOURCE_DIR}/python:$ENV{PYTHONPATH}
       ROOT_INCLUDE_PATH=${CMAKE_SOURCE_DIR}/tests/datamodel:${CMAKE_SOURCE_DIR}/include:$ENV{ROOT_INCLUDE_PATH}
       )
