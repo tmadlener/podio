@@ -149,7 +149,7 @@ TEST_CASE("Component", "[basics]") {
   REQUIRE(3 == info.component().data.x);
 }
 
-TEST_CASE("Cyclic", "[LEAK-FAIL][basics][relations][memory-management]") {
+TEST_CASE("Cyclic", "[basics][relations][memory-management]") {
   auto start = MutableExampleForCyclicDependency1();
   auto isAvailable = start.ref().isAvailable();
   REQUIRE_FALSE(isAvailable);
@@ -165,7 +165,7 @@ TEST_CASE("Cyclic", "[LEAK-FAIL][basics][relations][memory-management]") {
   REQUIRE(start == start.ref().ref());
 }
 
-TEST_CASE("Invalid_refs", "[LEAK-FAIL][basics][relations]") {
+TEST_CASE("Invalid_refs", "[basics][relations]") {
   auto store = podio::EventStore();
   auto& hits = store.create<ExampleHitCollection>("hits");
   auto hit1 = hits.create(0xcaffeeULL, 0., 0., 0., 0.);
@@ -602,7 +602,7 @@ TEST_CASE("Subset collection can handle subsets", "[subset-colls]") {
   }
 }
 
-TEST_CASE("Collection iterators work with subset collections", "[LEAK-FAIL][subset-colls]") {
+TEST_CASE("Collection iterators work with subset collections", "[subset-colls]") {
   auto hits = ExampleHitCollection();
   auto hit1 = hits.create(0x42ULL, 0., 0., 0., 0.);
   auto hit2 = hits.create(0x42ULL, 1., 1., 1., 1.);
