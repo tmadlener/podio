@@ -5,6 +5,7 @@
 
 #include "datamodel/ExampleClusterCollection.h"
 #include "datamodel/ExampleHitCollection.h"
+#include "datamodel/TypeWithEnergy.h"
 
 TEST_CASE("InterfaceWrapper basic functionality", "[interface-types][basics]") {
   using WrapperT = podio::utils::InterfaceWrapper<ExampleHit, ExampleCluster>;
@@ -71,4 +72,12 @@ TEST_CASE("InterfaceWrapper from mutable", "[interface-types][basics]") {
   REQUIRE(wrapper.getValue<ExampleCluster>() == cluster);
   REQUIRE_THROWS_AS(wrapper.getValue<ExampleHit>(), std::bad_variant_access);
   REQUIRE(wrapper != hit);
+}
+
+TEST_CASE("Interface getters", "[basics][interface-types][code-gen]") {
+  MutableExampleCluster cluster{};
+  cluster.energy(3.14f);
+
+  TypeWithEnergy interfaceType = cluster;
+  REQUIRE(interfaceType.energy() == 3.14f);
 }

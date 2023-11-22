@@ -130,6 +130,8 @@ class ClassGenerator:
       self._process_component(name, component)
     for name, datatype in self.datamodel.datatypes.items():
       self._process_datatype(name, datatype)
+    for name, interface in self.datamodel.interfaces.items():
+      self._process_interface(name, interface)
 
     self._write_edm_def_file()
 
@@ -346,6 +348,16 @@ have resolvable schema evolution incompatibilities:")
     if 'SIO' in self.io_handlers:
       self._fill_templates('SIOBlock', datatype)
 
+  def _process_interface(self, name, definition):
+    """Process an interface definition and generate the necesary code"""
+    interface = deepcopy(definition)
+    interface["class"] = DataType(name)
+    interface["include_types"] = [
+        self._build_include(t) for t in interface["Types"]
+        ]
+
+    self._fill_templates("Interface", interface)
+
   def prepare_iorules(self):
     """Prepare the IORules to be put in the Reflex dictionary"""
     for type_name, schema_changes in self.root_schema_dict.items():
@@ -405,6 +417,8 @@ have resolvable schema evolution incompatibilities:")
         member.sub_members = self.datamodel.components[member.full_type]['Members']
 
     for relation in datatype['OneToOneRelations']:
+      if self._is_interface(relation.full_type):
+        relation.interface_types = self.datamodel.interfaces[relation.full_type]["Types"]
       if self._needs_include(relation.full_type):
         if relation.namespace not in fwd_declarations:
           fwd_declarations[relation.namespace] = []
@@ -417,6 +431,8 @@ have resolvable schema evolution incompatibilities:")
       includes.add('#include "podio/RelationRange.h"')
 
     for relation in datatype['OneToManyRelations']:
+      if self._is_interface(relation.full_type):
+        relation.interface_types = self.datamodel.interfaces[relation.full_type]["Types"]
       if self._needs_include(relation.full_type):
         includes.add(self._build_include(relation))
 
@@ -447,7 +463,12 @@ have resolvable schema evolution incompatibilities:")
     for relation in datatype['OneToManyRelations'] + datatype['OneToOneRelations']:
       if datatype['class'].bare_type != relation.bare_type:
         include_from = self._needs_include(relation.full_type)
-        includes_cc.add(self._build_include_for_class(relation.bare_type + 'Collection', include_from))
+        if self._is_interface(relation.full_type):
+          includes_cc.add(self._build_include_for_class(relation.bare_type, include_from))
+          for int_type in relation.interface_types:
+            includes_cc.add(self._build_include_for_class(int_type.bare_type + "Collection", include_from))
+        else:
+          includes_cc.add(self._build_include_for_class(relation.bare_type + 'Collection', include_from))
         includes.add(self._build_include_for_class(relation.bare_type, include_from))
 
     if datatype['VectorMembers']:
@@ -577,14 +598,25 @@ have resolvable schema evolution incompatibilities:")
 
   def _needs_include(self, classname) -> IncludeFrom:
     """Check whether the member needs an include from within the datamodel"""
-    if classname in self.datamodel.components or classname in self.datamodel.datatypes:
+    if classname in self.datamodel.components or \
+       classname in self.datamodel.datatypes or \
+       classname in self.datamodel.interfaces:
       return IncludeFrom.INTERNAL
 
     if self.upstream_edm:
-      if classname in self.upstream_edm.components or classname in self.upstream_edm.datatypes:
+      if classname in self.upstream_edm.components or \
+         classname in self.upstream_edm.datatypes or \
+         classname in self.upstream_edm.interfaces:
         return IncludeFrom.EXTERNAL
 
     return IncludeFrom.NOWHERE
+
+  def _is_interface(self, classname):
+    """Check whether this is an interface type or a regular datatype"""
+    all_interfaces = self.datamodel.interfaces
+    if self.upstream_edm:
+      all_interfaces = list(self.datamodel.interfaces) + list(self.upstream_edm.interfaces)
+    return classname in all_interfaces
 
   def _create_selection_xml(self):
     """Create the selection xml that is necessary for ROOT I/O"""

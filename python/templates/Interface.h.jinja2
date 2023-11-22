@@ -1,0 +1,49 @@
+{% import "macros/utils.jinja2" as utils %}
+{% import "macros/declarations.jinja2" as macros %}
+// AUTOMATICALLY GENERATED FILE - DO NOT EDIT
+
+#ifndef {{ package_name.upper() }}_{{ class.bare_type }}_H
+#define {{ package_name.upper() }}_{{ class.bare_type }}_H
+
+{% for include in include_types %}
+{{ include }}
+{% endfor %}
+
+#include "podio/utilities/InterfaceWrapper.h"
+
+#include <ostream>
+
+{{ utils.namespace_open(class.namespace) }}
+
+{{ macros.class_description(class.bare_type, Description, Author) }}
+class {{ class.bare_type }} : public podio::utils::InterfaceWrapper<{{ Types | join(", ") }}> {
+  /// A typedef for the underlying wrapper
+  using WrapperT = podio::utils::InterfaceWrapper<{{ Types | join(", ")}}>;
+
+public:
+  static constexpr bool is_mutable = false;
+
+  /// {{ class.bare_type }} can only be constructed from a concrete value
+  {{ class.bare_type }}() = delete;
+  /// Default destructor
+  ~{{ class.bare_type}}() = default;
+  /// Copy constructor
+  {{ class.bare_type }}(const {{ class.bare_type }}&) = default;
+  /// Copy assignment
+  {{ class.bare_type }}& operator=(const {{ class.bare_type }}&) = default;
+
+  /// The default / main constructor takes anything that can be converted into a
+  /// type that is covered by the interface
+  template<typename T, typename = WrapperT::EnableIfConstructibleFrom<T>>
+  {{ class.bare_type }}(T&& val) : WrapperT(std::forward<T>(val)) {}
+
+  /// Create an empty handle.
+  static {{ class.bare_type }} makeEmpty();
+
+{{ macros.member_getters(Members, use_get_syntax) }}
+
+friend std::ostream& operator<<(std::ostream& os, const {{ class.bare_type }}& value);
+};
+
+{{ utils.namespace_close(class.namespace) }}
+#endif

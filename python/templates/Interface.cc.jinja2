@@ -1,0 +1,53 @@
+{% import "macros/utils.jinja2" as utils %}
+// AUTOMATICALLY GENERATED FILE - DO NOT EDIT
+
+#include "{{ incfolder }}{{ class.bare_type }}.h"
+
+#include "podio/utilities/TypeHelpers.h"
+
+#include <type_traits>
+
+{{ utils.namespace_open(class.namespace) }}
+
+{{ class.bare_type }} {{ class.bare_type }}::makeEmpty() {
+  // We simply chose the first type of the interfaced types here to initialize
+  // an empty handle
+  return {{ Types[0] }}::makeEmpty();
+}
+
+{% for member in Members %}
+const {{ member.full_type }}& {{ class.bare_type }}::{{ member.getter_name(use_get_syntax) }}() const {
+  return std::visit([](auto&& obj) -> const {{ member.full_type}}& {
+    return obj->data.{{ member.name }};
+  }, m_obj);
+}
+{% if member.is_array %}
+const {{ member.array_type }}& {{ class.bare_type }}::{{ member.getter_name(get_syntax) }}(size_t i) const {
+  return std::visit([](auto& obj) -> const {{ member.array_type }}& {
+    return obj->data.{{ member.name }}[i];
+  }, m_obj);
+}
+{% endif %}
+{% if member.sub_members %}
+{% for sub_member in member.sub_members %}
+const {{ sub_member.full_type }}& {{ class.bare_type }}::{{ sub_member.getter_name(get_syntax) }}() const {
+  return std::visit([](auto&& obj) -> const {{ sub_member.full_type }}& {
+    return m_obj->data.{{ member.name }}.{{ sub_member.name }};
+  }, m_obj);
+}
+{% endfor %}
+{%- endif %}
+
+{% endfor %}
+
+std::ostream& operator<<(std::ostream& os, const {{ class.bare_type }}& value) {
+{% set else = joiner("else ") %}
+{% for int_type in Types %}
+  {{ else() }}if (value.holds<{{ int_type }}>()) {
+    os << value.getValue<{{ int_type }}>();
+  }
+{% endfor %}
+  return os;
+}
+
+{{ utils.namespace_close(class.namespace) }}
