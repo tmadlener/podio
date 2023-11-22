@@ -1,8 +1,10 @@
 #ifndef PODIO_TESTS_READ_FRAME_H // NOLINT(llvm-header-guard): folder structure not suitable
 #define PODIO_TESTS_READ_FRAME_H // NOLINT(llvm-header-guard): folder structure not suitable
 
-#include "datamodel/ExampleWithVectorMemberCollection.h"
 #include "read_test.h"
+
+#include "datamodel/ExampleWithInterfaceRelationCollection.h"
+#include "datamodel/ExampleWithVectorMemberCollection.h"
 
 #include "extension_model/ContainedTypeCollection.h"
 #include "extension_model/ExternalComponentTypeCollection.h"
@@ -69,6 +71,26 @@ void checkVecMemSubsetColl(const podio::Frame& event) {
   ASSERT(subsetColl[0] == origColl[0], "subset coll does not have the right contents");
 }
 
+void checkExampleWithInterfaceRelations(const podio::Frame& event) {
+  const auto& interfaceColl = event.get<ExampleWithInterfaceRelationCollection>("interfaceTypes");
+  const auto& hits = event.get<ExampleHitCollection>("hits");
+  const auto& clusters = event.get<ExampleClusterCollection>("clusters");
+  const auto& mcps = event.get<ExampleMCCollection>("mcparticles");
+
+  ASSERT(interfaceColl.isValid(), "interfaceTypes collection should be present");
+  ASSERT(interfaceColl.size() == 2, "interfaceTypes collection should have 2 elements");
+
+  auto element = interfaceColl[0];
+  ASSERT(element.aSingleEnergyType() == clusters[0], "OneToOneRelation with interface type not persisted correctly");
+
+  element = interfaceColl[1];
+  auto manyEnergies = element.manyEnergies();
+  ASSERT(manyEnergies.size() == 3, "OneToManyRelation with interface type does not have the expected size");
+  ASSERT(manyEnergies[0] == clusters[1], "OneToManyRelation 0 with interface type not persisted correctly");
+  ASSERT(manyEnergies[1] == mcps[0], "OneToManyRelation 1 with interface type not persisted correctly");
+  ASSERT(manyEnergies[2] == hits[1], "OneToManyRelation 2 with interface type not persisted correctly");
+}
+
 template <typename ReaderT>
 int read_frames(const std::string& filename, bool assertBuildVersion = true) {
   auto reader = ReaderT();
@@ -124,6 +146,9 @@ int read_frames(const std::string& filename, bool assertBuildVersion = true) {
     // As well as a test for the vector members subset category
     if (reader.currentFileVersion() >= podio::version::Version{0, 16, 99}) {
       checkVecMemSubsetColl(otherFrame);
+    }
+    if (reader.currentFileVersion() >= podio::version::Version{0, 17, 99}) {
+      checkExampleWithInterfaceRelations(otherFrame);
     }
   }
 

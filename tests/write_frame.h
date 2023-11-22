@@ -11,6 +11,7 @@
 #include "datamodel/ExampleWithARelationCollection.h"
 #include "datamodel/ExampleWithArrayCollection.h"
 #include "datamodel/ExampleWithFixedWidthIntegersCollection.h"
+#include "datamodel/ExampleWithInterfaceRelationCollection.h"
 #include "datamodel/ExampleWithNamespaceCollection.h"
 #include "datamodel/ExampleWithOneRelationCollection.h"
 #include "datamodel/ExampleWithVectorMemberCollection.h"
@@ -361,6 +362,21 @@ auto createExtensionExternalRelationCollection(int i, const ExampleHitCollection
   return coll;
 }
 
+auto createExampleWithInterfaceRelationCollection(const ExampleHitCollection& hits, const ExampleMCCollection& mcps,
+                                                  const ExampleClusterCollection& clusters) {
+  auto coll = ExampleWithInterfaceRelationCollection{};
+  // Create one element to test all of the four interface relations
+  auto element = coll.create();
+  element.aSingleEnergyType(clusters[0]);
+
+  element = coll.create();
+  element.addmanyEnergies(clusters[1]);
+  element.addmanyEnergies(mcps[0]);
+  element.addmanyEnergies(hits[1]);
+
+  return coll;
+}
+
 podio::Frame makeFrame(int iFrame) {
   podio::Frame frame{};
 
@@ -419,6 +435,8 @@ podio::Frame makeFrame(int iFrame) {
   frame.put(createExtensionContainedCollection(iFrame), "extension_Contained");
   frame.put(createExtensionExternalComponentCollection(iFrame), "extension_ExternalComponent");
   frame.put(createExtensionExternalRelationCollection(iFrame, hits, clusters), "extension_ExternalRelation");
+
+  frame.put(createExampleWithInterfaceRelationCollection(hits, mcps, clusters), "interfaceTypes");
 
   return frame;
 }
