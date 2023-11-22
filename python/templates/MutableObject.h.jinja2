@@ -25,6 +25,10 @@
 
 {{ utils.forward_decls(forward_declarations) }}
 
+namespace podio::utils {
+  template<typename ...Ts> class InterfaceWrapper;
+}
+
 {{ utils.namespace_open(class.namespace) }}
 
 {{ macros.class_description(class.bare_type, Description, Author, prefix='Mutable') }}
@@ -34,9 +38,15 @@ class Mutable{{ class.bare_type }} {
   friend class {{ class.bare_type }}MutableCollectionIterator;
   friend class {{ class.bare_type }};
 
+  template<typename ...Ts>
+  friend class podio::utils::InterfaceWrapper;
+
 public:
   using object_type = {{ class.bare_type }};
   using collection_type = {{ class.bare_type }}Collection;
+  using obj_type = {{ class.bare_type }}Obj;
+
+  static constexpr bool is_mutable = true;
 
 {{ macros.constructors_destructors(class.bare_type, Members, prefix='Mutable') }}
 

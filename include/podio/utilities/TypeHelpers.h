@@ -11,6 +11,19 @@
 namespace podio {
 namespace detail {
 
+#if __cplusplus > 201704L
+  // Only available in c++20
+  using std::remove_cvref_t;
+#else
+  // Simple enough to roll our own quickly
+  template <class T>
+  struct remove_cvref {
+    using type = std::remove_cv_t<std::remove_reference_t<T>>;
+  };
+  template <class T>
+  using remove_cvref_t = typename remove_cvref<T>::type;
+#endif
+
   /**
    * Helper struct to determine whether a given type T is in a tuple of types
    * that act as a type list in this case
@@ -27,6 +40,16 @@ namespace detail {
    */
   template <typename T, typename Tuple>
   static constexpr bool isInTuple = TypeInTupleHelper<T, Tuple>::value;
+
+  /**
+   * Variable template for determining whether the first T is any of the passed
+   * othert types after stripping all const, volatile and references from the
+   * first type. I.e. the following will compile
+   *
+   * static_asser(isAnyOf<const int&, int>);
+   */
+  template <typename T, typename... Ts>
+  constexpr bool isAnyOf = isInTuple<remove_cvref_t<T>, std::tuple<Ts...>>;
 
   /**
    * Helper struct to turn a tuple of types into a tuple of a template of types, e.g.
@@ -157,6 +180,68 @@ namespace detail {
 
   template <typename T>
   using GetMappedType = typename MapLikeTypeHelper<T>::mapped_type;
+
+  /**
+   * Helper struct to determine whether a type has an obj_type member
+   * typedef. This is useful for detecting whether a type follows what podio
+   * generated types look like
+   */
+  template <typename T, typename = std::void_t<>>
+  struct HasObjPtrT : std::false_type {};
+
+  template <typename T>
+  struct HasObjPtrT<T, std::void_t<typename T::obj_type>> : std::true_type {};
+
+  /**
+   * Variable template for determining whether a type T has an obj_type
+   * member typedef.
+   */
+  template <typename T>
+  constexpr bool hasObjPtr = HasObjPtrT<T>::value;
+
+  /**
+   * Helper type for retrieving the obj_type member type from a T. Not
+   * SFINAE friendly by design!
+   */
+  template <typename T>
+  struct GetObjPtrTypeHelper {
+    using type = typename T::obj_type;
+  };
+
+  /**
+   * Type alias for retrieving the obj_type type member from a type T
+   */
+  template <typename T>
+  using GetObjPtrType = typename GetObjPtrTypeHelper<T>::type;
+
+  /**
+   * Helper type for retrieving the mutable_type member type from a T. Not
+   * SFINAE freindly by design
+   */
+  template <typename T>
+  struct GetMutableTypeHelper {
+    using type = typename T::mutable_type;
+  };
+
+  /**
+   * Type alias for retrieving the mutable_type member from a type T
+   */
+  template <typename T>
+  using GetMutableType = typename GetMutableTypeHelper<T>::type;
+
+  /**
+   * Helper type to extract the first type from a type list
+   */
+  template <typename... Ts>
+  struct FirstTypeHelper {
+    using type = std::tuple_element_t<0, std::tuple<Ts...>>;
+  };
+
+  /**
+   * Type alias for extracting the first type from a type list
+   */
+  template <typename... Ts>
+  using FirstType = typename FirstTypeHelper<Ts...>::type;
 
 } // namespace detail
 
