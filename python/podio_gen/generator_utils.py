@@ -106,6 +106,7 @@ class MemberVariable:
     self.array_size = kwargs.pop('array_size', None)
 
     self.includes = set()
+    self.interface_types = []  # populated in the generator script if necessary
 
     if kwargs:
       raise ValueError(f"Unused kwargs in MemberVariable: {list(kwargs.keys())}")
