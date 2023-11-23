@@ -235,7 +235,8 @@ have resolvable schema evolution incompatibilities:")
 
     endings = {
         'Data': ('h',),
-        'PrintInfo': ('h',)
+        'PrintInfo': ('h',),
+        'Interface': ('h',),
         }.get(template_base, ('h', 'cc'))
 
     fn_templates = []

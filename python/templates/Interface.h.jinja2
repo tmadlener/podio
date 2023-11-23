@@ -1,0 +1,88 @@
+{% import "macros/declarations.jinja2" as common_macros %}
+{% import "macros/utils.jinja2" as utils %}
+{% import "macros/interface.jinja2" as macros %}
+// AUTOMATICALLY GENERATED FILE - DO NOT EDIT
+
+#ifndef {{ package_name.upper() }}_{{ class.bare_type }}_H
+#define {{ package_name.upper() }}_{{ class.bare_type }}_H
+
+#include "podio/ObjectID.h"
+
+#include <memory>
+#include <ostream>
+
+{{ utils.namespace_open(class.namespace) }}
+
+{{ common_macros.class_description(class.bare_type, Description, Author) }}
+class {{ class.bare_type }} {
+
+  struct Concept {
+    virtual ~Concept() = default;
+    virtual std::unique_ptr<Concept> clone() const = 0;
+    virtual void print(std::ostream&) const = 0;
+
+    virtual podio::ObjectID getObjectID() const = 0;
+    virtual bool isAvailable() const = 0;
+    virtual void unlink() = 0;
+{{ macros.member_getters_concept(Members, use_get_syntax) }}
+  };
+
+  template<typename ValueT>
+  struct Model final : Concept {
+    ~Model() = default;
+    Model(ValueT value) : m_value(value) {}
+
+    std::unique_ptr<Concept> clone() const final {
+      return std::make_unique<Model<ValueT>>(m_value);
+    }
+
+    void print(std::ostream& os) const final {
+      os << m_value;
+    }
+
+{{ macros.member_getters_model(Members, use_get_syntax) }}
+
+  private:
+    ValueT m_value{};
+  };
+
+public:
+  template<typename ValueT>
+  {{ class.bare_type }}(ValueT value) :
+    m_self(std::make_unique<Model<ValueT>>(value)) {}
+
+  {{ class.bare_type }}(const {{ class.bare_type }}& other) :
+    m_self(other.m_self->clone()) {}
+  {{ class.bare_type }}& operator=(const {{ class.bare_type }}& other) {
+    {{ class.bare_type }} tmp{other};
+    std::swap(tmp.m_self, this->m_self);
+    return *this;
+  }
+
+  ~{{ class.bare_type }}() = default;
+  {{ class.bare_type }}({{ class.bare_type }}&&) = default;
+  {{ class.bare_type }}& operator=({{ class.bare_type }}&&) = default;
+
+  /// Create an empty handle
+  static {{ class.bare_type }} makeEmpty();
+
+  /// check whether the object is actually available
+  bool isAvailable() const { return m_self->isAvailable(); }
+  /// disconnect from the underlying value
+  void unlink() { m_self->unlink(); }
+
+  podio::ObjectID id() const { return getObjectID(); }
+  podio::ObjectID getObjectID() const { return m_self->getObjectID(); }
+
+  friend std::ostream& operator<<(std::ostream& os, const {{ class.bare_type }}& value) {
+    value.m_self->print(os);
+    return os;
+  }
+
+private:
+  std::unique_ptr<Concept> m_self{nullptr};
+};
+
+{{ utils.namespace_close(class.namespace) }}
+
+#endif
