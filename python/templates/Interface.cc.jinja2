@@ -18,13 +18,13 @@
 {% for member in Members %}
 const {{ member.full_type }}& {{ class.bare_type }}::{{ member.getter_name(use_get_syntax) }}() const {
   return std::visit([](auto&& obj) -> const {{ member.full_type}}& {
-    return obj->data.{{ member.name }};
+    return obj.{{ member.getter_name(use_get_syntax) }}();
   }, m_obj);
 }
 {% if member.is_array %}
 const {{ member.array_type }}& {{ class.bare_type }}::{{ member.getter_name(get_syntax) }}(size_t i) const {
   return std::visit([](auto& obj) -> const {{ member.array_type }}& {
-    return obj->data.{{ member.name }}[i];
+    return obj.{{ member.getter_name(use_get_syntax) }}(i);
   }, m_obj);
 }
 {% endif %}
@@ -32,7 +32,7 @@ const {{ member.array_type }}& {{ class.bare_type }}::{{ member.getter_name(get_
 {% for sub_member in member.sub_members %}
 const {{ sub_member.full_type }}& {{ class.bare_type }}::{{ sub_member.getter_name(get_syntax) }}() const {
   return std::visit([](auto&& obj) -> const {{ sub_member.full_type }}& {
-    return m_obj->data.{{ member.name }}.{{ sub_member.name }};
+    return obj.{{ sub_member.getter_name(use_get_syntax) }}();
   }, m_obj);
 }
 {% endfor %}
@@ -41,9 +41,6 @@ const {{ sub_member.full_type }}& {{ class.bare_type }}::{{ sub_member.getter_na
 {% endfor %}
 
 std::ostream& operator<<(std::ostream& os, const {{ class.bare_type }}& value) {
-  if (!value.isAvailable()) {
-    return os << "[not available]";
-  }
 {% set else = joiner("else ") %}
 {% for int_type in Types %}
   {{ else() }}if (value.holds<{{ int_type }}>()) {

@@ -200,21 +200,6 @@ namespace detail {
   constexpr bool hasObjPtr = HasObjPtrT<T>::value;
 
   /**
-   * Helper type for retrieving the obj_type member type from a T. Not
-   * SFINAE friendly by design!
-   */
-  template <typename T>
-  struct GetObjPtrTypeHelper {
-    using type = typename T::obj_type;
-  };
-
-  /**
-   * Type alias for retrieving the obj_type type member from a type T
-   */
-  template <typename T>
-  using GetObjPtrType = typename GetObjPtrTypeHelper<T>::type;
-
-  /**
    * Helper type for retrieving the mutable_type member type from a T. Not
    * SFINAE freindly by design
    */
