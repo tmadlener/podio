@@ -214,15 +214,18 @@ datatypes :
     Author: "Thomas Madlener"
     Members:
       - double energy // energy
+    ExtraCode:
+      declaration:
+        "int PDG() const { return 42; }"
 
 interfaces:
   TypeWithEnergy:
     Description: "Generic interface for all types with an energy member"
     Author: "Thomas Madlener"
     Types:
+      - ExampleHit
       - ExampleMC
       - ExampleCluster
-      - ExampleHit
     Members:
       - double energy // the energy
 
@@ -230,7 +233,8 @@ interfaces:
     Description: "Another interface type for making sure they also work in namespaces"
     Author: "Thomas Madlener"
     Types:
-      - ExampleHit
+      - ExampleMC
       - nsp::EnergyInNamespace
     Members:
       - double energy // the energy
+      - int PDG // a pdg
