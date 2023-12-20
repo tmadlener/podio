@@ -27,7 +27,8 @@ jobs:
                 -DCMAKE_CXX_STANDARD=17
           cmake --build build --target install
           export PYTHONPATH=$(pwd)/install/python:$PYTHONPATH
-          export LD_LIBRARY_PATH=$(pwd)/lib*/:$LD_LIBRARY_PATH
+          export LD_LIBRARY_PATH=$(pwd)/install/lib*/:$LD_LIBRARY_PATH
+          export ROOT_INCLUDE_PATH=$(pwd)/install/include
 
           echo -e "::endgroup::\n::group::build doc"
           sphinx-build -M html doc doc_output
