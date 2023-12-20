@@ -48,12 +48,13 @@ extensions = [
     "sphinx.ext.napoleon",
     "myst_parser",
     "breathe",
+    "sphinx_multiversion",
     ]
 
 source_suffix = {".rst": "restructuredtext", ".md": "markdown"}
 
 # Add any paths that contain templates here, relative to this directory.
-# templates_path = ["_templates"]
+templates_path = ["_templates"]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -151,3 +152,9 @@ subprocess.check_call(
     )
 
 print("Done with python API doc generation")
+
+# -- multiversion setup -------------------------------------------------------
+smv_tag_whitelist = r'^(v[0-9]{2}-[0-9]{2}(-[0-9]{2})?)$'
+smv_remote_whitelist = r'^(origin)$'
+smv_branch_whitelist = r'^(master|docs-on-gh-pages)$'
+smv_released_pattern = r'^tags/.*$'

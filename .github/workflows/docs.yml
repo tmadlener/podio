@@ -29,6 +29,10 @@ jobs:
           echo "::group::Install dependencies"
           python3 -m pip install -r doc/requirements.txt
           export PATH=/root/.local/bin:$PATH
+          # Newer versions of git are more cautious around the github runner
+          # environment and without this git rev-parse --show-cdup in pre-commit
+          # fails
+          git config --global --add safe.directory $(pwd)
 
           echo -e "::endgroup::\n::group::Build podio"
           cmake -B build . --install-prefix=$(pwd)/install \
@@ -41,7 +45,7 @@ jobs:
           export ROOT_INCLUDE_PATH=$(pwd)/install/include
 
           echo -e "::endgroup::\n::group::build doc"
-          sphinx-build -M html doc doc_output
+          sphinx-multiversion doc doc_output
 
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
