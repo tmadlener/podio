@@ -2,6 +2,11 @@ name: publish-doc
 
 on:
   push:
+    branches:
+       - 'master'
+       - 'docs-on-gh-pages'
+    tags:
+      - v*-*
   workflow_dispatch:
 
 concurrency:
@@ -46,6 +51,8 @@ jobs:
   publish-doc-master:
     needs: build-doc
     runs-on: ubuntu-latest
+
+    if: github.ref == 'refs/heads/docs-on-gh-pages'
 
     steps:
       - uses: actions/checkout@v4
