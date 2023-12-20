@@ -73,8 +73,9 @@ jobs:
       - name: Commit and push changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TARGET_DIR: ${{ github.ref_name }}
         run: |
           git config --global user.email ${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com
           git config --global user.name ${GITHUB_ACTOR}
-          git add master
-          git diff-index --quiet HEAD 2>&1 > /dev/null || git commit -m "Update latest documentation" && git push
+          git add ${TARGET_DIR}
+          git diff-index --quiet HEAD 2>&1 > /dev/null || git commit -m "Update documentation for ${TARGET_DIR}" && git push
