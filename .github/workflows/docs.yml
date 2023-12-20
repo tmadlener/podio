@@ -1,0 +1,33 @@
+name: publish-doc
+
+on:
+  push:
+  workflow_dispatch:
+
+
+jobs:
+  build-doc:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: cvmfs-contrib/github-action-cvmfs@v3
+    - uses: aidasoft/run-lcg-view@v4
+      with:
+        container: el9
+        view-path: /cvmfs/sw-nightlies.hsf.org/key4hep
+        run: |
+          echo "::group::Install dependencies"
+          python3 -m pip install -r doc/requirements.txt
+          export PATH=/root/.local/bin:$PATH
+
+          echo -e "::endgroup::\n::group::Build podio"
+          cmake -B build . --install-prefix=$(pwd)/install \
+                -GNinja -DENBALE_SIO=ON -DENABLE_RNTUPLE=ON \
+                -DBUILD_TESTING=OFF \
+                -DCMAKE_CXX_STANDARD=17
+          cmake --build build --target install
+          export PYTHONPATH=$(pwd)/install/python:$PYTHONPATH
+          export LD_LIBRARY_PATH=$(pwd)/lib*/:$LD_LIBRARY_PATH
+
+          echo -e "::endgroup::\n::group::build doc"
+          sphinx-build -M html doc doc_output
