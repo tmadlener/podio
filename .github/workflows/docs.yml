@@ -4,21 +4,13 @@ on:
   push:
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 concurrency:
   group: pages
   cancel-in-progress: true
 
 jobs:
-  build-and-publish-doc:
+  build-doc:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
     - uses: actions/checkout@v4
@@ -52,6 +44,24 @@ jobs:
       uses: actions/upload-pages-artifact@v3
       with:
         path: doc_output/html
-    - name: Deploy to Github pages
-      id: deployment
-      uses: actions/deploy-pages@v4
+
+  publish-doc:
+    needs: build-doc
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+      - uses: actions/download-artifact@v4
+        with:
+          name: github-pages
+          path: master
+      - name: Check artifact download
+        run: ls master
+
+
+
+    # - name: Deploy to Github pages
+    #   id: deployment
+    #   uses: actions/deploy-pages@v4
