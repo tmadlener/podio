@@ -6,7 +6,7 @@ on:
        - 'master'
        - 'docs-on-gh-pages'
     tags:
-      - v[0-9]{2}-[0-9]{2}(-[0-9]{2})?
+      - v[0-9]+-[0-9]+(-[0-9]+)?
   workflow_dispatch:
 
 concurrency:
