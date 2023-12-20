@@ -47,8 +47,6 @@ jobs:
     needs: build-doc
     runs-on: ubuntu-latest
 
-    if: endsWith(github.event.push.ref, '/doc-on-gh-pages')
-
     steps:
       - uses: actions/checkout@v4
         with:
@@ -60,7 +58,7 @@ jobs:
 
       - name: Update documentation
         run: |
-          rm -rf master
+          rm -rf master/*
           tar -xvf doc_artifact/artifact.tar --directory master
           rm -r doc_artifact
       - name: Commit and push changes
@@ -71,12 +69,3 @@ jobs:
           git config --global user.name ${GITHUB_ACTOR}
           git add master
           git diff-index --quiet HEAD 2>&1 > /dev/null || git commit -m "Update latest documentation" && git push
-
-
-
-
-
-
-    # - name: Deploy to Github pages
-    #   id: deployment
-    #   uses: actions/deploy-pages@v4
