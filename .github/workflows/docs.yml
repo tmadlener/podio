@@ -48,11 +48,9 @@ jobs:
       with:
         path: doc_output/html
 
-  publish-doc-master:
+  publish-doc:
     needs: build-doc
     runs-on: ubuntu-latest
-
-    if: github.ref == 'refs/heads/docs-on-gh-pages'
 
     steps:
       - uses: actions/checkout@v4
@@ -64,10 +62,14 @@ jobs:
           path: doc_artifact
 
       - name: Update documentation
+        env:
+          TARGET_DIR: ${{ github.ref_name }}
         run: |
-          rm -rf master/*
-          tar -xvf doc_artifact/artifact.tar --directory master
+          mkdir -p ${TARGET_DIR}
+          rm -rf ${TARGET_DIR}/*
+          tar -xvf doc_artifact/artifact.tar --directory ${TARGET_DIR}
           rm -r doc_artifact
+
       - name: Commit and push changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -76,13 +78,3 @@ jobs:
           git config --global user.name ${GITHUB_ACTOR}
           git add master
           git diff-index --quiet HEAD 2>&1 > /dev/null || git commit -m "Update latest documentation" && git push
-
-  publish-doc-tag:
-    needs: build-doc
-    runs-on: ubuntu-latest
-
-    if: contains('tag', github.ref)
-
-    steps:
-    - name: Print hello
-      run: echo "Hello from a tag"
