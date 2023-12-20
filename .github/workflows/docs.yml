@@ -35,7 +35,7 @@ jobs:
 
           echo -e "::endgroup::\n::group::Build podio"
           cmake -B build . --install-prefix=$(pwd)/install \
-                -GNinja -DENBALE_SIO=ON -DENABLE_RNTUPLE=ON \
+                -GNinja -DENABLE_SIO=ON -DENABLE_RNTUPLE=ON \
                 -DBUILD_TESTING=OFF \
                 -DCMAKE_CXX_STANDARD=17
           cmake --build build --target install
@@ -51,7 +51,7 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
-        path: doc_output
+        path: doc_output/html
     - name: Deploy to Github pages
       id: deployment
       uses: actions/deploy-pages@v3
