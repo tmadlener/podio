@@ -13,9 +13,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Print info
-      run: echo ${{ github.event.push.ref }}
-
     - uses: actions/checkout@v4
     - uses: actions/configure-pages@v4
     - uses: cvmfs-contrib/github-action-cvmfs@v3
@@ -28,15 +25,15 @@ jobs:
           python3 -m pip install -r doc/requirements.txt
           export PATH=/root/.local/bin:$PATH
 
-          echo -e "::endgroup::\n::group::Build podio"
-          cmake -B build . --install-prefix=$(pwd)/install \
-                -GNinja -DENABLE_SIO=ON -DENABLE_RNTUPLE=ON \
-                -DBUILD_TESTING=OFF \
-                -DCMAKE_CXX_STANDARD=17
-          cmake --build build --target install
-          export PYTHONPATH=$(pwd)/install/python:$PYTHONPATH
-          export LD_LIBRARY_PATH=$(pwd)/install/lib*/:$LD_LIBRARY_PATH
-          export ROOT_INCLUDE_PATH=$(pwd)/install/include
+          # echo -e "::endgroup::\n::group::Build podio"
+          # cmake -B build . --install-prefix=$(pwd)/install \
+          #       -GNinja -DENABLE_SIO=ON -DENABLE_RNTUPLE=ON \
+          #       -DBUILD_TESTING=OFF \
+          #       -DCMAKE_CXX_STANDARD=17
+          # cmake --build build --target install
+          # export PYTHONPATH=$(pwd)/install/python:$PYTHONPATH
+          # export LD_LIBRARY_PATH=$(pwd)/install/lib*/:$LD_LIBRARY_PATH
+          # export ROOT_INCLUDE_PATH=$(pwd)/install/include
 
           echo -e "::endgroup::\n::group::build doc"
           sphinx-build -M html doc doc_output
@@ -50,6 +47,8 @@ jobs:
     needs: build-doc
     runs-on: ubuntu-latest
 
+    if: endsWith(github.event.push.ref, '/doc-on-gh-pages')
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -57,11 +56,13 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: github-pages
-          path: master
-      - name: Unpack artifact
+          path: doc_artifact
+
+      - name: Update documentation
         run: |
-          tar -xvf master/artifact.tar
-          rm master/artifact.tar
+          rm -rf master
+          tar -xvf doc_artifact/artifact.tar --directory master
+          rm -r doc_artifact
       - name: Commit and push changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
