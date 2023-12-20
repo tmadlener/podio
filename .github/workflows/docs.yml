@@ -38,8 +38,6 @@ jobs:
           echo -e "::endgroup::\n::group::build doc"
           sphinx-build -M html doc doc_output
 
-    - name: Setup Pages
-      uses: actions/configure-pages@v4
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
@@ -57,8 +55,21 @@ jobs:
         with:
           name: github-pages
           path: master
-      - name: Check artifact download
-        run: ls master
+      - name: Unpack artifact
+        run: |
+          tar -xvf master/artifact.tar
+          rm master/artifact.tar
+      - name: Commit and push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.email ${{ github.actor.user.login }}@github.com
+          git config --global user.name ${{ github.actor.user.login }}
+          git add master
+          git diff-index --quiet HEAD 2>&1 > /dev/null || git commit -m "Update latest documentation" && git push
+
+
+
 
 
 
