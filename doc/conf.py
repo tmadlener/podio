@@ -48,7 +48,7 @@ extensions = [
     "sphinx.ext.napoleon",
     "myst_parser",
     "breathe",
-    "sphinx_multiversion",
+    "sphinx_copybutton",
     ]
 
 source_suffix = {".rst": "restructuredtext", ".md": "markdown"}
@@ -91,70 +91,73 @@ html_theme_options = {
     "prev_next_buttons_location": None,  # no navigation buttons
     }
 
-# -- Doxygen integration with Breathe -----------------------------------------
+# # -- Doxygen integration with Breathe -----------------------------------------
 
-breathe_projects = {"PODIO": "_build/cpp/doxygen-xml"}
-breathe_default_project = "PODIO"
-breathe_domain_by_extension = {"h": "cpp", "cc": "cpp", "ipp": "cpp"}
-breathe_default_members = ("members", "undoc-members")
+# breathe_projects = {"PODIO": "_build/cpp/doxygen-xml"}
+# breathe_default_project = "PODIO"
+# breathe_domain_by_extension = {"h": "cpp", "cc": "cpp", "ipp": "cpp"}
+# breathe_default_members = ("members", "undoc-members")
 
 
-# -- Automatic API documentation (c++) ----------------------------------------
+# # -- Automatic API documentation (c++) ----------------------------------------
 
-print(f"Executing doxygen in {doc_dir}")
-doxygen_version = subprocess.check_output(["doxygen", "--version"], encoding="utf-8")
-print(f"Doxygen version: {doxygen_version}")
+# print(f"Executing doxygen in {doc_dir}")
+# doxygen_version = subprocess.check_output(["doxygen", "--version"], encoding="utf-8")
+# print(f"Doxygen version: {doxygen_version}")
 
-env = os.environ.copy()
-env["DOXYGEN_WARN_AS_ERROR"] = "NO"
+# env = os.environ.copy()
+# env["DOXYGEN_WARN_AS_ERROR"] = "NO"
 
-os.makedirs("_build/cpp", exist_ok=True)
+# os.makedirs("_build/cpp", exist_ok=True)
 
-subprocess.check_call(
-    ["doxygen", "Doxyfile"], stdout=subprocess.PIPE, cwd=doc_dir, env=env
-    )
+# subprocess.check_call(
+#     ["doxygen", "Doxyfile"], stdout=subprocess.PIPE, cwd=doc_dir, env=env
+#     )
 
-cpp_api_index_target = doc_dir / "cpp_api/api.rst"
+# cpp_api_index_target = doc_dir / "cpp_api/api.rst"
 
-print(f"Executing breath apidoc in {doc_dir}")
-subprocess.check_call(
-    [sys.executable, "-m", "breathe.apidoc", "_build/cpp/doxygen-xml", "-o", "cpp_api"],
-    stdout=subprocess.PIPE,
-    cwd=doc_dir,
-    env=env,
-    )
+# print(f"Executing breath apidoc in {doc_dir}")
+# subprocess.check_call(
+#     [sys.executable, "-m", "breathe.apidoc", "_build/cpp/doxygen-xml", "-o", "cpp_api"],
+#     stdout=subprocess.PIPE,
+#     cwd=doc_dir,
+#     env=env,
+#     )
 
-if not cpp_api_index_target.exists():
-  shutil.copyfile(doc_dir / "cpp_api.rst", cpp_api_index_target)
+# if not cpp_api_index_target.exists():
+#   shutil.copyfile(doc_dir / "cpp_api.rst", cpp_api_index_target)
 
-print("Done with c++ API doc generation")
+# print("Done with c++ API doc generation")
 
-# -- Automatic API documentation (python) --------------------------------------
+# # -- Automatic API documentation (python) --------------------------------------
 
-# Make sure that the __init__ docstrings appear as part of the class
-# documentation
-autoclass_content = "both"
+# # Make sure that the __init__ docstrings appear as part of the class
+# # documentation
+# autoclass_content = "both"
 
-print("Executing sphinx-apidoc for python API")
-print(f"Executing sphinx-apidoc in {doc_dir}")
-subprocess.check_call(
-    [
-        sys.executable,
-        "-m",
-        "sphinx.ext.apidoc",
-        "--force",
-        "-o",
-        "py_api",
-        "../python",
-        "../*/*test_*.py",  # exclude tests
-        "../python/podio_version.py",
-        ]
-    )
+# print("Executing sphinx-apidoc for python API")
+# print(f"Executing sphinx-apidoc in {doc_dir}")
+# subprocess.check_call(
+#     [
+#         sys.executable,
+#         "-m",
+#         "sphinx.ext.apidoc",
+#         "--force",
+#         "-o",
+#         "py_api",
+#         "../python",
+#         "../*/*test_*.py",  # exclude tests
+#         "../python/podio_version.py",
+#         ]
+#     )
 
-print("Done with python API doc generation")
+# print("Done with python API doc generation")
 
 # -- multiversion setup -------------------------------------------------------
-smv_tag_whitelist = r'^(v[0-9]{2}-[0-9]{2}(-[0-9]{2})?)$'
-smv_remote_whitelist = r'^(origin)$'
-smv_branch_whitelist = r'^(master|docs-on-gh-pages)$'
-smv_released_pattern = r'^tags/.*$'
+try:
+  html_context
+except NameError:
+  html_context = {}
+
+# html_context["display_lower_left"] = True
+html_context["current_version"] = os.environ.get("GIT_CURRENT_REF", "master")

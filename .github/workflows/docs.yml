@@ -45,7 +45,8 @@ jobs:
           export ROOT_INCLUDE_PATH=$(pwd)/install/include
 
           echo -e "::endgroup::\n::group::build doc"
-          sphinx-multiversion doc doc_output
+          export GIT_CURRENT_REF=${{ github.ref_name }}
+          sphinx-build -M html doc doc_output
 
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
