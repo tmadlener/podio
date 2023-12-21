@@ -49,6 +49,7 @@ extensions = [
     "myst_parser",
     "breathe",
     "sphinx_copybutton",
+    "sphinx_multiversion",
     ]
 
 source_suffix = {".rst": "restructuredtext", ".md": "markdown"}
@@ -154,20 +155,7 @@ html_theme_options = {
 # print("Done with python API doc generation")
 
 # -- multiversion setup -------------------------------------------------------
-# To support several versions of the documentation on github pages we do a
-# somewhat stripped down implementation of sphinx-multiversion, where we only
-# provide the necessary _templates/versions.html and populate the html_context
-# ourselves in a very minimal fashion. The github action in docs.yml will take
-# care of populating it with all availabe informations and also with updating
-# the existing versions of the documentataion
-
-git_version = os.environ.get("GIT_CURRENT_REF", None)
-
-if git_version is not None:
-  try:
-    html_context
-  except NameError:
-    html_context = {}
-
-    html_context["current_version"] = git_version
-    html_context["versions"] = [git_version]
+mv_tag_whitelist = r'^v[0-9]{2}-[0-9]{2}(-[0-9]{2})?$'
+smv_remote_whitelist = r'^(origin)$'
+smv_branch_whitelist = r'^(master|docs-on-gh-pages)$'
+smv_released_pattern = r'^tags/.*$'

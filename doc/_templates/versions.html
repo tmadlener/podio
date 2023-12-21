@@ -2,19 +2,21 @@
 <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
   <span class="rst-current-version" data-toggle="rst-current-version">
     <span class="fa fa-book"> Other Versions</span>
-    v: {{ current_version }}
+    v: {{ current_version.name }}
     <span class="fa fa-caret-down"></span>
   </span>
   <div class="rst-other-versions">
+    {%- if versions.tags or versions.branches -%}
     <dl>
       <dt>Versions</dt>
-<!-- VERSION_CHANGE START -->
-
-      {%- for version in versions %}
-      <dd><a href="../{{ version }}/index.html">{{ version }}</a></dd>
+      {%- for version in versions.branches %}
+      <dd><a href="{{ version.url }}">{{ version.name }}</a></dd>
       {%- endfor %}
-<!-- VERSION_CHANGE END -->
+      {%- for version in versions.tags %}
+      <dd><a href="{{ version.url }}">{{ version.name }}</a></dd>
+      {%- endfor %}
     </dl>
+    {%- endif -%}
   </div>
 </div>
 {% endif %}

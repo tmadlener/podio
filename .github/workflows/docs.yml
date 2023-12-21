@@ -29,6 +29,10 @@ jobs:
           echo "::group::Install dependencies"
           python3 -m pip install -r doc/requirements.txt
           export PATH=/root/.local/bin:$PATH
+          # Newer versions of git are more cautious around the github runner
+          # environment and without this git rev-parse --show-cdup in pre-commit
+          # fails
+          git config --global --add safe.directory $(pwd)
 
           echo -e "::endgroup::\n::group::Build podio"
           cmake -B build . --install-prefix=$(pwd)/install \
@@ -42,16 +46,15 @@ jobs:
 
           echo -e "::endgroup::\n::group::build doc"
           export GIT_CURRENT_REF=${{ github.ref_name }}
-          sphinx-build -M html doc doc_output
+          # sphinx-build -M html doc doc_output
+          sphinx-multiversion doc doc_output
 
-          # Copy the update_versions script to the artifact so that we have it
-          # available in the second part
-          cp doc/scripts/update_versions.py doc_output/html
+          cp doc/aux/main_index_redirect.html doc_output/index.html
 
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
-        path: doc_output/html
+        path: doc_output
 
   publish-doc:
     needs: build-doc
@@ -67,30 +70,16 @@ jobs:
           path: doc_artifact
 
       - name: Update documentation
-        env:
-          TARGET_DIR: ${{ github.ref_name }}
         run: |
-          mkdir -p ${TARGET_DIR}
-          rm -rf ${TARGET_DIR}/*
-          tar -xvf doc_artifact/artifact.tar --directory ${TARGET_DIR}
-          cp ${TARGET_DIR}/update_versions.py .
-          rm -r doc_artifact
+          tar -xvf doc_artifact/artifact.tar --directory .
+          ls -l
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - name: Update version information
-        run: |
-          for dir in */;
-            do python update_versions.py ${dir}/index.html;
-          done
-          rm -r update_versions.py
 
-      - name: Commit and push changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config --global user.email ${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com
-          git config --global user.name ${GITHUB_ACTOR}
-          git add .
-          git diff-index --quiet HEAD 2>&1 > /dev/null || git commit -m "Update documentation for ${TARGET_DIR}" && git push
+      # - name: Commit and push changes
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   run: |
+      #     git config --global user.email ${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com
+      #     git config --global user.name ${GITHUB_ACTOR}
+      #     git add .
+      #     git diff-index --quiet HEAD 2>&1 > /dev/null || git commit -m "Update documentation for ${TARGET_DIR}" && git push
