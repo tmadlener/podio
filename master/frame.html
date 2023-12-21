@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Frame concept &mdash; PODIO  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=7f41d439"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Writing extra data outside an EDM" href="userdata.html" />
+    <link rel="prev" title="Examples for Supported Interface" href="examples.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PODIO
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="doc.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="doc.html#quick-start">Quick-start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="design.html">Design and Implementation Details</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="design.html#layout-of-objects">Layout of Objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="design.html#the-user-layer">The User Layer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="design.html#the-internal-data-layer">The Internal Data Layer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="design.html#the-pod-layer">The POD Layer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="design.html#the-collections">The Collections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="design.html#vectorization-support-notebook-pattern">Vectorization support / notebook pattern</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="design.html#handling-mutability">Handling mutability</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="datamodel_syntax.html">Data Models and Data Model Definitions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="datamodel_syntax.html#basic-concepts-and-supported-features">Basic Concepts and Supported Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datamodel_syntax.html#definition-of-custom-components">Definition of custom components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datamodel_syntax.html#definition-of-custom-data-classes">Definition of custom data classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="datamodel_syntax.html#defining-members">Defining members</a></li>
+<li class="toctree-l3"><a class="reference internal" href="datamodel_syntax.html#definition-of-references-between-objects">Definition of references between objects:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="datamodel_syntax.html#explicit-definition-of-methods">Explicit definition of methods</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="datamodel_syntax.html#global-options">Global options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datamodel_syntax.html#extending-a-datamodel-using-types-from-an-upstream-datamodel">Extending a datamodel / using types from an upstream datamodel</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="datamodel_syntax.html#potential-pitfalls">Potential pitfalls</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples for Supported Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#object-ownership">Object Ownership</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#object-creation-and-storage">Object Creation and Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#object-references">Object References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#looping-through-collections">Looping through Collections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#support-for-notebook-pattern">Support for Notebook-Pattern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#podio-frame-container"><code class="docutils literal notranslate"><span class="pre">podio::Frame</span></code> container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#object-retrieval">Object Retrieval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#user-defined-meta-data">User defined Meta Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#python-interface">Python Interface</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">The <code class="docutils literal notranslate"><span class="pre">Frame</span></code> concept</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#basic-functionality-of-a-frame">Basic functionality of a <code class="docutils literal notranslate"><span class="pre">Frame</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#usage-examples-for-collection-data">Usage examples for collection data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#putting-collection-data-into-the-frame">Putting collection data into the <code class="docutils literal notranslate"><span class="pre">Frame</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#getting-collection-references-from-the-frame">Getting collection (references) from the <code class="docutils literal notranslate"><span class="pre">Frame</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#usage-for-parameters">Usage for Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#i-o-basics-and-philosophy">I/O basics and philosophy</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#writing-a-frame">Writing a <code class="docutils literal notranslate"><span class="pre">Frame</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reading-a-frame">Reading a <code class="docutils literal notranslate"><span class="pre">Frame</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#schema-evolution">Schema evolution</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#frame-implementation-and-design">Frame implementation and design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userdata.html">Writing extra data outside an EDM</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="userdata.html#example-usage">Example usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userdata.html#some-limitations">Some limitations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="userdata.html#no-relations-to-other-collections">No relations to other collections</a></li>
+<li class="toctree-l3"><a class="reference internal" href="userdata.html#limited-supported-types">Limited supported types</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="advanced_topics.html">Advanced Topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="advanced_topics.html#writing-extra-data-outside-the-edm">Writing extra data outside the EDM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_topics.html#changing-creating-new-templates">Changing / creating new templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_topics.html#persistency">Persistency</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="advanced_topics.html#writing-back-end">Writing Back-End</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced_topics.html#reading-back-end">Reading Back-End</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced_topics.html#dumping-json">Dumping JSON</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_topics.html#thread-safety">Thread-safety</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="advanced_topics.html#changing-user-data">Changing user data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced_topics.html#serialization">Serialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced_topics.html#not-thread-safe-components">Not-thread-safe components</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_topics.html#running-pre-commit">Running pre-commit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_topics.html#retrieving-the-edm-definition-from-a-data-file">Retrieving the EDM definition from a data file</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="advanced_topics.html#accessing-the-edm-definition-programmatically">Accessing the EDM definition programmatically</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced_topics.html#technical-details-on-edm-definition-embedding">Technical details on EDM definition embedding</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="advanced_topics.html#the-datamodelregistry">The <code class="docutils literal notranslate"><span class="pre">DatamodelRegistry</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="advanced_topics.html#i-o-helpers-for-edm-definition-storing">I/O helpers for EDM definition storing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">Changing / creating new templates</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#preprocessing-of-yaml-file">Preprocessing of yaml file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#existing-templates">Existing templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#adding-a-new-template">Adding a new template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#available-information-in-the-templates">Available information in the templates</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="templates.html#general-information">General information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="templates.html#components">Components</a></li>
+<li class="toctree-l3"><a class="reference internal" href="templates.html#datatypes">Datatypes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="templates.html#membervariable"><code class="docutils literal notranslate"><span class="pre">MemberVariable</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="templates.html#datatype"><code class="docutils literal notranslate"><span class="pre">DataType</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="templates.html#julia-code-generation">Julia code generation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PODIO</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">The <code class="docutils literal notranslate"><span class="pre">Frame</span></code> concept</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="the-frame-concept">
+<h1>The <code class="docutils literal notranslate"><span class="pre">Frame</span></code> concept<a class="headerlink" href="#the-frame-concept" title="Link to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">podio::Frame</span></code> is a general data container for collection data of podio generated EDMs.
+Additionally, it offers the functionality to store some (limited) data outside of an EDM.
+The basic idea of the <code class="docutils literal notranslate"><span class="pre">Frame</span></code> is to give users of podio the possibility to organize EDM data into logical units and to potentially build a hierarchy of different <code class="docutils literal notranslate"><span class="pre">Frame</span></code>s.
+Common examples would be the organisation of data into <em>Events</em> and <em>Runs</em>.
+However, it is important to note that podio does really not impose any meaning on any <code class="docutils literal notranslate"><span class="pre">Frame</span></code> and each <code class="docutils literal notranslate"><span class="pre">Frame</span></code> is essentially defined by its contents.</p>
+<section id="basic-functionality-of-a-frame">
+<h2>Basic functionality of a <code class="docutils literal notranslate"><span class="pre">Frame</span></code><a class="headerlink" href="#basic-functionality-of-a-frame" title="Link to this heading"></a></h2>
+<p>The main functionality of a <code class="docutils literal notranslate"><span class="pre">Frame</span></code> is to store and aggregate EDM collection data and it also offers the possibility to store some generic data alongside.
+To ensure thread safety and const-correctness a <code class="docutils literal notranslate"><span class="pre">Frame</span></code> takes ownership of any data that is put into it and only gives read access to immutable data.
+This is mandated by the interface for collection data (simplified here for better readability):</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">Frame</span><span class="w"> </span><span class="p">{</span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">CollT</span><span class="o">&gt;</span>
+<span class="k">const</span><span class="w"> </span><span class="n">CollT</span><span class="o">&amp;</span><span class="w"> </span><span class="n">put</span><span class="p">(</span><span class="n">CollT</span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">coll</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">name</span><span class="p">);</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">put</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">podio</span><span class="o">::</span><span class="n">CollectionBase</span><span class="o">&gt;</span><span class="w"> </span><span class="n">coll</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">name</span><span class="p">);</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">CollT</span><span class="o">&gt;</span>
+<span class="k">const</span><span class="w"> </span><span class="n">CollT</span><span class="o">&amp;</span><span class="w"> </span><span class="n">get</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">putParameter</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="k">const</span><span class="w"> </span><span class="n">T</span><span class="o">&amp;</span><span class="w"> </span><span class="n">getParameter</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">);</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>In this case there are two ways to get collection data into the <code class="docutils literal notranslate"><span class="pre">Frame</span></code></p>
+<ol class="arabic simple">
+<li><p>By passing a concrete collection (of type <code class="docutils literal notranslate"><span class="pre">CollT</span></code>) into the <code class="docutils literal notranslate"><span class="pre">Frame</span></code> as an <a class="reference external" href="https://en.cppreference.com/w/cpp/language/value_category"><code class="docutils literal notranslate"><span class="pre">rvalue</span></code></a>. There are two ways to achieve this, either by passing the return value of a function directly into <code class="docutils literal notranslate"><span class="pre">Frame::put</span></code> or by explicitly moving it in the call via <code class="docutils literal notranslate"><span class="pre">std::move</span></code> if you are using a named variable.</p></li>
+<li><p>By passing a <code class="docutils literal notranslate"><span class="pre">std::unique_ptr</span></code> to a collection. Similar to the first case, this can either be the return value of a function call, or has to be done via <code class="docutils literal notranslate"><span class="pre">std::move</span></code> (as mandated by the <code class="docutils literal notranslate"><span class="pre">std::unique_ptr</span></code> interface).</p></li>
+</ol>
+<p>In both cases, if you passed in a named variable, the user is left with a <em>moved-from object</em>, which has to be in a <em>valid but indefinite</em> state, and cannot be used afterwards.
+Some compilers and static code analysis tools are able to detect the accidental usage of <em>moved-from</em> objects.</p>
+<p>For putting in parameters the basic principle is very similar, with the major difference being, that for <em>trivial</em> types <code class="docutils literal notranslate"><span class="pre">getParameter</span></code> will actually return by value.</p>
+<p>For all use cases there is some <code class="docutils literal notranslate"><span class="pre">enable_if</span></code> machinery in place to ensure that only valid collections and valid parameter types can actually be used.
+These checks also make sure that it is impossible to put in collections without handing over ownership to the <code class="docutils literal notranslate"><span class="pre">Frame</span></code>.</p>
+<section id="usage-examples-for-collection-data">
+<h3>Usage examples for collection data<a class="headerlink" href="#usage-examples-for-collection-data" title="Link to this heading"></a></h3>
+<p>These are a few very basic usage examples that highlight the main functionality (and potential pitfalls).</p>
+<section id="putting-collection-data-into-the-frame">
+<h4>Putting collection data into the <code class="docutils literal notranslate"><span class="pre">Frame</span></code><a class="headerlink" href="#putting-collection-data-into-the-frame" title="Link to this heading"></a></h4>
+<p>In all of the following examples, the following basic setup is assumed:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;podio/Frame.h&quot;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;edm4hep/MCParticleCollection.h&quot;</span><span class="c1"> // just to have a concrete example</span>
+
+<span class="c1">// create an empty Frame</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">frame</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">podio</span><span class="o">::</span><span class="n">Frame</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>Assuming there is a function that creates an <code class="docutils literal notranslate"><span class="pre">MCParticleCollection</span></code> putting the return value into the <code class="docutils literal notranslate"><span class="pre">Frame</span></code> is very simple</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">edm4hep</span><span class="o">::</span><span class="n">MCParticleCollection</span><span class="w"> </span><span class="nf">createMCParticles</span><span class="p">();</span><span class="w"> </span><span class="c1">// implemented somewhere else</span>
+
+<span class="c1">// put the return value of a function into the Frame</span>
+<span class="n">frame</span><span class="p">.</span><span class="n">put</span><span class="p">(</span><span class="n">createMCParticles</span><span class="p">(),</span><span class="w"> </span><span class="s">&quot;particles&quot;</span><span class="p">);</span>
+
+<span class="c1">// put the return value into the Frame but keep the const reference</span>
+<span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">particles</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">frame</span><span class="p">.</span><span class="n">put</span><span class="p">(</span><span class="n">createMCParticles</span><span class="p">(),</span><span class="w"> </span><span class="s">&quot;moreParticles&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If working with named variables it is necessary to use <code class="docutils literal notranslate"><span class="pre">std::move</span></code> to put collections into the <code class="docutils literal notranslate"><span class="pre">Frame</span></code>.
+The <code class="docutils literal notranslate"><span class="pre">Frame</span></code> will refuse to compile in case a named variable is not moved.
+Assuming the same <code class="docutils literal notranslate"><span class="pre">createMCParticles</span></code> function as above, this looks like the following</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">coll</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">createMCParticles</span><span class="p">();</span>
+<span class="c1">// potentially still modify the collection</span>
+
+<span class="c1">// Need to use std::move now that the collection has a name</span>
+<span class="n">frame</span><span class="p">.</span><span class="n">put</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">coll</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;particles&quot;</span><span class="p">);</span>
+
+<span class="c1">// Keeping a const reference is also possible</span>
+<span class="c1">// NOTE: We are explicitly using a new variable name here</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">coll2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">createMCParticles</span><span class="p">();</span>
+<span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">particles</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">frame</span><span class="p">.</span><span class="n">put</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">coll2</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;MCParticles&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>At this point only <code class="docutils literal notranslate"><span class="pre">particles</span></code> is in a valid and <strong>defined</strong> state.</p>
+</section>
+<section id="getting-collection-references-from-the-frame">
+<h4>Getting collection (references) from the <code class="docutils literal notranslate"><span class="pre">Frame</span></code><a class="headerlink" href="#getting-collection-references-from-the-frame" title="Link to this heading"></a></h4>
+<p>Obtaining immutable (<code class="docutils literal notranslate"><span class="pre">const</span></code>) references to collections stored in the <code class="docutils literal notranslate"><span class="pre">Frame</span></code> is trivial.
+Here we are assuming that the collections are actually present in the <code class="docutils literal notranslate"><span class="pre">Frame</span></code>.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">particles</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">frame</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="n">edm4hep</span><span class="o">::</span><span class="n">MCParticleCollection</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;particles&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="usage-for-parameters">
+<h3>Usage for Parameters<a class="headerlink" href="#usage-for-parameters" title="Link to this heading"></a></h3>
+<p>Parameters are using the <code class="docutils literal notranslate"><span class="pre">podio::GenericParameters</span></code> class behind the scene.
+Hence, the types that can be used are <code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, and <code class="docutils literal notranslate"><span class="pre">std::string</span></code> as well as as <code class="docutils literal notranslate"><span class="pre">std::vectors</span></code> of those.
+For better usability, some overloads for <code class="docutils literal notranslate"><span class="pre">putParameter</span></code> exist to allow for an <em>in-place</em> construction, like, e.g.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Passing in a const char* for a std::string</span>
+<span class="n">frame</span><span class="p">.</span><span class="n">putParameter</span><span class="p">(</span><span class="s">&quot;aString&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;a string value&quot;</span><span class="p">);</span>
+
+<span class="c1">// Creating a vector of ints on the fly</span>
+<span class="n">frame</span><span class="p">.</span><span class="n">putParameter</span><span class="p">(</span><span class="s">&quot;ints&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">});</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="i-o-basics-and-philosophy">
+<h2>I/O basics and philosophy<a class="headerlink" href="#i-o-basics-and-philosophy" title="Link to this heading"></a></h2>
+<p>podio offers all the necessary functionality to read and write <code class="docutils literal notranslate"><span class="pre">Frame</span></code>s.
+However, it is not in the scope of podio to organize them into a hierarchy, nor
+to maintain such a hierarchy. When writing data to file <code class="docutils literal notranslate"><span class="pre">Frame</span></code>s are written to
+the file in the order they are passed to the writer. For reading them back podio
+offers random access to stored <code class="docutils literal notranslate"><span class="pre">Frame</span></code>s, which should make it possible to
+restore any hierarchy again. The Writers and Readers of podio are supposed to be
+run on and accessed by only one single thread.</p>
+<section id="writing-a-frame">
+<h3>Writing a <code class="docutils literal notranslate"><span class="pre">Frame</span></code><a class="headerlink" href="#writing-a-frame" title="Link to this heading"></a></h3>
+<p>For writing a <code class="docutils literal notranslate"><span class="pre">Frame</span></code> the writers can ask each <code class="docutils literal notranslate"><span class="pre">Frame</span></code> for <code class="docutils literal notranslate"><span class="pre">CollectionWriteBuffers</span></code> for each collection that should be written.
+In these buffers the underlying data is still owned by the collection, and by extension the <code class="docutils literal notranslate"><span class="pre">Frame</span></code>.
+This makes it possible to write the same collection with several different writers.
+Writers can access a <code class="docutils literal notranslate"><span class="pre">Frame</span></code> from several different threads, even though each writer is assumed to be on only one thread.
+For writing the <code class="docutils literal notranslate"><span class="pre">GenericParameters</span></code> that are stored in the <code class="docutils literal notranslate"><span class="pre">Frame</span></code> and for other necessary data, similar access functionality is offered by the <code class="docutils literal notranslate"><span class="pre">Frame</span></code>.</p>
+</section>
+<section id="reading-a-frame">
+<h3>Reading a <code class="docutils literal notranslate"><span class="pre">Frame</span></code><a class="headerlink" href="#reading-a-frame" title="Link to this heading"></a></h3>
+<p>When reading a <code class="docutils literal notranslate"><span class="pre">Frame</span></code> readers do not have to return a complete <code class="docutils literal notranslate"><span class="pre">Frame</span></code>.
+Instead they return a more or less arbitrary type of <code class="docutils literal notranslate"><span class="pre">FrameData</span></code> that simply has to provide the following public interface.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">FrameData</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">/// Get a (copy) of the internal collection id table</span>
+<span class="w">  </span><span class="n">podio</span><span class="o">::</span><span class="n">CollectionIDTable</span><span class="w"> </span><span class="nf">getIDTable</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">  </span><span class="c1">/// Get the buffers to construct the collection with the given name</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">optional</span><span class="o">&lt;</span><span class="n">podio</span><span class="o">::</span><span class="n">CollectionReadBuffers</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getCollectionBuffers</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">name</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">/// Get the still available, i.e. yet unpacked, collections from the raw data</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getAvailableCollections</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+
+<span class="w">  </span><span class="c1">/// Get the parameters that are stored in the raw data</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">podio</span><span class="o">::</span><span class="n">GenericParameters</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getParameters</span><span class="p">();</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>A <code class="docutils literal notranslate"><span class="pre">Frame</span></code> is constructed with a (<code class="docutils literal notranslate"><span class="pre">unique_ptr</span></code> of such) <code class="docutils literal notranslate"><span class="pre">FrameData</span></code> and handles everything from there.
+Note that the <code class="docutils literal notranslate"><span class="pre">FrameData</span></code> type of any I/O backend is a free type without inheritance as the <code class="docutils literal notranslate"><span class="pre">Frame</span></code> constructor is templated on this.
+This splitting of reading data from file and constructing a <code class="docutils literal notranslate"><span class="pre">Frame</span></code> from it later has some advantages:</p>
+<ul class="simple">
+<li><p>Since podio assumes that reading is done single threaded the amount of time that is actually spent in a reader is minimized, as only the file operations need to be done on a single thread. All further processing (potential decompression, unpacking, etc.) can be done on a different thread where the <code class="docutils literal notranslate"><span class="pre">Frame</span></code> is actually constructed.</p></li>
+<li><p>It gives different backends the necessary freedom to exploit different optimization strategies and does not force them to conform to an implementation that is potentially detrimental to performance.</p></li>
+<li><p>It also makes it possible to pass around data from which a <code class="docutils literal notranslate"><span class="pre">Frame</span></code> can be constructed without having to actually construct one.</p></li>
+<li><p>Readers do not have to know how to construct collections from the buffers, as they are only required to provide the buffers themselves.</p></li>
+</ul>
+</section>
+<section id="schema-evolution">
+<h3>Schema evolution<a class="headerlink" href="#schema-evolution" title="Link to this heading"></a></h3>
+<p>Schema evolution happens on the <code class="docutils literal notranslate"><span class="pre">CollectionReadBuffers</span></code> when they are requested from the <code class="docutils literal notranslate"><span class="pre">FrameData</span></code> inside the <code class="docutils literal notranslate"><span class="pre">Frame</span></code>.
+It is possible for the I/O backend to handle schema evolution before the <code class="docutils literal notranslate"><span class="pre">Frame</span></code> sees the buffers for the first time.
+In that case podio schema evolution becomes a simple check.</p>
+</section>
+</section>
+</section>
+<section id="frame-implementation-and-design">
+<h1>Frame implementation and design<a class="headerlink" href="#frame-implementation-and-design" title="Link to this heading"></a></h1>
+<p>One of the main concerns of the <code class="docutils literal notranslate"><span class="pre">Frame</span></code> is to offer one common, non-templated, interface while still supporting different I/O backends and potentially different <em>policies</em>.
+The “classic” approach would be to have an abstract <code class="docutils literal notranslate"><span class="pre">IFrame</span></code> interface with several implementations that offer the desired functionality (and their small differences).
+One problem with that approach is that a purely abstract interface cannot have templated member functions. Hence, the desired type-safe behavior of <code class="docutils literal notranslate"><span class="pre">get</span></code> and <code class="docutils literal notranslate"><span class="pre">put</span></code> would be very hard to implement.
+Additionally, policies ideally affect orthogonal aspects of the <code class="docutils literal notranslate"><span class="pre">Frame</span></code> behavior.
+Implementing all possible combinations of behaviors through implementations of an abstract interface would lead to quite a bit of code duplication and cannot take advantage of the factorization of the problem.
+To solve these problems, we chose to implement the <code class="docutils literal notranslate"><span class="pre">Frame</span></code> via <a class="reference external" href="https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Type_Erasure"><em>Type Erasure</em></a>.
+This also has the advantage that the <code class="docutils literal notranslate"><span class="pre">Frame</span></code> also has <em>value semantics</em> in line with the design of podio.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Key4hep authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Other Versions</span>
+    v: master
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions"><dl>
+      <dt>Versions</dt>
+      <dd><a href="../docs-on-gh-pages/frame.html">docs-on-gh-pages</a></dd>
+      <dd><a href="frame.html">master</a></dd>
+      <dd><a href="../v00-00-00/frame.html">v00-00-00</a></dd>
+      <dd><a href="../v00-99/frame.html">v00-99</a></dd>
+      <dd><a href="../v99-99-99/frame.html">v99-99-99</a></dd>
+    </dl></div>
+</div>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
