@@ -7,7 +7,13 @@
   <div class="rst-other-versions">
     <dl>
       <dt>Versions</dt>
-      <object type="text/html" data="../version_list.html"></object>
+      <dd><a href="../{{ current_version }}/index.html">master</a></dd>
+<!-- VERSION_CHANGE START -->
+
+      {%- for version in versions %}
+      <dd><a href="../{{ version }}/index.html">{{ version }}</a></dd>
+      {%- endfor %}
+<!-- VERSION_CHANGE END -->
     </dl>
   </div>
 </div>

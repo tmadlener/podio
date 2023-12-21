@@ -159,5 +159,11 @@ try:
 except NameError:
   html_context = {}
 
-# html_context["display_lower_left"] = True
 html_context["current_version"] = os.environ.get("GIT_CURRENT_REF", "master")
+
+html_context["versions"] = []
+with open("versions.txt", "r") as vfile:
+  for ver in vfile.readlines():
+    html_context["versions"].append(ver.strip())
+
+html_context["versions"].remove(html_context["current_version"])
