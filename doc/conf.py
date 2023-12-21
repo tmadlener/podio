@@ -154,16 +154,20 @@ html_theme_options = {
 # print("Done with python API doc generation")
 
 # -- multiversion setup -------------------------------------------------------
-try:
-  html_context
-except NameError:
-  html_context = {}
+# To support several versions of the documentation on github pages we do a
+# somewhat stripped down implementation of sphinx-multiversion, where we only
+# provide the necessary _templates/versions.html and populate the html_context
+# ourselves in a very minimal fashion. The github action in docs.yml will take
+# care of populating it with all availabe informations and also with updating
+# the existing versions of the documentataion
 
-html_context["current_version"] = os.environ.get("GIT_CURRENT_REF", "master")
+git_version = os.environ.get("GIT_CURRENT_REF", None)
 
-html_context["versions"] = []
-with open("versions.txt", "r") as vfile:
-  for ver in vfile.readlines():
-    html_context["versions"].append(ver.strip())
+if git_version is not None:
+  try:
+    html_context
+  except NameError:
+    html_context = {}
 
-html_context["versions"].remove(html_context["current_version"])
+    html_context["current_version"] = git_version
+    html_context["versions"] = [git_version]

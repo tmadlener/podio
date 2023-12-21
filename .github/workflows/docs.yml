@@ -44,6 +44,10 @@ jobs:
           export GIT_CURRENT_REF=${{ github.ref_name }}
           sphinx-build -M html doc doc_output
 
+          # Copy the update_versions script to the artifact so that we have it
+          # available in the second part
+          cp doc/scripts/update_versions.py doc_output/html
+
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
@@ -69,14 +73,24 @@ jobs:
           mkdir -p ${TARGET_DIR}
           rm -rf ${TARGET_DIR}/*
           tar -xvf doc_artifact/artifact.tar --directory ${TARGET_DIR}
+          cp ${TARGET_DIR}/update_versions.py .
           rm -r doc_artifact
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Update version information
+        run: |
+          for dir in */;
+            do python update_versions.py ${dir}/index.html;
+          done
+          rm -r update_versions.py
 
       - name: Commit and push changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TARGET_DIR: ${{ github.ref_name }}
         run: |
           git config --global user.email ${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com
           git config --global user.name ${GITHUB_ACTOR}
-          git add ${TARGET_DIR}
+          git add .
           git diff-index --quiet HEAD 2>&1 > /dev/null || git commit -m "Update documentation for ${TARGET_DIR}" && git push
