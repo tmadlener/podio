@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Struct podio::root_utils::CollectionBranches &mdash; PODIO  documentation</title>
+  <title>Struct podio::version::Version &mdash; PODIO  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -24,8 +24,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Struct podio::utils::MaybeSharedPtr::ControlBlock" href="structpodio_1_1utils_1_1_maybe_shared_ptr_1_1_control_block.html" />
-    <link rel="prev" title="Struct podio::SchemaEvolution::MapIndex" href="structpodio_1_1_schema_evolution_1_1_map_index.html" /> 
+    <link rel="next" title="Namespace list" href="../namespacelist.html" />
+    <link rel="prev" title="Struct podio::utils::MaybeSharedPtr::ControlBlock" href="structpodio_1_1utils_1_1_maybe_shared_ptr_1_1_control_block.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -347,16 +347,16 @@
 <li class="toctree-l4"><a class="reference internal" href="structpodio_1_1_schema_evolution_1_1_map_index.html#_CPPv4N5podio15SchemaEvolution8MapIndexE"><code class="docutils literal notranslate"><span class="pre">MapIndex</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Struct podio::root_utils::CollectionBranches</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N5podio10root_utils18CollectionBranchesE"><code class="docutils literal notranslate"><span class="pre">CollectionBranches</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="structpodio_1_1root__utils_1_1_collection_branches.html">Struct podio::root_utils::CollectionBranches</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="structpodio_1_1root__utils_1_1_collection_branches.html#_CPPv4N5podio10root_utils18CollectionBranchesE"><code class="docutils literal notranslate"><span class="pre">CollectionBranches</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="structpodio_1_1utils_1_1_maybe_shared_ptr_1_1_control_block.html">Struct podio::utils::MaybeSharedPtr::ControlBlock</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="structpodio_1_1utils_1_1_maybe_shared_ptr_1_1_control_block.html#_CPPv4N5podio5utils14MaybeSharedPtr12ControlBlockE"><code class="docutils literal notranslate"><span class="pre">ControlBlock</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="structpodio_1_1version_1_1_version.html">Struct podio::version::Version</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="structpodio_1_1version_1_1_version.html#_CPPv4N5podio7version7VersionE"><code class="docutils literal notranslate"><span class="pre">Version</span></code></a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Struct podio::version::Version</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N5podio7version7VersionE"><code class="docutils literal notranslate"><span class="pre">Version</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -525,7 +525,7 @@
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../api.html">C++ API documentation</a></li>
           <li class="breadcrumb-item"><a href="../structlist.html">Struct list</a></li>
-      <li class="breadcrumb-item active">Struct podio::root_utils::CollectionBranches</li>
+      <li class="breadcrumb-item active">Struct podio::version::Version</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -534,41 +534,37 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="struct-podio-root-utils-collectionbranches">
-<h1>Struct podio::root_utils::CollectionBranches<a class="headerlink" href="#struct-podio-root-utils-collectionbranches" title="Link to this heading"></a></h1>
+  <section id="struct-podio-version-version">
+<h1>Struct podio::version::Version<a class="headerlink" href="#struct-podio-version-version" title="Link to this heading"></a></h1>
 <dl class="cpp struct">
-<dt class="sig sig-object cpp" id="_CPPv4N5podio10root_utils18CollectionBranchesE">
-<span id="_CPPv3N5podio10root_utils18CollectionBranchesE"></span><span id="_CPPv2N5podio10root_utils18CollectionBranchesE"></span><span id="podio::root_utils::CollectionBranches"></span><span class="target" id="structpodio_1_1root__utils_1_1_collection_branches"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CollectionBranches</span></span></span><br /></dt>
-<dd><p>Small helper struct to collect all branches that are necessary to read or write a collection. </p>
-<p>Needed to cache the branch pointers and avoid having to get them from a TTree/TChain for every event. </p>
+<dt class="sig sig-object cpp" id="_CPPv4N5podio7version7VersionE">
+<span id="_CPPv3N5podio7version7VersionE"></span><span id="_CPPv2N5podio7version7VersionE"></span><span id="podio::version::Version"></span><span class="target" id="structpodio_1_1version_1_1_version"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Version</span></span></span><br /></dt>
+<dd><p>Version class consisting of 3 16 bit unsigned integers to hold the major, minor and patch version. </p>
+<p>Provides constexpr comparison operators that allow to use this class in constexpr-if clauses. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
 <dl class="cpp var">
-<dt class="sig sig-object cpp" id="_CPPv4N5podio10root_utils18CollectionBranches4dataE">
-<span id="_CPPv3N5podio10root_utils18CollectionBranches4dataE"></span><span id="_CPPv2N5podio10root_utils18CollectionBranches4dataE"></span><span id="podio::root_utils::CollectionBranches::data__TBranchP"></span><span class="target" id="structpodio_1_1root__utils_1_1_collection_branches_1a51b5dcdc2cf21016863dcce0d74bf7d7"></span><span class="n"><span class="pre">TBranch</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">data</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="k"><span class="pre">nullptr</span></span><span class="p"><span class="pre">}</span></span><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N5podio7version7Version5majorE">
+<span id="_CPPv3N5podio7version7Version5majorE"></span><span id="_CPPv2N5podio7version7Version5majorE"></span><span id="podio::version::Version::major__uint16_t"></span><span class="target" id="structpodio_1_1version_1_1_version_1a3ae1bdd096f1332b45bceee16bf15755"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">major</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">}</span></span><br /></dt>
 <dd></dd></dl>
 
 <dl class="cpp var">
-<dt class="sig sig-object cpp" id="_CPPv4N5podio10root_utils18CollectionBranches4refsE">
-<span id="_CPPv3N5podio10root_utils18CollectionBranches4refsE"></span><span id="_CPPv2N5podio10root_utils18CollectionBranches4refsE"></span><span id="podio::root_utils::CollectionBranches::refs__std::vector:TBranchP:"></span><span class="target" id="structpodio_1_1root__utils_1_1_collection_branches_1ade533bb04c631cac1d65dfea5d72ea23"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">TBranch</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">refs</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N5podio7version7Version5minorE">
+<span id="_CPPv3N5podio7version7Version5minorE"></span><span id="_CPPv2N5podio7version7Version5minorE"></span><span id="podio::version::Version::minor__uint16_t"></span><span class="target" id="structpodio_1_1version_1_1_version_1ac6855e7d059ee4a5cf91233e6d035778"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">minor</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">}</span></span><br /></dt>
 <dd></dd></dl>
 
 <dl class="cpp var">
-<dt class="sig sig-object cpp" id="_CPPv4N5podio10root_utils18CollectionBranches4vecsE">
-<span id="_CPPv3N5podio10root_utils18CollectionBranches4vecsE"></span><span id="_CPPv2N5podio10root_utils18CollectionBranches4vecsE"></span><span id="podio::root_utils::CollectionBranches::vecs__std::vector:TBranchP:"></span><span class="target" id="structpodio_1_1root__utils_1_1_collection_branches_1ab8c10afdea20015224900d9a317acf5f"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">TBranch</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">vecs</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N5podio7version7Version5patchE">
+<span id="_CPPv3N5podio7version7Version5patchE"></span><span id="_CPPv2N5podio7version7Version5patchE"></span><span id="podio::version::Version::patch__uint16_t"></span><span class="target" id="structpodio_1_1version_1_1_version_1a0cc79a37d6f936a4c912fb593f8c253d"></span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">patch</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">}</span></span><br /></dt>
 <dd></dd></dl>
 
-<dl class="cpp var">
-<dt class="sig sig-object cpp" id="_CPPv4N5podio10root_utils18CollectionBranches8refNamesE">
-<span id="_CPPv3N5podio10root_utils18CollectionBranches8refNamesE"></span><span id="_CPPv2N5podio10root_utils18CollectionBranches8refNamesE"></span><span id="podio::root_utils::CollectionBranches::refNames__std::vector:ss:"></span><span class="target" id="structpodio_1_1root__utils_1_1_collection_branches_1a67dc47a8502e28d087be26c2b112b634"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">refNames</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><br /></dt>
-<dd><p>The names of the relation branches. </p>
-</dd></dl>
-
-<dl class="cpp var">
-<dt class="sig sig-object cpp" id="_CPPv4N5podio10root_utils18CollectionBranches8vecNamesE">
-<span id="_CPPv3N5podio10root_utils18CollectionBranches8vecNamesE"></span><span id="_CPPv2N5podio10root_utils18CollectionBranches8vecNamesE"></span><span id="podio::root_utils::CollectionBranches::vecNames__std::vector:ss:"></span><span class="target" id="structpodio_1_1root__utils_1_1_collection_branches_1a55cbd5d9ad59c477c66b45ab8b2056d3"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">vecNames</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><br /></dt>
-<dd><p>The names of the vector member branches. </p>
-</dd></dl>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-friends">Friends</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N5podio7version7VersionlsERNSt7ostreamERK7Version">
+<span id="_CPPv3N5podio7version7VersionlsERNSt7ostreamERK7Version"></span><span id="_CPPv2N5podio7version7VersionlsERNSt7ostreamERK7Version"></span><span id="podio::version::Version::lshift-operator__osR.VersionCR"></span><span class="target" id="structpodio_1_1version_1_1_version_1aa57fe1526f6672b7619fa040680b92a1"></span><span class="k"><span class="pre">friend</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;&lt;</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="p"><span class="pre">&amp;</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../file/podio_version_8h.html#_CPPv4N5podio7version7VersionE" title="podio::version::Version"><span class="n"><span class="pre">Version</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">v</span></span><span class="sig-paren">)</span><br /></dt>
+<dd></dd></dl>
 
 </div>
 </dd></dl>
