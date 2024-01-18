@@ -402,6 +402,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="py_api/podio.html#module-podio.base_writer">podio.base_writer module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="py_api/podio.html#podio.base_writer.AllWriters"><code class="docutils literal notranslate"><span class="pre">AllWriters</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="py_api/podio.html#podio.base_writer.BaseWriterMixin"><code class="docutils literal notranslate"><span class="pre">BaseWriterMixin</span></code></a></li>
 </ul>
 </li>
@@ -536,7 +537,7 @@
 <h1>Examples for Supported Interface<a class="headerlink" href="#examples-for-supported-interface" title="Link to this heading"></a></h1>
 <p>The following snippets show the support of PODIO for the different use cases as
 well as some potential pitfalls. These examples are mainly concerned with how
-collections of objects and the objects themselve interact. As such they are
+collections of objects and the objects themselves interact. As such they are
 framework agnostic.</p>
 <section id="object-ownership">
 <h2>Object Ownership<a class="headerlink" href="#object-ownership" title="Link to this heading"></a></h2>
@@ -589,7 +590,7 @@ to objects in this collection are invalidated as well.</strong></p>
 <span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">hit</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">cluster</span><span class="p">.</span><span class="n">Hits</span><span class="p">(</span><span class="o">&lt;</span><span class="n">aNumber</span><span class="o">&gt;</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>If asking for an entry outside bounds, a std::out_of_range exception is thrown.</p>
+<p>If asking for an entry outside bounds, a <code class="docutils literal notranslate"><span class="pre">std::out_of_range</span></code> exception is thrown.</p>
 </section>
 <section id="looping-through-collections">
 <h2>Looping through Collections<a class="headerlink" href="#looping-through-collections" title="Link to this heading"></a></h2>

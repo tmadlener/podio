@@ -402,6 +402,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-podio.base_writer">podio.base_writer module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#podio.base_writer.AllWriters"><code class="docutils literal notranslate"><span class="pre">AllWriters</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#podio.base_writer.BaseWriterMixin"><code class="docutils literal notranslate"><span class="pre">BaseWriterMixin</span></code></a></li>
 </ul>
 </li>
@@ -645,6 +646,31 @@ setup.</p>
 <p>Python module for defining the basic writer interface that is used by the
 backend specific bindings</p>
 <dl class="py class">
+<dt class="sig sig-object py" id="podio.base_writer.AllWriters">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">podio.base_writer.</span></span><span class="sig-name descname"><span class="pre">AllWriters</span></span><a class="headerlink" href="#podio.base_writer.AllWriters" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class to manage all writers in the program
+so that they can be properly finished at the end of the program</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="podio.base_writer.AllWriters.add">
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">writer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#podio.base_writer.AllWriters.add" title="Link to this definition"></a></dt>
+<dd><p>Add a writer to the list of managed writers</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="podio.base_writer.AllWriters.finish">
+<span class="sig-name descname"><span class="pre">finish</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#podio.base_writer.AllWriters.finish" title="Link to this definition"></a></dt>
+<dd><p>Finish all managed writers</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="podio.base_writer.AllWriters.writers">
+<span class="sig-name descname"><span class="pre">writers</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#podio.base_writer.AllWriters.writers" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="podio.base_writer.BaseWriterMixin">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">podio.base_writer.</span></span><span class="sig-name descname"><span class="pre">BaseWriterMixin</span></span><a class="headerlink" href="#podio.base_writer.BaseWriterMixin" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
@@ -654,6 +680,7 @@ following members:</p>
 <ul class="simple">
 <li><p>_writer: The actual writer that is able to write frames</p></li>
 </ul>
+<p>Initialize the writer</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="podio.base_writer.BaseWriterMixin.write_frame">
 <span class="sig-name descname"><span class="pre">write_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#podio.base_writer.BaseWriterMixin.write_frame" title="Link to this definition"></a></dt>
@@ -718,6 +745,20 @@ write. If None, all collections are written</p></li>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>KeyError</strong> – If the collection with the name is not available</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="podio.frame.Frame.getAvailableCollections">
+<span class="sig-name descname"><span class="pre">getAvailableCollections</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#podio.frame.Frame.getAvailableCollections" title="Link to this definition"></a></dt>
+<dd><p>Get the currently available collection (names) from this Frame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The names of the available collections from this Frame.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple(str)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -810,7 +851,7 @@ parameters please use get_parameter</p>
 <dt class="sig sig-object py" id="podio.frame.Frame.put">
 <span class="sig-name descname"><span class="pre">put</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#podio.frame.Frame.put" title="Link to this definition"></a></dt>
 <dd><p>Put the collection into the frame</p>
-<p>The passed collectoin is “moved” into the Frame, i.e. it cannot be used any
+<p>The passed collection is “moved” into the Frame, i.e. it cannot be used any
 longer after a call to this function. This also means that only objects that
 were in the collection at the time of calling this function will be
 available afterwards.</p>
@@ -876,7 +917,7 @@ pretty much face-value and there are only limited checks for this.</p></li>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Iterator for iterating over all Frames of a given category available from a
 reader as well as accessing specific entries</p>
-<p>Construct the iterator from the reader and the cateogry.</p>
+<p>Construct the iterator from the reader and the category.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1017,7 +1058,7 @@ Frame based I/O into Frames for a more seamless transition.</p>
 <dt class="sig sig-object py" id="podio.sio_io.LegacyReader">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">podio.sio_io.</span></span><span class="sig-name descname"><span class="pre">LegacyReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#podio.sio_io.LegacyReader" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#podio.base_reader.BaseReaderMixin" title="podio.base_reader.BaseReaderMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseReaderMixin</span></code></a></p>
-<p>Reader class for reading legcy podio sio files.</p>
+<p>Reader class for reading legacy podio sio files.</p>
 <p>This reader can be used to read files that have not yet been written using the
 Frame based I/O into Frames for a more seamless transition.</p>
 <p>Create a reader that reads from the passed file.</p>
@@ -1032,7 +1073,7 @@ Frame based I/O into Frames for a more seamless transition.</p>
 <dt class="sig sig-object py" id="podio.sio_io.Reader">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">podio.sio_io.</span></span><span class="sig-name descname"><span class="pre">Reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#podio.sio_io.Reader" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#podio.base_reader.BaseReaderMixin" title="podio.base_reader.BaseReaderMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseReaderMixin</span></code></a></p>
-<p>Reader class for readion podio SIO files.</p>
+<p>Reader class for reading podio SIO files.</p>
 <p>Create a reader that reads from the passed file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1099,6 +1140,20 @@ Frame based I/O into Frames for a more seamless transition.</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>KeyError</strong> – If the collection with the name is not available</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="podio.Frame.getAvailableCollections">
+<span class="sig-name descname"><span class="pre">getAvailableCollections</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#podio.Frame.getAvailableCollections" title="Link to this definition"></a></dt>
+<dd><p>Get the currently available collection (names) from this Frame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The names of the available collections from this Frame.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple(str)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1191,7 +1246,7 @@ parameters please use get_parameter</p>
 <dt class="sig sig-object py" id="podio.Frame.put">
 <span class="sig-name descname"><span class="pre">put</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#podio.Frame.put" title="Link to this definition"></a></dt>
 <dd><p>Put the collection into the frame</p>
-<p>The passed collectoin is “moved” into the Frame, i.e. it cannot be used any
+<p>The passed collection is “moved” into the Frame, i.e. it cannot be used any
 longer after a call to this function. This also means that only objects that
 were in the collection at the time of calling this function will be
 available afterwards.</p>

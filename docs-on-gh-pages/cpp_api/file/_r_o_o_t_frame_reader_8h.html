@@ -400,6 +400,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../py_api/podio.html#module-podio.base_writer">podio.base_writer module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../py_api/podio.html#podio.base_writer.AllWriters"><code class="docutils literal notranslate"><span class="pre">AllWriters</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../py_api/podio.html#podio.base_writer.BaseWriterMixin"><code class="docutils literal notranslate"><span class="pre">BaseWriterMixin</span></code></a></li>
 </ul>
 </li>
@@ -622,7 +623,7 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK5podio15ROOTFrameReader22getAvailableCategoriesEv">
 <span id="_CPPv3NK5podio15ROOTFrameReader22getAvailableCategoriesEv"></span><span id="_CPPv2NK5podio15ROOTFrameReader22getAvailableCategoriesEv"></span><span id="podio::ROOTFrameReader::getAvailableCategoriesC"></span><span class="target" id="classpodio_1_1_r_o_o_t_frame_reader_1a976e1303f48181b21372c3b3e287fd44"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getAvailableCategories</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
-<dd><p>Get the names of all the availalable Frame categories in the current file(s) </p>
+<dd><p>Get the names of all the available Frame categories in the current file(s) </p>
 </dd></dl>
 
 <dl class="cpp function">
@@ -643,7 +644,7 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5podio15ROOTFrameReader12initCategoryER12CategoryInfoRKNSt6stringE">
 <span id="_CPPv3N5podio15ROOTFrameReader12initCategoryER12CategoryInfoRKNSt6stringE"></span><span id="_CPPv2N5podio15ROOTFrameReader12initCategoryER12CategoryInfoRKNSt6stringE"></span><span id="podio::ROOTFrameReader::initCategory__CategoryInfoR.ssCR"></span><span class="target" id="classpodio_1_1_r_o_o_t_frame_reader_1a23e8993de618f8e4992138e978de2276"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initCategory</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N5podio15ROOTFrameReader12CategoryInfoE" title="podio::ROOTFrameReader::CategoryInfo"><span class="n"><span class="pre">CategoryInfo</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">catInfo</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5podio15ROOTFrameReader12initCategoryER12CategoryInfoRKNSt6stringE" title="Link to this definition"></a><br /></dt>
-<dd><p>Initialze the passed CategoryInfo by setting up the necessary branches, collection infos and all necessary meta data to be able to read entries with this name. </p>
+<dd><p>Initialize the passed CategoryInfo by setting up the necessary branches, collection infos and all necessary meta data to be able to read entries with this name. </p>
 </dd></dl>
 
 <dl class="cpp function">
@@ -662,7 +663,7 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5podio15ROOTFrameReader9readEntryERN15ROOTFrameReader12CategoryInfoE">
 <span id="_CPPv3N5podio15ROOTFrameReader9readEntryERN15ROOTFrameReader12CategoryInfoE"></span><span id="_CPPv2N5podio15ROOTFrameReader9readEntryERN15ROOTFrameReader12CategoryInfoE"></span><span id="podio::ROOTFrameReader::readEntry__ROOTFrameReader::CategoryInfoR"></span><span class="target" id="classpodio_1_1_r_o_o_t_frame_reader_1a85ecbef5a66b706518b3155fd9ba4210"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unique_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="_collection_base_8h.html#_CPPv45podio" title="podio"><span class="n"><span class="pre">podio</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../class/classpodio_1_1_r_o_o_t_frame_data.html#_CPPv4N5podio13ROOTFrameDataE" title="podio::ROOTFrameData"><span class="n"><span class="pre">ROOTFrameData</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">readEntry</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../class/classpodio_1_1_r_o_o_t_frame_reader.html#_CPPv4N5podio15ROOTFrameReaderE" title="podio::ROOTFrameReader"><span class="n"><span class="pre">ROOTFrameReader</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N5podio15ROOTFrameReader12CategoryInfoE" title="podio::ROOTFrameReader::CategoryInfo"><span class="n"><span class="pre">CategoryInfo</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">catInfo</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5podio15ROOTFrameReader9readEntryERN15ROOTFrameReader12CategoryInfoE" title="Link to this definition"></a><br /></dt>
-<dd><p>Read the data entry specified in the passed CategoryInfo, and increase the counter aferwards. </p>
+<dd><p>Read the data entry specified in the passed CategoryInfo, and increase the counter afterwards. </p>
 <p>In case the requested entry is larger than the available number of entries, return a nullptr. </p>
 </dd></dl>
 

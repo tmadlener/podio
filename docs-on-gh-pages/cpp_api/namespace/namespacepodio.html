@@ -402,6 +402,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../py_api/podio.html#module-podio.base_writer">podio.base_writer module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../py_api/podio.html#podio.base_writer.AllWriters"><code class="docutils literal notranslate"><span class="pre">AllWriters</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../py_api/podio.html#podio.base_writer.BaseWriterMixin"><code class="docutils literal notranslate"><span class="pre">BaseWriterMixin</span></code></a></li>
 </ul>
 </li>
@@ -653,7 +654,7 @@
 <dt class="sig sig-object cpp" id="_CPPv4N5podio21collMetadataParamNameERKNSt6stringERKNSt6stringE">
 <span id="_CPPv3N5podio21collMetadataParamNameERKNSt6stringERKNSt6stringE"></span><span id="_CPPv2N5podio21collMetadataParamNameERKNSt6stringERKNSt6stringE"></span><span id="podio::collMetadataParamName__ssCR.ssCR"></span><span class="target" id="namespacepodio_1af9fb3f0fbceb8b0e54c24fd1a4fba841"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">collMetadataParamName</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">collName</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">paramName</span></span><span class="sig-paren">)</span><br /></dt>
 <dd><p>Create a parameterName that encodes the collection name and the parameter Name into one string. </p>
-<p>This codifies a convention that was decided on to store collection level parameters. These are parameters / metadata that are valid for all collections of a given name in a file, e.g. CellID encoding strings. These parameters are usually stored in a dedicated metadata Frame inside a file, see the predefined category names in the Cateogry namespace.</p>
+<p>This codifies a convention that was decided on to store collection level parameters. These are parameters / metadata that are valid for all collections of a given name in a file, e.g. CellID encoding strings. These parameters are usually stored in a dedicated metadata Frame inside a file, see the predefined category names in the Category namespace.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -713,7 +714,7 @@
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN5podio26isSupportedGenericDataTypeE">
 <span id="_CPPv3I0EN5podio26isSupportedGenericDataTypeE"></span><span id="_CPPv2I0EN5podio26isSupportedGenericDataTypeE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespacepodio_1a90d864baf46bb78b899f55f34f912bb2"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isSupportedGenericDataType</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">detail</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">isAnyOrVectorOf</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../file/_generic_parameters_8h.html#_CPPv4I0EN5podio26isSupportedGenericDataTypeE" title="podio::isSupportedGenericDataType::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../file/_generic_parameters_8h.html#_CPPv4N5podio25SupportedGenericDataTypesE" title="podio::SupportedGenericDataTypes"><span class="n"><span class="pre">SupportedGenericDataTypes</span></span></a><span class="p"><span class="pre">&gt;</span></span><br /></dt>
-<dd><p>Static bool for determining if a type T is a supported GenericParamter type. </p>
+<dd><p>Static bool for determining if a type T is a supported GenericParameters type. </p>
 </dd></dl>
 
 <dl class="cpp var">
@@ -867,7 +868,7 @@
 <em>#include &lt;podio/CollectionBufferFactory.h&gt;</em></div>
 <p>The CollectionBufferFactory allows to create buffers of known datatypes, which can then be populated by e.g. </p>
 <p>readers. In order to support schema evolution, the buffers have a version and this factory will also require a schema version to create buffers.</p>
-<p>It is implemented as a singleton, which is populated at the time a shared datamodel library is loaded. It is assumed that that happens early on in the startup of an appliation, such that only a single thread will access the factory instance for registering datatypes. Since the necessary creation functions are part of the core datamodel library, this should be very easy to achieve by simply linking to that library. Once the factory is populated it can be safely accessed from multiple threads concurrently to obtain buffers. </p>
+<p>It is implemented as a singleton, which is populated at the time a shared datamodel library is loaded. It is assumed that that happens early on in the startup of an application, such that only a single thread will access the factory instance for registering datatypes. Since the necessary creation functions are part of the core datamodel library, this should be very easy to achieve by simply linking to that library. Once the factory is populated it can be safely accessed from multiple threads concurrently to obtain buffers. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
@@ -905,7 +906,7 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>collType</strong> – The collection type name (e.g. from collection-&gt;getTypeName()) </p></li>
 <li><p><strong>version</strong> – The schema version the created buffers should have </p></li>
-<li><p><strong>susbsetColl</strong> – Should the buffers be for a subset collection or not</p></li>
+<li><p><strong>subsetColl</strong> – Should the buffers be for a subset collection or not</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1667,7 +1668,7 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5podio17GenericParameters8setValueERKNSt6stringENSt6vectorINSt6stringEEE">
 <span id="_CPPv3N5podio17GenericParameters8setValueERKNSt6stringENSt6vectorINSt6stringEEE"></span><span id="_CPPv2N5podio17GenericParameters8setValueERKNSt6stringENSt6vectorINSt6stringEEE"></span><span id="podio::GenericParameters::setValue__ssCR.std::vector:ss:"></span><span class="target" id="classpodio_1_1_generic_parameters_1a4d01a311646f8f524fb7b7d9b0ed078a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setValue</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">key</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">values</span></span><span class="sig-paren">)</span><br /></dt>
-<dd><p>Overlaod for catching initializer list setting of string vector values. </p>
+<dd><p>Overload for catching initializer list setting of string vector values. </p>
 </dd></dl>
 
 <dl class="cpp function">
@@ -2050,7 +2051,7 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK5podio15ROOTFrameReader22getAvailableCategoriesEv">
 <span id="_CPPv3NK5podio15ROOTFrameReader22getAvailableCategoriesEv"></span><span id="_CPPv2NK5podio15ROOTFrameReader22getAvailableCategoriesEv"></span><span id="podio::ROOTFrameReader::getAvailableCategoriesC"></span><span class="target" id="classpodio_1_1_r_o_o_t_frame_reader_1a976e1303f48181b21372c3b3e287fd44"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getAvailableCategories</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
-<dd><p>Get the names of all the availalable Frame categories in the current file(s) </p>
+<dd><p>Get the names of all the available Frame categories in the current file(s) </p>
 </dd></dl>
 
 <dl class="cpp function">
@@ -2198,7 +2199,7 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK5podio16ROOTLegacyReader22getAvailableCategoriesEv">
 <span id="_CPPv3NK5podio16ROOTLegacyReader22getAvailableCategoriesEv"></span><span id="_CPPv2NK5podio16ROOTLegacyReader22getAvailableCategoriesEv"></span><span id="podio::ROOTLegacyReader::getAvailableCategoriesC"></span><span class="target" id="classpodio_1_1_r_o_o_t_legacy_reader_1a861809c45f96445e8933eb8519cb26bf"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getAvailableCategories</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
-<dd><p>Get the names of all the availalable Frame categories in the current file(s) </p>
+<dd><p>Get the names of all the available Frame categories in the current file(s) </p>
 </dd></dl>
 
 </div>
@@ -2430,12 +2431,12 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5podio15SchemaEvolution21registerEvolutionFuncERKNSt6stringE14SchemaVersionT14SchemaVersionTRK14EvolutionFuncT8Priority">
 <span id="_CPPv3N5podio15SchemaEvolution21registerEvolutionFuncERKNSt6stringE14SchemaVersionT14SchemaVersionTRK14EvolutionFuncT8Priority"></span><span id="_CPPv2N5podio15SchemaEvolution21registerEvolutionFuncERKNSt6stringE14SchemaVersionT14SchemaVersionTRK14EvolutionFuncT8Priority"></span><span id="podio::SchemaEvolution::registerEvolutionFunc__ssCR.SchemaVersionT.SchemaVersionT.EvolutionFuncTCR.Priority"></span><span class="target" id="classpodio_1_1_schema_evolution_1a0ecb8876694177609e0042db8a4e7cda"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">registerEvolutionFunc</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">collType</span></span>, <a class="reference internal" href="../file/_schema_evolution_8h.html#_CPPv4N5podio14SchemaVersionTE" title="podio::SchemaVersionT"><span class="n"><span class="pre">SchemaVersionT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">fromVersion</span></span>, <a class="reference internal" href="../file/_schema_evolution_8h.html#_CPPv4N5podio14SchemaVersionTE" title="podio::SchemaVersionT"><span class="n"><span class="pre">SchemaVersionT</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">currentVersion</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../file/_schema_evolution_8h.html#_CPPv4N5podio15SchemaEvolution14EvolutionFuncTE" title="podio::SchemaEvolution::EvolutionFuncT"><span class="n"><span class="pre">EvolutionFuncT</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">evolutionFunc</span></span>, <a class="reference internal" href="../class/classpodio_1_1_schema_evolution.html#_CPPv4N5podio15SchemaEvolution8PriorityE" title="podio::SchemaEvolution::Priority"><span class="n"><span class="pre">Priority</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">priority</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../class/classpodio_1_1_schema_evolution.html#_CPPv4N5podio15SchemaEvolution8PriorityE" title="podio::SchemaEvolution::Priority"><span class="n"><span class="pre">Priority</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../class/classpodio_1_1_schema_evolution.html#_CPPv4N5podio15SchemaEvolution8Priority11UserDefinedE" title="podio::SchemaEvolution::Priority::UserDefined"><span class="n"><span class="pre">UserDefined</span></span></a><span class="sig-paren">)</span><br /></dt>
-<dd><p>Register an evoution function for a given collection type and given versions from where to where the evolution applies. </p>
+<dd><p>Register an evolution function for a given collection type and given versions from where to where the evolution applies. </p>
 <p>Several assumptions are in place here:</p>
 <p><ul class="simple">
 <li><p>The current version has to be the same for all invocations for a given datatype.</p></li>
 <li><p>An evolution function has to be registered for all possible versions from 1 to N - 1, where N is the current version</p></li>
-<li><p>An evolution function can only be registerd once for a given datatype and fromVersion</p></li>
+<li><p>An evolution function can only be registered once for a given datatype and fromVersion</p></li>
 <li><p>For auto generated code the passed in priority has to be AutoGenerated otherwise it might override user defined functions</p></li>
 <li><p>Even if a datatype does not require schema evolution it has to register an evolution function (e.g. the noOpSchemaEvolution below) in order to be known to the internal map.</p></li>
 </ul>
@@ -2446,7 +2447,7 @@
 <li><p><strong>collType</strong> – The fully qualified collection data type </p></li>
 <li><p><strong>fromVersion</strong> – The version from which this evolution function should apply </p></li>
 <li><p><strong>currentVersion</strong> – The current schema version for the data type </p></li>
-<li><p><strong>evolutionFunc</strong> – The evolution function that evolves passed in buffers from fromVersion to currrentVersion </p></li>
+<li><p><strong>evolutionFunc</strong> – The evolution function that evolves passed in buffers from fromVersion to currentVersion </p></li>
 <li><p><strong>priority</strong> – The priority of this evolution function. Defaults to UserDefined which overrides auto generated functionality. </p></li>
 </ul>
 </dd>
@@ -2943,7 +2944,7 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK5podio14SIOFrameReader22getAvailableCategoriesEv">
 <span id="_CPPv3NK5podio14SIOFrameReader22getAvailableCategoriesEv"></span><span id="_CPPv2NK5podio14SIOFrameReader22getAvailableCategoriesEv"></span><span id="podio::SIOFrameReader::getAvailableCategoriesC"></span><span class="target" id="classpodio_1_1_s_i_o_frame_reader_1a18cb2a9e84314f05339f0fc8de5c7ee4"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getAvailableCategories</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
-<dd><p>Get the names of all the availalable Frame categories in the current file(s) </p>
+<dd><p>Get the names of all the available Frame categories in the current file(s) </p>
 </dd></dl>
 
 <dl class="cpp function">
@@ -3073,7 +3074,7 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK5podio15SIOLegacyReader22getAvailableCategoriesEv">
 <span id="_CPPv3NK5podio15SIOLegacyReader22getAvailableCategoriesEv"></span><span id="_CPPv2NK5podio15SIOLegacyReader22getAvailableCategoriesEv"></span><span id="podio::SIOLegacyReader::getAvailableCategoriesC"></span><span class="target" id="classpodio_1_1_s_i_o_legacy_reader_1af0fea308507bdaa35e43a939ac95c2a9"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getAvailableCategories</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
-<dd><p>Get the names of all the availalable Frame categories in the current file(s) </p>
+<dd><p>Get the names of all the available Frame categories in the current file(s) </p>
 </dd></dl>
 
 </div>
@@ -3238,7 +3239,7 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5podio18UserDataCollection18UserDataCollectionERRNSt6vectorI9BasicTypeEE">
 <span id="_CPPv3N5podio18UserDataCollection18UserDataCollectionERRNSt6vectorI9BasicTypeEE"></span><span id="_CPPv2N5podio18UserDataCollection18UserDataCollectionERRNSt6vectorI9BasicTypeEE"></span><span id="podio::UserDataCollection::UserDataCollection__std::vector:BasicType:RR"></span><span class="target" id="classpodio_1_1_user_data_collection_1a3037970f133fa9acbb1ef71aa6f77f95"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UserDataCollection</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../class/classpodio_1_1_user_data_collection.html#_CPPv4I00EN5podio18UserDataCollectionE" title="podio::UserDataCollection::BasicType"><span class="n"><span class="pre">BasicType</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">vec</span></span><span class="sig-paren">)</span><br /></dt>
-<dd><p>Constructor from an existing vector (wich will be moved from!) </p>
+<dd><p>Constructor from an existing vector (which will be moved from!) </p>
 </dd></dl>
 
 <dl class="cpp function">
@@ -3353,7 +3354,7 @@
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N5podio18UserDataCollection19setSubsetCollectionEb">
 <span id="_CPPv3N5podio18UserDataCollection19setSubsetCollectionEb"></span><span id="_CPPv2N5podio18UserDataCollection19setSubsetCollectionEb"></span><span id="podio::UserDataCollection::setSubsetCollection__b"></span><span class="target" id="classpodio_1_1_user_data_collection_1a0315742ef623a413ad4f3f9f7d734ee7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setSubsetCollection</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
-<dd><p>declare this collection to be a subset collectionv - no effect </p>
+<dd><p>declare this collection to be a subset collection - no effect </p>
 </dd></dl>
 
 <dl class="cpp function">
@@ -3474,7 +3475,7 @@
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N5podio8Category8MetadataE">
 <span id="_CPPv3N5podio8Category8MetadataE"></span><span id="_CPPv2N5podio8Category8MetadataE"></span><span id="podio::Category::Metadata__autoC"></span><span class="target" id="namespacepodio_1_1_category_1adf3805c51d25eba06d8769af380595bc"></span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Metadata</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;metadata&quot;</span></span><br /></dt>
-<dd><p>The metadata cateogry that is used to store a single Frame that holds data that is valid for a whole file, e.g. </p>
+<dd><p>The metadata category that is used to store a single Frame that holds data that is valid for a whole file, e.g. </p>
 <p>collection level parameters </p>
 </dd></dl>
 
@@ -3589,7 +3590,7 @@
 <span id="_CPPv3I0EN5podio5utils14MaybeSharedPtrE"></span><span id="_CPPv2I0EN5podio5utils14MaybeSharedPtrE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classpodio_1_1utils_1_1_maybe_shared_ptr"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MaybeSharedPtr</span></span></span><br /></dt>
 <dd><div class="docutils container">
 <em>#include &lt;podio/utilities/MaybeSharedPtr.h&gt;</em></div>
-<p>“Semi-smart” pointer class for pointers that at some point during their lifetime might hand over management to another entitity. </p>
+<p>“Semi-smart” pointer class for pointers that at some point during their lifetime might hand over management to another entity. </p>
 <p>E.g. Objects that are added to a collection will hand over the management of their Obj* to collection. In such a case two things need to be considered:<ul class="simple">
 <li><p>Other Objects with the same Obj* instance should not delete the managed Obj*, even if the last Object goes out of scope</p></li>
 <li><p>Even if the managed Obj* is gone (e.g. collection has gone out of scope or was cleared), the remaining Object instances should still be able to gracefully destruct, even if they are at this point merely an “empty husk” The MaybeSharedPtr achieves this by having an optional control block that controls the lifetime of itself and potentially the managed Obj*. </p></li>

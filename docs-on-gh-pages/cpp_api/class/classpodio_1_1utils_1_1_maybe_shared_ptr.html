@@ -402,6 +402,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../py_api/podio.html#module-podio.base_writer">podio.base_writer module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../py_api/podio.html#podio.base_writer.AllWriters"><code class="docutils literal notranslate"><span class="pre">AllWriters</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../py_api/podio.html#podio.base_writer.BaseWriterMixin"><code class="docutils literal notranslate"><span class="pre">BaseWriterMixin</span></code></a></li>
 </ul>
 </li>
@@ -539,7 +540,7 @@
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN5podio5utils14MaybeSharedPtrE">
 <span id="_CPPv3I0EN5podio5utils14MaybeSharedPtrE"></span><span id="_CPPv2I0EN5podio5utils14MaybeSharedPtrE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classpodio_1_1utils_1_1_maybe_shared_ptr"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MaybeSharedPtr</span></span></span><a class="headerlink" href="#_CPPv4I0EN5podio5utils14MaybeSharedPtrE" title="Link to this definition"></a><br /></dt>
-<dd><p>“Semi-smart” pointer class for pointers that at some point during their lifetime might hand over management to another entitity. </p>
+<dd><p>“Semi-smart” pointer class for pointers that at some point during their lifetime might hand over management to another entity. </p>
 <p>E.g. Objects that are added to a collection will hand over the management of their Obj* to collection. In such a case two things need to be considered:<ul class="simple">
 <li><p>Other Objects with the same Obj* instance should not delete the managed Obj*, even if the last Object goes out of scope</p></li>
 <li><p>Even if the managed Obj* is gone (e.g. collection has gone out of scope or was cleared), the remaining Object instances should still be able to gracefully destruct, even if they are at this point merely an “empty husk” The MaybeSharedPtr achieves this by having an optional control block that controls the lifetime of itself and potentially the managed Obj*. </p></li>

@@ -400,6 +400,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../py_api/podio.html#module-podio.base_writer">podio.base_writer module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../py_api/podio.html#podio.base_writer.AllWriters"><code class="docutils literal notranslate"><span class="pre">AllWriters</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../py_api/podio.html#podio.base_writer.BaseWriterMixin"><code class="docutils literal notranslate"><span class="pre">BaseWriterMixin</span></code></a></li>
 </ul>
 </li>
@@ -542,7 +543,7 @@
 <em>#include &lt;podio/CollectionBufferFactory.h&gt;</em></div>
 <p>The CollectionBufferFactory allows to create buffers of known datatypes, which can then be populated by e.g. </p>
 <p>readers. In order to support schema evolution, the buffers have a version and this factory will also require a schema version to create buffers.</p>
-<p>It is implemented as a singleton, which is populated at the time a shared datamodel library is loaded. It is assumed that that happens early on in the startup of an appliation, such that only a single thread will access the factory instance for registering datatypes. Since the necessary creation functions are part of the core datamodel library, this should be very easy to achieve by simply linking to that library. Once the factory is populated it can be safely accessed from multiple threads concurrently to obtain buffers. </p>
+<p>It is implemented as a singleton, which is populated at the time a shared datamodel library is loaded. It is assumed that that happens early on in the startup of an application, such that only a single thread will access the factory instance for registering datatypes. Since the necessary creation functions are part of the core datamodel library, this should be very easy to achieve by simply linking to that library. Once the factory is populated it can be safely accessed from multiple threads concurrently to obtain buffers. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
@@ -580,7 +581,7 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>collType</strong> – The collection type name (e.g. from collection-&gt;getTypeName()) </p></li>
 <li><p><strong>version</strong> – The schema version the created buffers should have </p></li>
-<li><p><strong>susbsetColl</strong> – Should the buffers be for a subset collection or not</p></li>
+<li><p><strong>subsetColl</strong> – Should the buffers be for a subset collection or not</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

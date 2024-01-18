@@ -402,6 +402,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="py_api/podio.html#module-podio.base_writer">podio.base_writer module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="py_api/podio.html#podio.base_writer.AllWriters"><code class="docutils literal notranslate"><span class="pre">AllWriters</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="py_api/podio.html#podio.base_writer.BaseWriterMixin"><code class="docutils literal notranslate"><span class="pre">BaseWriterMixin</span></code></a></li>
 </ul>
 </li>
@@ -595,7 +596,7 @@ In cmake the necessary steps are (assuming that <code class="docutils literal no
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>Each element of the collection will be converted to a JSON object, where the keys are the same as in the datamodel definiton.
+<p>Each element of the collection will be converted to a JSON object, where the keys are the same as in the datamodel definition.
 Components contained in the objects will similarly be similarly converted.</p>
 <p><strong>JSON is not foreseen as a mode for persistency, i.e. there is no plan to add the conversion from JSON to the in memory representation of the datamodel.</strong></p>
 </section>
@@ -698,7 +699,7 @@ datamodels and provides access to this information possible. In this context we
 refer to an <em>EDM</em> as the shared library (and the corresponding public headers)
 that have been compiled from code that has been generated from a <em>datamodel
 definition</em> in the original YAML file. In general whenever we refer to a
-<em>datamodel</em> in this context we mean the enitity as a whole, i.e. its definition
+<em>datamodel</em> in this context we mean the entity as a whole, i.e. its definition
 in a YAML file, the concrete implementation as an EDM, as well as other related
 information that is related to it.</p>
 <p>Currently the <code class="docutils literal notranslate"><span class="pre">DatamodelRegistry</span></code> provides mainly access to the original

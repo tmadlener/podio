@@ -402,6 +402,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="py_api/podio.html#module-podio.base_writer">podio.base_writer module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="py_api/podio.html#podio.base_writer.AllWriters"><code class="docutils literal notranslate"><span class="pre">AllWriters</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="py_api/podio.html#podio.base_writer.BaseWriterMixin"><code class="docutils literal notranslate"><span class="pre">BaseWriterMixin</span></code></a></li>
 </ul>
 </li>
@@ -544,7 +545,7 @@ PODIO only makes use of rather basic Jinja2 templates, so it should in principle
 When reading the yaml file a basic validation is run and the data members, relations and vector members of components and datatypes are parsed into <code class="docutils literal notranslate"><span class="pre">MemberVariable</span></code> objects (defined in <a class="reference internal" href="#/python/podio_gen/generator_utils.py"><span class="xref myst"><code class="docutils literal notranslate"><span class="pre">python/podio_gen/generator_utils.py</span></code></span></a>).
 The main entry point to the code generation is the <a class="reference internal" href="#/python/podio_class_generator.py"><span class="xref myst"><code class="docutils literal notranslate"><span class="pre">python/podio_class_generator.py</span></code></span></a> which takes care of instantiating the language specific code generator (either C++ or a prototype version for Julia at this point).
 The language specific generators inherit from the <a class="reference internal" href="#/python/podio_gen/generator_base.py"><span class="xref myst"><code class="docutils literal notranslate"><span class="pre">ClassGeneratorBaseMixin</span></code></span></a> which takes care of some common initialization and provides some common functionality for code generation.
-In the end each langauge specific generator will take care of (either by itself or through the common functionality in <code class="docutils literal notranslate"><span class="pre">ClassGeneratorBaseMixin</span></code>):</p>
+In the end each language specific generator will take care of (either by itself or through the common functionality in <code class="docutils literal notranslate"><span class="pre">ClassGeneratorBaseMixin</span></code>):</p>
 <ul class="simple">
 <li><p>Configuring the Jinja2 template engine. At the moment this is mainly making the templates known to the engine.</p></li>
 <li><p>The necessary preprocessing of all the datatypes and components. This includes collecting necessary include directories and forward declaration, as well as digesting <code class="docutils literal notranslate"><span class="pre">ExtraCode</span></code> snippets.</p></li>
@@ -576,7 +577,7 @@ They are broadly split along the classes that are generated for each datatype or
 <td><p><code class="docutils literal notranslate"><span class="pre">[&lt;package&gt;/]&lt;datatype-name&gt;Data.h</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Obj.{h,cc}.jinja2</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">Obj</span></code> class for each datatype (linving in the object layer) and managing resources</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Obj</span></code> class for each datatype (living in the object layer) and managing resources</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[&lt;package&gt;/]&lt;datatype-name&gt;Obj.h</span></code>,  <code class="docutils literal notranslate"><span class="pre">src/&lt;datatype-name&gt;Obj.cc</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">[Mutable]Object.{h,cc}.jinja2</span></code></p></td>
@@ -717,7 +718,7 @@ generation!</p>
 <td><p>The include directives for the the user facing classes header files</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">includes_cc</span></code></p></td>
-<td><p>The include directives for the implemenations of the user facing classes</p></td>
+<td><p>The include directives for the implementations of the user facing classes</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">includes_data</span></code></p></td>
 <td><p>The necessary include directives for the <code class="docutils literal notranslate"><span class="pre">Data</span></code> POD types</p></td>
@@ -812,7 +813,7 @@ In principle all members are accessible in the templates, however, the most impo
 <section id="datatype">
 <h3><code class="docutils literal notranslate"><span class="pre">DataType</span></code><a class="headerlink" href="#datatype" title="Link to this heading"></a></h3>
 <p>Defined in <a class="reference internal" href="#/python/generator_utils.py"><span class="xref myst"><code class="docutils literal notranslate"><span class="pre">python/generator_utils.py</span></code></span></a>.
-This is essenitally a stripped down version of the <code class="docutils literal notranslate"><span class="pre">MemberVariable</span></code> with the major difference being that the string representation returns the fully qualified type instead.
+This is essentially a stripped down version of the <code class="docutils literal notranslate"><span class="pre">MemberVariable</span></code> with the major difference being that the string representation returns the fully qualified type instead.
 The available fields are</p>
 <table class="docutils align-default">
 <thead>

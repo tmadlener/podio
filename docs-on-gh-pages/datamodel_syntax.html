@@ -402,6 +402,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="py_api/podio.html#module-podio.base_writer">podio.base_writer module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="py_api/podio.html#podio.base_writer.AllWriters"><code class="docutils literal notranslate"><span class="pre">AllWriters</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="py_api/podio.html#podio.base_writer.BaseWriterMixin"><code class="docutils literal notranslate"><span class="pre">BaseWriterMixin</span></code></a></li>
 </ul>
 </li>
@@ -677,7 +678,7 @@ The <code class="docutils literal notranslate"><span class="pre">includes</span>
 <section id="extending-a-datamodel-using-types-from-an-upstream-datamodel">
 <h2>Extending a datamodel / using types from an upstream datamodel<a class="headerlink" href="#extending-a-datamodel-using-types-from-an-upstream-datamodel" title="Link to this heading"></a></h2>
 <p>It is possible to extend another datamodel with your own types, resp. use some datatypes or components from an upstream datamodel in your own datamodel.
-This can be useful for prototyping new datatypes or for accomodating special requirements without having to reimplement / copy a complete datamodel.</p>
+This can be useful for prototyping new datatypes or for accommodating special requirements without having to reimplement / copy a complete datamodel.</p>
 <p>To pass an upstream datamodel to the class generator use the <code class="docutils literal notranslate"><span class="pre">--upstream-edm</span></code> option that takes the package name as well as the yaml definition file of the upstream datamodel separated by a colon (‘:’).
 This will effectively make all components and datatypes of the upstream datamodel available to the current definition for validation and generation of the necessary includes.
 Nevertheless, only the code for the datatypes and components defined in the current yaml file will be generated.
