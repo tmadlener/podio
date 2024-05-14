@@ -64,6 +64,7 @@
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Data Models and Data Model Definitions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#basic-concepts-and-supported-features">Basic Concepts and Supported Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mandatory-fields">Mandatory fields</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#definition-of-custom-components">Definition of custom components</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#definition-of-custom-data-classes">Definition of custom data classes</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#defining-members">Defining members</a></li>
@@ -570,6 +571,12 @@ integers from <code class="docutils literal notranslate"><span class="pre">&lt;c
 In the following the syntax for defining a given data model is explained.
 A later section contains more details about the code being created from this.</p>
 </section>
+<section id="mandatory-fields">
+<h2>Mandatory fields<a class="headerlink" href="#mandatory-fields" title="Link to this heading"></a></h2>
+<p>A datamodel definition has only one mandatory field: <code class="docutils literal notranslate"><span class="pre">schema_version</span></code>. This
+defines the current version of the datamodel schema and allows to do schema
+evolution. All other fields described below are in principle optional.</p>
+</section>
 <section id="definition-of-custom-components">
 <h2>Definition of custom components<a class="headerlink" href="#definition-of-custom-components" title="Link to this heading"></a></h2>
 <p>A component is just a flat struct containing data. it can be defined via:</p>
@@ -697,7 +704,7 @@ is currently being held internally.</p>
 
 <span class="k">auto</span><span class="w"> </span><span class="n">hit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ExampleHit</span><span class="p">{};</span>
 <span class="n">energyType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hit</span><span class="p">;</span><span class="w">     </span><span class="c1">// assigning a hit to the interface type</span>
-<span class="n">energyType</span><span class="p">.</span><span class="n">energy</span><span class="p">();</span><span class="w">  </span><span class="c1">// &lt;-- get&#39;s the energy from the underlying hit</span>
+<span class="n">energyType</span><span class="p">.</span><span class="n">energy</span><span class="p">();</span><span class="w">  </span><span class="c1">// &lt;-- get the energy from the underlying hit</span>
 
 <span class="k">auto</span><span class="w"> </span><span class="n">cluster</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ExampleCluster</span><span class="p">{};</span>
 <span class="n">energyType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cluster</span><span class="p">;</span><span class="w"> </span><span class="c1">// ra-assigning another object is possible</span>
