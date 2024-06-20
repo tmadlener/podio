@@ -24,7 +24,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Struct podio::RelationNames" href="structpodio_1_1_relation_names.html" />
+    <link rel="next" title="Struct podio::Reader::ReaderConcept" href="structpodio_1_1_reader_1_1_reader_concept.html" />
     <link rel="prev" title="Struct podio::ROOTReader::CategoryInfo" href="structpodio_1_1_r_o_o_t_reader_1_1_category_info.html" /> 
 </head>
 
@@ -88,6 +88,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../examples.html#object-creation-and-storage">Object Creation and Storage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../examples.html#object-references">Object References</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../examples.html#looping-through-collections">Looping through Collections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#cloneing-objects">Cloneing objects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../examples.html#support-for-notebook-pattern">Support for Notebook-Pattern</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../examples.html#podio-frame-container"><code class="docutils literal notranslate"><span class="pre">podio::Frame</span></code> container</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../examples.html#object-retrieval">Object Retrieval</a></li>
@@ -123,6 +124,21 @@
 <li class="toctree-l3"><a class="reference internal" href="../../userdata.html#limited-supported-types">Limited supported types</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../storage_details.html">Storage details of files produced by podio</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../storage_details.html#root">ROOT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../storage_details.html#storage-of-collection-data">Storage of Collection data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../storage_details.html#storage-of-frame-parameters">Storage of Frame parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../storage_details.html#storage-of-podio-related-metadata">Storage of podio related metadata</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../storage_details.html#sio">SIO</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../cmake.html">Building a new data model library with CMake</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../cmake.html#exported-cmake-functions-and-macros">Exported CMake functions and macros</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cmake.html#a-simple-example">A simple example</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced_topics.html">Advanced Topics</a><ul>
@@ -165,6 +181,35 @@
 <li class="toctree-l3"><a class="reference internal" href="../../templates.html#julia-code-generation">Julia code generation</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../python.html">Python interface for data models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../python.html#pythonizations">Pythonizations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../python.html#developing-new-pythonizations">Developing new pythonizations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../python.html#considerations">Considerations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../collections_as_container.html">PODIO Collection as a <em>Container</em></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../collections_as_container.html#container-types">Container Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../collections_as_container.html#container-member-functions-and-operators">Container member functions and operators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../collections_as_container.html#collection-as-an-allocatorawarecontainer">Collection as an <em>AllocatorAwareContainer</em></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../collections_as_container.html#allocatorawarecontainer-types">AllocatorAwareContainer types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../collections_as_container.html#allocatorawarecontainer-expression-and-statements"><em>AllocatorAwareContainer</em> expression and statements</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../collections_as_container.html#collection-iterators-as-an-iterator">Collection iterators as an <em>Iterator</em></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../collections_as_container.html#iterator-summary">Iterator summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../collections_as_container.html#legacyiterator">LegacyIterator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../collections_as_container.html#legacyinputiterator">LegacyInputIterator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../collections_as_container.html#legacyforwarditerator">LegacyForwardIterator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../collections_as_container.html#legacyoutputiterator">LegacyOutputIterator</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../collections_as_container.html#collection-iterators-and-standard-iterator-adaptors">Collection iterators and standard iterator adaptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../collections_as_container.html#collection-and-standard-algorithms">Collection and standard algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../collections_as_container.html#standard-range-algorithms">Standard range algorithms</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">C++ API documentation</a><ul class="current">
@@ -233,6 +278,10 @@
 <li class="toctree-l4"><a class="reference internal" href="../class/classpodio_1_1_r_o_o_t_writer.html#_CPPv4N5podio10ROOTWriterE"><code class="docutils literal notranslate"><span class="pre">ROOTWriter</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../class/classpodio_1_1_reader.html">Class podio::Reader</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../class/classpodio_1_1_reader.html#_CPPv4N5podio6ReaderE"><code class="docutils literal notranslate"><span class="pre">Reader</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../class/classpodio_1_1_relation_range.html">Class podio::RelationRange</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../class/classpodio_1_1_relation_range.html#_CPPv4I0EN5podio13RelationRangeE"><code class="docutils literal notranslate"><span class="pre">RelationRange</span></code></a></li>
 </ul>
@@ -293,6 +342,10 @@
 <li class="toctree-l4"><a class="reference internal" href="../class/classpodio_1_1_user_data_collection.html#_CPPv4I00EN5podio18UserDataCollectionE"><code class="docutils literal notranslate"><span class="pre">UserDataCollection</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../class/classpodio_1_1_writer.html">Class podio::Writer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../class/classpodio_1_1_writer.html#_CPPv4N5podio6WriterE"><code class="docutils literal notranslate"><span class="pre">Writer</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../class/classpodio_1_1utils_1_1_maybe_shared_ptr.html">Class podio::utils::MaybeSharedPtr</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../class/classpodio_1_1utils_1_1_maybe_shared_ptr.html#_CPPv4I0EN5podio5utils14MaybeSharedPtrE"><code class="docutils literal notranslate"><span class="pre">MaybeSharedPtr</span></code></a></li>
 </ul>
@@ -320,8 +373,8 @@
 <li class="toctree-l4"><a class="reference internal" href="structpodio_1_1_r_n_tuple_reader_1_1_collection_info.html#_CPPv4N5podio13RNTupleReader14CollectionInfoE"><code class="docutils literal notranslate"><span class="pre">CollectionInfo</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="structpodio_1_1_r_n_tuple_writer_1_1_collection_info.html">Struct podio::RNTupleWriter::CollectionInfo</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="structpodio_1_1_r_n_tuple_writer_1_1_collection_info.html#_CPPv4N5podio13RNTupleWriter14CollectionInfoE"><code class="docutils literal notranslate"><span class="pre">CollectionInfo</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="structpodio_1_1_r_n_tuple_writer_1_1_category_info.html">Struct podio::RNTupleWriter::CategoryInfo</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="structpodio_1_1_r_n_tuple_writer_1_1_category_info.html#_CPPv4N5podio13RNTupleWriter12CategoryInfoE"><code class="docutils literal notranslate"><span class="pre">CategoryInfo</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="structpodio_1_1_r_o_o_t_reader_1_1_category_info.html">Struct podio::ROOTReader::CategoryInfo</a><ul>
@@ -330,6 +383,14 @@
 </li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Struct podio::ROOTWriter::CategoryInfo</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N5podio10ROOTWriter12CategoryInfoE"><code class="docutils literal notranslate"><span class="pre">CategoryInfo</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="structpodio_1_1_reader_1_1_reader_concept.html">Struct podio::Reader::ReaderConcept</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="structpodio_1_1_reader_1_1_reader_concept.html#_CPPv4N5podio6Reader13ReaderConceptE"><code class="docutils literal notranslate"><span class="pre">ReaderConcept</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="structpodio_1_1_reader_1_1_reader_model.html">Struct podio::Reader::ReaderModel</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="structpodio_1_1_reader_1_1_reader_model.html#_CPPv4I0EN5podio6Reader11ReaderModelE"><code class="docutils literal notranslate"><span class="pre">ReaderModel</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="structpodio_1_1_relation_names.html">Struct podio::RelationNames</a><ul>
@@ -352,12 +413,24 @@
 <li class="toctree-l4"><a class="reference internal" href="structpodio_1_1_schema_evolution_1_1_map_index.html#_CPPv4N5podio15SchemaEvolution8MapIndexE"><code class="docutils literal notranslate"><span class="pre">MapIndex</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="structpodio_1_1_writer_1_1_writer_concept.html">Struct podio::Writer::WriterConcept</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="structpodio_1_1_writer_1_1_writer_concept.html#_CPPv4N5podio6Writer13WriterConceptE"><code class="docutils literal notranslate"><span class="pre">WriterConcept</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="structpodio_1_1_writer_1_1_writer_model.html">Struct podio::Writer::WriterModel</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="structpodio_1_1_writer_1_1_writer_model.html#_CPPv4I0EN5podio6Writer11WriterModelE"><code class="docutils literal notranslate"><span class="pre">WriterModel</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="structpodio_1_1det_1_1nonesuch.html">Struct podio::det::nonesuch</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="structpodio_1_1det_1_1nonesuch.html#_CPPv4N5podio3det8nonesuchE"><code class="docutils literal notranslate"><span class="pre">nonesuch</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="structpodio_1_1root__utils_1_1_collection_branches.html">Struct podio::root_utils::CollectionBranches</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="structpodio_1_1root__utils_1_1_collection_branches.html#_CPPv4N5podio10root_utils18CollectionBranchesE"><code class="docutils literal notranslate"><span class="pre">CollectionBranches</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="structpodio_1_1root__utils_1_1_param_storage.html">Struct podio::root_utils::ParamStorage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="structpodio_1_1root__utils_1_1_param_storage.html#_CPPv4I0EN5podio10root_utils12ParamStorageE"><code class="docutils literal notranslate"><span class="pre">ParamStorage</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="structpodio_1_1utils_1_1_maybe_shared_ptr_1_1_control_block.html">Struct podio::utils::MaybeSharedPtr::ControlBlock</a><ul>
@@ -409,6 +482,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../py_api/modules.html">python</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../py_api/podio.html">podio package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../py_api/podio.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../py_api/podio.pythonizations.html">podio.pythonizations package</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../../py_api/podio.html#submodules">Submodules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../py_api/podio.html#module-podio.base_reader">podio.base_reader module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../py_api/podio.html#podio.base_reader.BaseReaderMixin"><code class="docutils literal notranslate"><span class="pre">BaseReaderMixin</span></code></a></li>
@@ -565,13 +642,13 @@
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N5podio10ROOTWriter12CategoryInfo8branchesE">
-<span id="_CPPv3N5podio10ROOTWriter12CategoryInfo8branchesE"></span><span id="_CPPv2N5podio10ROOTWriter12CategoryInfo8branchesE"></span><span id="podio::ROOTWriter::CategoryInfo::branches__std::vector:root_utils::CollectionBranches:"></span><span class="target" id="structpodio_1_1_r_o_o_t_writer_1_1_category_info_1af4808e52b578b49200046f3e800ab031"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../file/_collection_branches_8h.html#_CPPv4N5podio10root_utilsE" title="podio::root_utils"><span class="n"><span class="pre">root_utils</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../file/_collection_branches_8h.html#_CPPv4N5podio10root_utils18CollectionBranchesE" title="podio::root_utils::CollectionBranches"><span class="n"><span class="pre">CollectionBranches</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">branches</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><br /></dt>
+<span id="_CPPv3N5podio10ROOTWriter12CategoryInfo8branchesE"></span><span id="_CPPv2N5podio10ROOTWriter12CategoryInfo8branchesE"></span><span id="podio::ROOTWriter::CategoryInfo::branches__std::vector:root_utils::CollectionBranches:"></span><span class="target" id="structpodio_1_1_r_o_o_t_writer_1_1_category_info_1af4808e52b578b49200046f3e800ab031"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../file/_root_helpers_8h.html#_CPPv4N5podio10root_utilsE" title="podio::root_utils"><span class="n"><span class="pre">root_utils</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../file/_root_helpers_8h.html#_CPPv4N5podio10root_utils18CollectionBranchesE" title="podio::root_utils::CollectionBranches"><span class="n"><span class="pre">CollectionBranches</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">branches</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><br /></dt>
 <dd><p>The branches for this category. </p>
 </dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N5podio10ROOTWriter12CategoryInfo8collInfoE">
-<span id="_CPPv3N5podio10ROOTWriter12CategoryInfo8collInfoE"></span><span id="_CPPv2N5podio10ROOTWriter12CategoryInfo8collInfoE"></span><span id="podio::ROOTWriter::CategoryInfo::collInfo__std::vector:CollectionInfoT:"></span><span class="target" id="structpodio_1_1_r_o_o_t_writer_1_1_category_info_1ac8757ff8e6ab915682018c462d613daf"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../file/_r_o_o_t_writer_8h.html#_CPPv4N5podio10ROOTWriter15CollectionInfoTE" title="podio::ROOTWriter::CollectionInfoT"><span class="n"><span class="pre">CollectionInfoT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">collInfo</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><br /></dt>
+<span id="_CPPv3N5podio10ROOTWriter12CategoryInfo8collInfoE"></span><span id="_CPPv2N5podio10ROOTWriter12CategoryInfo8collInfoE"></span><span id="podio::ROOTWriter::CategoryInfo::collInfo__std::vector:root_utils::CollectionWriteInfoT:"></span><span class="target" id="structpodio_1_1_r_o_o_t_writer_1_1_category_info_1a6ccbd272f39812a49cd621cdb8043478"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../file/_root_helpers_8h.html#_CPPv4N5podio10root_utilsE" title="podio::root_utils"><span class="n"><span class="pre">root_utils</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../file/_root_helpers_8h.html#_CPPv4N5podio10root_utils20CollectionWriteInfoTE" title="podio::root_utils::CollectionWriteInfoT"><span class="n"><span class="pre">CollectionWriteInfoT</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">collInfo</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><br /></dt>
 <dd><p>Collection info for this category. </p>
 </dd></dl>
 
@@ -586,6 +663,26 @@
 <span id="_CPPv3N5podio10ROOTWriter12CategoryInfo12collsToWriteE"></span><span id="_CPPv2N5podio10ROOTWriter12CategoryInfo12collsToWriteE"></span><span id="podio::ROOTWriter::CategoryInfo::collsToWrite__std::vector:ss:"></span><span class="target" id="structpodio_1_1_r_o_o_t_writer_1_1_category_info_1a10f2b93842eb64037f72998a262a8e55"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">collsToWrite</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><br /></dt>
 <dd><p>The collections to write for this category. </p>
 </dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N5podio10ROOTWriter12CategoryInfo9intParamsE">
+<span id="_CPPv3N5podio10ROOTWriter12CategoryInfo9intParamsE"></span><span id="_CPPv2N5podio10ROOTWriter12CategoryInfo9intParamsE"></span><span id="podio::ROOTWriter::CategoryInfo::intParams__root_utils::ParamStorage:i:"></span><span class="target" id="structpodio_1_1_r_o_o_t_writer_1_1_category_info_1a9cd86c785dac43f90f0a87874852f037"></span><a class="reference internal" href="../file/_root_helpers_8h.html#_CPPv4N5podio10root_utilsE" title="podio::root_utils"><span class="n"><span class="pre">root_utils</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../file/_root_helpers_8h.html#_CPPv4I0EN5podio10root_utils12ParamStorageE" title="podio::root_utils::ParamStorage"><span class="n"><span class="pre">ParamStorage</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intParams</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N5podio10ROOTWriter12CategoryInfo11floatParamsE">
+<span id="_CPPv3N5podio10ROOTWriter12CategoryInfo11floatParamsE"></span><span id="_CPPv2N5podio10ROOTWriter12CategoryInfo11floatParamsE"></span><span id="podio::ROOTWriter::CategoryInfo::floatParams__root_utils::ParamStorage:float:"></span><span class="target" id="structpodio_1_1_r_o_o_t_writer_1_1_category_info_1ac3858cfad75a1577e59ca9ae982d19f4"></span><a class="reference internal" href="../file/_root_helpers_8h.html#_CPPv4N5podio10root_utilsE" title="podio::root_utils"><span class="n"><span class="pre">root_utils</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../file/_root_helpers_8h.html#_CPPv4I0EN5podio10root_utils12ParamStorageE" title="podio::root_utils::ParamStorage"><span class="n"><span class="pre">ParamStorage</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">floatParams</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N5podio10ROOTWriter12CategoryInfo12doubleParamsE">
+<span id="_CPPv3N5podio10ROOTWriter12CategoryInfo12doubleParamsE"></span><span id="_CPPv2N5podio10ROOTWriter12CategoryInfo12doubleParamsE"></span><span id="podio::ROOTWriter::CategoryInfo::doubleParams__root_utils::ParamStorage:double:"></span><span class="target" id="structpodio_1_1_r_o_o_t_writer_1_1_category_info_1a373231fca505365287e47df2fbc89817"></span><a class="reference internal" href="../file/_root_helpers_8h.html#_CPPv4N5podio10root_utilsE" title="podio::root_utils"><span class="n"><span class="pre">root_utils</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../file/_root_helpers_8h.html#_CPPv4I0EN5podio10root_utils12ParamStorageE" title="podio::root_utils::ParamStorage"><span class="n"><span class="pre">ParamStorage</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">doubleParams</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N5podio10ROOTWriter12CategoryInfo12stringParamsE">
+<span id="_CPPv3N5podio10ROOTWriter12CategoryInfo12stringParamsE"></span><span id="_CPPv2N5podio10ROOTWriter12CategoryInfo12stringParamsE"></span><span id="podio::ROOTWriter::CategoryInfo::stringParams__root_utils::ParamStorage:ss:"></span><span class="target" id="structpodio_1_1_r_o_o_t_writer_1_1_category_info_1ad41151cfe1f5f9a6e706c811cde64f0e"></span><a class="reference internal" href="../file/_root_helpers_8h.html#_CPPv4N5podio10root_utilsE" title="podio::root_utils"><span class="n"><span class="pre">root_utils</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../file/_root_helpers_8h.html#_CPPv4I0EN5podio10root_utils12ParamStorageE" title="podio::root_utils::ParamStorage"><span class="n"><span class="pre">ParamStorage</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stringParams</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">}</span></span><br /></dt>
+<dd></dd></dl>
 
 </div>
 </dd></dl>
