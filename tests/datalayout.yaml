@@ -247,6 +247,15 @@ datatypes :
       declaration:
         "int PDG() const { return 42; }"
 
+  ExampleAssociation:
+    Description: "An association for debugging clang-tidy"
+    Author: "whoever"
+    Members:
+      - float weight // weight
+    OneToOneRelations:
+      - ExampleHit from // hit
+      - ExampleCluster to // cluster
+
 interfaces:
   TypeWithEnergy:
     Description: "Generic interface for all types with an energy member"
