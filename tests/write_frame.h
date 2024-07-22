@@ -4,6 +4,7 @@
 #include "frame_test_common.h"
 
 #include "datamodel/EventInfoCollection.h"
+#include "datamodel/ExampleAssociationCollection.h"
 #include "datamodel/ExampleClusterCollection.h"
 #include "datamodel/ExampleHitCollection.h"
 #include "datamodel/ExampleMCCollection.h"
@@ -28,7 +29,9 @@
 #include <tuple>
 
 // Define an association that is used for the I/O tests
-using TestAssocCollection = podio::AssociationCollection<ExampleHit, ExampleCluster>;
+// using TestAssocCollection = podio::AssociationCollection<ExampleHit, ExampleCluster>;
+
+using TestAssocCollection = ExampleAssociationCollection;
 
 auto createMCCollection() {
   auto mcps = ExampleMCCollection();
@@ -389,12 +392,15 @@ auto createAssociationCollection(const ExampleHitCollection& hits, const Example
   const auto nAssocs = std::min(clusters.size(), hits.size());
   for (size_t iA = 0; iA < nAssocs; ++iA) {
     auto assoc = associations.create();
-    assoc.setWeight(0.5 * iA);
+    assoc.weight(0.5 * iA);
+    // assoc.setWeight(0.5 * iA);
 
     // Fill in opposite "order" to at least make sure that we uncover issues
     // that would otherwise be masked by parallel running of indices
-    assoc.setFrom(hits[iA]);
-    assoc.setTo(clusters[nAssocs - 1 - iA]);
+    // assoc.setFrom(hits[iA]);
+    // assoc.setTo(clusters[nAssocs - 1 - iA]);
+    assoc.from(hits[iA]);
+    assoc.to(clusters[nAssocs - 1 - iA]);
   }
 
   return associations;
