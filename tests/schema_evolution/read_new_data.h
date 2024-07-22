@@ -1,15 +1,19 @@
 #ifndef PODIO_TESTS_SCHEMAEVOLUTION_READNEWDATA_H // NOLINT(llvm-header-guard): folder structure not suitable
 #define PODIO_TESTS_SCHEMAEVOLUTION_READNEWDATA_H // NOLINT(llvm-header-guard): folder structure not suitable
 
+#include "datamodel/ExampleClusterCollection.h"
 #include "datamodel/ExampleHitCollection.h"
 #include "datamodel/ExampleWithARelationCollection.h"
 #include "datamodel/ExampleWithArrayComponentCollection.h"
 #include "datamodel/ExampleWithNamespaceCollection.h"
 
+#include "podio/AssociationCollection.h"
 #include "podio/Frame.h"
 
 #include <iostream>
 #include <string>
+
+using TestAssocCollection = podio::AssociationCollection<ExampleHit, ExampleCluster>;
 
 #define ASSERT_EQUAL(actual, expected, msg)                                                                            \
   if ((expected) != (actual)) {                                                                                        \
@@ -62,6 +66,26 @@ int readExampleWithARelation(const podio::Frame& event) {
   return 0;
 }
 
+int checkAssociationsTransparent(const podio::Frame& event) {
+  auto& associations = event.get<TestAssocCollection>("associations");
+  const auto& hits = event.get<ExampleHitCollection>("datatypeMemberAdditionTest");
+  const auto& clusters = event.get<ExampleClusterCollection>("clusters");
+
+  const auto nAssocs = std::min(clusters.size(), hits.size());
+  if (associations.size() != nAssocs) {
+    return 1;
+  }
+  int assocIndex = 0;
+  for (auto assoc : associations) {
+    if (!((assoc.getWeight() == 0.5 * assocIndex) && (assoc.getFrom() == hits[assocIndex]) &&
+          (assoc.getTo() == clusters[nAssocs - 1 - assocIndex]))) {
+      return 1;
+    }
+    assocIndex++;
+  }
+  return 0;
+}
+
 template <typename ReaderT>
 int read_new_data(const std::string& filename) {
   ReaderT reader{};
@@ -74,6 +98,7 @@ int read_new_data(const std::string& filename) {
   result += readExampleHit(event);
   result += readExampleWithNamespace(event);
   result += readExampleWithARelation(event);
+  result += checkAssociationsTransparent(event);
 
   return result;
 }

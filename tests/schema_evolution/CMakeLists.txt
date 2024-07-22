@@ -8,10 +8,14 @@ PODIO_GENERATE_DATAMODEL(datamodel datalayout_new.yaml headers sources
 PODIO_ADD_DATAMODEL_CORE_LIB(TestDataModel_v3 "${headers}" "${sources}"
   OUTPUT_FOLDER ${CMAKE_CURRENT_BINARY_DIR}/datamodel_new
 )
+target_sources(TestDataModel_v3 PRIVATE DatamodelAssociations.cc)
+
+list(APPEND headers "DatamodelAssociations.h")
 
 PODIO_ADD_ROOT_IO_DICT(TestDataModel_v3Dict TestDataModel_v3 "${headers}" ${CMAKE_CURRENT_BINARY_DIR}/datamodel_new/src/selection.xml
   OUTPUT_FOLDER ${CMAKE_CURRENT_BINARY_DIR}/datamodel_new
 )
+target_sources(TestDataModel_v3Dict PRIVATE DatamodelAssociations.cc)
 
 PODIO_ADD_SIO_IO_BLOCKS(TestDataModel_v3 "${headers}" "${sources}")
 

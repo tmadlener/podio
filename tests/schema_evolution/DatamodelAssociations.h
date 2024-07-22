@@ -1,0 +1,3 @@
+struct ExampleAssociationData {
+  float weight;
+};
