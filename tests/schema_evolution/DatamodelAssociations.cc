@@ -1,22 +1,20 @@
-#include "podio/AssociationCollection.h"
+#include "DatamodelAssociations.h"
 
 #include "datamodel/ExampleClusterCollection.h"
 #include "datamodel/ExampleHitCollection.h"
 
+#include "podio/AssociationCollection.h"
 #include "podio/CollectionBufferFactory.h"
 #include "podio/CollectionBuffers.h"
 #include "podio/DatamodelRegistry.h"
 #include "podio/SchemaEvolution.h"
 #include "podio/detail/AssociationFwd.h"
 
-#include "DatamodelAssociations.h"
-
-#include <functional>
 #include <vector>
 
 PODIO_DECLARE_ASSOCIATION(ExampleHit, ExampleCluster)
 
-using ExampleAssociationDataContainer = std::vector<ExampleAssociationData>;
+// using ExampleAssociationContainer = podio::AssociationDataContainer;
 
 namespace {
 auto evolveAssociations(podio::CollectionReadBuffers oldBuffers, podio::SchemaVersionT) {
@@ -31,15 +29,10 @@ auto evolveAssociations(podio::CollectionReadBuffers oldBuffers, podio::SchemaVe
   newBuffers.vectorMembers = newBuffers.vectorMembers;
   oldBuffers.vectorMembers = nullptr;
 
-  auto newData = new podio::AssociationDataContainer{};
-  const auto oldData = oldBuffers.dataAsVector<ExampleAssociationData>();
-  newData->reserve(oldData->size());
-  for (const auto data : *oldData) {
-    newData->emplace_back(data.weight);
-  }
-
-  newBuffers.data = newData;
-  delete static_cast<ExampleAssociationDataContainer*>(oldBuffers.data);
+  // We can simply "recast" from the old struct to the new one here since memory
+  // layout doesn't change
+  newBuffers.data = oldBuffers.dataAsVector<podio::AssociationData>();
+  oldBuffers.data = nullptr;
 
   newBuffers.createCollection = [](const podio::CollectionReadBuffers& buffers, bool isSubsetColl) {
     podio::AssociationCollectionData<ExampleHit, ExampleCluster> data(buffers, isSubsetColl);
@@ -48,13 +41,13 @@ auto evolveAssociations(podio::CollectionReadBuffers oldBuffers, podio::SchemaVe
 
   newBuffers.recast = [](podio::CollectionReadBuffers& buffers) {
     if (buffers.data) {
-      buffers.data = podio::CollectionWriteBuffers::asVector<float>(buffers.data);
+      buffers.data = podio::CollectionWriteBuffers::asVector<podio::AssociationData>(buffers.data);
     }
   };
 
   newBuffers.deleteBuffers = [](podio::CollectionReadBuffers& buffers) {
     if (buffers.data) {
-      delete static_cast<std::vector<float>*>(buffers.data);
+      delete static_cast<std::vector<podio::AssociationData>*>(buffers.data);
     }
 
     delete buffers.references;
@@ -68,7 +61,7 @@ auto createAssocBuffers(bool isSubset) {
   auto readBuffers = podio::CollectionReadBuffers{};
   readBuffers.type = "ExampleAssociationCollection";
   readBuffers.schemaVersion = 2;
-  readBuffers.data = isSubset ? nullptr : new ExampleAssociationDataContainer;
+  readBuffers.data = isSubset ? nullptr : new podio::AssociationDataContainer;
   // The number of ObjectID vectors is either 1 or the sum of OneToMany and
   // OneToOne relations
   const auto nRefs = isSubset ? 1 : 0 + 2;
@@ -89,7 +82,7 @@ auto createAssocBuffers(bool isSubset) {
   readBuffers.recast = [](podio::CollectionReadBuffers& buffers) {
     // We only have any of these buffers if this is not a subset collection
     if (buffers.data) {
-      buffers.data = podio::CollectionWriteBuffers::asVector<ExampleAssociationData>(buffers.data);
+      buffers.data = podio::CollectionWriteBuffers::asVector<podio::AssociationData>(buffers.data);
     }
   };
 
@@ -98,7 +91,7 @@ auto createAssocBuffers(bool isSubset) {
       // If we have data then we are not a subset collection and we have to
       // clean up all type erased buffers by casting them back to something that
       // we can delete
-      delete static_cast<ExampleAssociationDataContainer*>(buffers.data);
+      delete static_cast<podio::AssociationDataContainer*>(buffers.data);
     }
     delete buffers.references;
     delete buffers.vectorMembers;
