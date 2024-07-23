@@ -61,7 +61,7 @@ public:
 
   /// Constructor with weight
   AssociationT(float weight) : m_obj(new AssociationObjT{}, podio::utils::MarkOwned) {
-    m_obj->weight = weight;
+    m_obj->data.weight = weight;
   }
 
   /// Copy constructor
@@ -82,7 +82,7 @@ public:
   /// Create a mutable deep-copy with identical relations
   template <typename FromU = FromT, typename ToU = ToT, typename = std::enable_if_t<sameTypes<FromU, ToU>>>
   MutableAssociation<FromU, ToU> clone(bool cloneRelations = true) const {
-    auto tmp = new AssociationObjT(podio::ObjectID{}, m_obj->weight);
+    auto tmp = new AssociationObjT(podio::ObjectID{}, m_obj->data.weight);
     if (cloneRelations) {
       if (m_obj->m_from) {
         tmp->m_from = new FromT(*m_obj->m_from);
@@ -104,13 +104,13 @@ public:
 
   /// Get the weight of the association
   float getWeight() const {
-    return m_obj->weight;
+    return m_obj->data.weight;
   }
 
   /// Set the weight of the association
   template <bool Mut = Mutable, typename = std::enable_if_t<Mut && Mutable>>
   void setWeight(float value) {
-    m_obj->weight = value;
+    m_obj->data.weight = value;
   }
 
   /// Access the related-from object

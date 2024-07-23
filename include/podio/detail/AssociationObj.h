@@ -15,15 +15,15 @@ class AssociationObj {
 
 public:
   /// Constructor
-  AssociationObj() : id(), weight(0.0f), m_from(nullptr), m_to(nullptr) {
+  AssociationObj() : id(), data({0.0f}), m_from(nullptr), m_to(nullptr) {
   }
 
   /// Constructor from ObjectID and weight (does not initialize relations yet!)
-  AssociationObj(const podio::ObjectID id_, float weight_) : id(id_), weight(weight_) {
+  AssociationObj(const podio::ObjectID id_, AssociationData data_) : id(id_), data(data_) {
   }
 
   /// Copy constructor (deep-copy of relations)
-  AssociationObj(const AssociationObj& other) : id(), weight(other.weight), m_from(nullptr), m_to(nullptr) {
+  AssociationObj(const AssociationObj& other) : id(), data(other.data), m_from(nullptr), m_to(nullptr) {
     if (other.m_from) {
       m_from = new FromT(*other.m_from);
     }
@@ -43,7 +43,7 @@ public:
 
 public:
   podio::ObjectID id{};
-  float weight{1.0f};
+  AssociationData data{1.0f};
   FromT* m_from{nullptr};
   ToT* m_to{nullptr};
 };

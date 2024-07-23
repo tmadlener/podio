@@ -60,7 +60,11 @@ class AssociationObj;
 template <typename FromT, typename ToT>
 using AssociationObjPointerContainer = std::deque<AssociationObj<FromT, ToT>*>;
 
-using AssociationDataContainer = std::vector<float>;
+struct AssociationData {
+  float weight;
+};
+
+using AssociationDataContainer = std::vector<AssociationData>;
 
 template <typename FromT, typename ToT, bool Mutable>
 class AssociationT;

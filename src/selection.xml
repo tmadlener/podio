@@ -43,5 +43,7 @@
     <class name="podio::UserDataCollection<uint32_t>"/>
     <class name="podio::UserDataCollection<uint64_t>"/>
 
+    <class name="podio::AssociationData"/>
+
   </selection>
 </lcgdict>
