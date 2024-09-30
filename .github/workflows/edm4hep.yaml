@@ -66,12 +66,12 @@ jobs:
             echo "::endgroup::"
             echo "::group::Build and test EDM4hep"
             cd $STARTDIR/edm4hep
-            mkdir build && cd build
-            cmake -DCMAKE_CXX_STANDARD=20 \
+            cmake -B build -S . \
+              -DCMAKE_CXX_STANDARD=20 \
               -DCMAKE_CXX_FLAGS=" -fdiagnostics-color=always " \
               -DUSE_EXTERNAL_CATCH2=ON \
               -DCMAKE_FIND_DEBUG_MODE=ON \
-              -G Ninja ..
-            ninja -k0
-            ctest --output-on-failure
+              -G Ninja
+            cmake --build build -- -k0
+            ctest --test-dir build --output-on-failure -j
             echo "::endgroup::"
