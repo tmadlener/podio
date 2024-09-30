@@ -36,6 +36,7 @@ jobs:
           run: |
             STARTDIR=$(pwd)
             echo "::group::Build Catch2"
+            echo "CMake version: " $(cmake --version)
             cd $STARTDIR/catch2
             mkdir build && cd build
             cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_INSTALL_PREFIX=../install -G Ninja ..
@@ -64,7 +65,6 @@ jobs:
             echo "::group::CMAKE_PREFIX_PATH"
             echo $CMAKE_PREFIX_PATH | tr ':' '\n'
             echo "::endgroup::"
-
             echo "::group::Build and test EDM4hep"
             cd $STARTDIR/edm4hep
             mkdir build && cd build
