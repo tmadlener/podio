@@ -57,15 +57,15 @@ jobs:
               -G Ninja ..
             ninja -k0
             echo "::endgroup::"
-            echo "::group::Test podio settings"
-            echo "PODIO-DUMP: "$(echo $(which podio-dump))
-            echo "PODIO-PYTHON: "$(python -c 'import podio; print(podio.__file__)')
-            echo "::endgroup::"
             echo "::group::Test and install podio"
             ctest --output-on-failure
             ninja install
             cd $STARTDIR/podio
             source init.sh && source env.sh
+            echo "::endgroup::"
+            echo "::group::Test podio settings"
+            echo "PODIO-DUMP: "$(echo $(which podio-dump))
+            echo "PODIO-PYTHON: "$(python -c 'import podio; print(podio.__file__)')
             echo "::endgroup::"
             echo "::group::Build and test EDM4hep"
             cd $STARTDIR/edm4hep
