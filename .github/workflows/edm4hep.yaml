@@ -61,6 +61,10 @@ jobs:
             echo "::group::PYTHONPATH"
             echo $PYTHONPATH | tr ':' '\n'
             echo "::endgroup::"
+            echo "::group::CMAKE_PREFIX_PATH"
+            echo $CMAKE_PREFIX_PATH | tr ':' '\n'
+            echo "::endgroup::"
+
             echo "::group::Build and test EDM4hep"
             cd $STARTDIR/edm4hep
             mkdir build && cd build
