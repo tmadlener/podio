@@ -38,9 +38,8 @@ jobs:
             echo "::group::Build Catch2"
             echo "CMake version: " $(cmake --version)
             cd $STARTDIR/catch2
-            mkdir build && cd build
-            cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_INSTALL_PREFIX=../install -G Ninja ..
-            ninja -k0 install
+            cmake -B build -S . -DCMAKE_CXX_STANDARD=20 -DCMAKE_INSTALL_PREFIX=./install -G Ninja
+            cmake --build build --target install
             export CMAKE_PREFIX_PATH=$STARTDIR/catch2/install:$CMAKE_PREFIX_PATH
             echo "::endgroup::"
             echo "::group::Build and install podio"
