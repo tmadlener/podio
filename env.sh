@@ -7,8 +7,6 @@ if [ -z "$PODIO" ]; then
   return
 fi
 
-export podio_ROOT=$PODIO
-
 unamestr=`uname`
 if [[ "$unamestr" = 'Linux' ]]; then
   if ! echo $LD_LIBRARY_PATH | grep $PODIO/lib > /dev/null 2>&1; then
