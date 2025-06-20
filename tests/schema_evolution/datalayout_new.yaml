@@ -77,6 +77,14 @@ datatypes :
      - double energy // energy
      - double t      // time
 
+  ExampleForManualSchemaEvolution:
+    Author: "T. Madlener"
+    Description: |
+      This is a datatype that demonstrates a non-trivial schema evolution.
+      Precisely, it replaces one member with a different one with a different type and name
+    Members:
+      - int newMember // the new member that should extract the i-value of the old one
+
   ExampleMC :
     Description : "Example MC-particle"
     Author: "F.Gaede"

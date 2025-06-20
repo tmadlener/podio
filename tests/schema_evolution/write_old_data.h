@@ -2,6 +2,7 @@
 #define PODIO_TESTS_SCHEMAEVOLUTION_WRITEOLDDATA_H // NOLINT(llvm-header-guard): folder structure not suitable
 
 #include "datamodel/ExampleClusterCollection.h"
+#include "datamodel/ExampleForManualSchemaEvolutionCollection.h"
 #include "datamodel/ExampleHitCollection.h"
 #include "datamodel/ExampleWithARelationCollection.h"
 #include "datamodel/ExampleWithNamespaceCollection.h"
@@ -44,6 +45,15 @@ auto writeExampleWithARelation() {
   return coll;
 }
 
+auto writeExampleForManualSchemaEvolution() {
+  ExampleForManualSchemaEvolutionCollection coll;
+  auto elem = coll.create();
+  elem.oldMember().i = 123;
+  elem.oldMember().arr = {42., 42.};
+
+  return coll;
+}
+
 podio::Frame createFrame() {
   podio::Frame event;
 
@@ -51,6 +61,7 @@ podio::Frame createFrame() {
   event.put(writeExampleHit(), "datatypeMemberAdditionTest");
   event.put(writeExampleWithNamespace(), "componentMemberRenameTest");
   event.put(writeExampleWithARelation(), "floatToDoubleMemberTest");
+  event.put(writeExampleForManualSchemaEvolution(), "manualSchemaEvolutionTest");
 
   return event;
 }

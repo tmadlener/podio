@@ -2,6 +2,7 @@
 #define PODIO_TESTS_SCHEMAEVOLUTION_READNEWDATA_H // NOLINT(llvm-header-guard): folder structure not suitable
 
 #include "datamodel/ExampleClusterCollection.h"
+#include "datamodel/ExampleForManualSchemaEvolutionCollection.h"
 #include "datamodel/ExampleHitCollection.h"
 #include "datamodel/ExampleWithARelationCollection.h"
 #include "datamodel/ExampleWithNamespaceCollection.h"
@@ -59,6 +60,14 @@ int readExampleWithARelation(const podio::Frame& event) {
   return 0;
 }
 
+int readExampleForManualSchemaEvlution(const podio::Frame& event) {
+  const auto& coll = event.get<ExampleForManualSchemaEvolutionCollection>("manualSchemaEvolutionTest");
+  auto elem = coll[0];
+  ASSERT_EQUAL(elem.newMember(), 123, "Manual schema evolution was not able to preserve old value")
+
+  return 0;
+}
+
 template <typename ReaderT>
 int read_new_data(const std::string& filename) {
   ReaderT reader{};
@@ -71,6 +80,7 @@ int read_new_data(const std::string& filename) {
   result += readExampleCluster(event);
   result += readExampleWithNamespace(event);
   result += readExampleWithARelation(event);
+  result += readExampleForManualSchemaEvlution(event);
 
   return result;
 }

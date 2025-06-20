@@ -90,6 +90,14 @@ datatypes :
      - double z [mm]     // z-coordinate
      - double energy [GeV] // measured energy deposit
 
+  ExampleForManualSchemaEvolution:
+    Author: "T. Madlener"
+    Description: |
+      This is a datatype that demonstrates a non-trivial schema evolution.
+      Precisely, it replaces one member with a different one with a different type and name
+    Members:
+      - CompWithInit oldMember // the old member
+
   ExampleMC :
     Description : "Example MC-particle"
     Author: "F.Gaede"

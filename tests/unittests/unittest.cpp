@@ -1619,7 +1619,8 @@ TEST_CASE("Add type lists", "[basics][code-gen]") {
                                                         "ExampleWithUserInit",
                                                         "ExampleWithInterfaceRelation",
                                                         "ExampleWithExternalExtraCode",
-                                                        "nsp::EnergyInNamespace"}));
+                                                        "nsp::EnergyInNamespace",
+                                                        "ExampleForManualSchemaEvolution"}));
   std::vector<std::string> linkTypes;
   addTypeAll(datamodel::datamodelLinkTypes{}, linkTypes);
   REQUIRE_THAT(linkTypes,
