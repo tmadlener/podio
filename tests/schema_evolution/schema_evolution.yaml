@@ -16,3 +16,8 @@ evolutions:
     member_rename:
       - energy
       - newEnergyName
+
+  ExampleForManualSchemaEvolution:
+    manual_evolution:
+      from: CompWithInit oldMember
+      to: int newMember

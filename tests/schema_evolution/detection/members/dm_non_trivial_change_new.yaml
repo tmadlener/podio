@@ -1,0 +1,8 @@
+schema_version: 3
+
+datatypes:
+  TypeWithNonTrivialMemberChange:
+    Description: "A type with a non-trivial member change"
+    Author: "Thomas Madlener"
+    Members:
+      - float onlyZ // only the z-components should survive

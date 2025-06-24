@@ -6,7 +6,7 @@ Provides infrastructure for analyzing schema definitions for schema evolution
 import sys
 import yaml
 
-from podio_gen.podio_config_reader import PodioConfigReader
+from podio_gen.podio_config_reader import PodioConfigReader, MemberParser
 
 
 # @TODO: not really a good class model here
@@ -170,6 +170,18 @@ class DroppedMultiRelation(SchemaChange):
         self.klassname = datatype
         super().__init__(
             f"'{self.klassname}' has dropped a OneToManyRelation '{self.member.name}'"
+        )
+
+
+class ManualMemberChange(SchemaChange):
+    """Class representing a non-trivial evolution for a member"""
+
+    def __init__(self, name, old_member, new_member):
+        self.name = name
+        self.old_member = old_member
+        self.new_member = new_member
+        super().__init__(
+            f"'{self.name}': member '{self.old_member.name}' ({self.old_member.full_type}) will be manually evolved to '{self.new_member.name}' ({self.new_member.full_type})"
         )
 
 
@@ -394,6 +406,29 @@ class DataModelComparator:
 
         return False
 
+    def check_non_trivial_member_change(self, added_member, dropped_member, schema_changes):
+        """Check whether a set of additions and removals of members for a given
+        datatype constitute a non-trivial change where we need user input to
+        decide whether we need to mark it as a potential problem, or whether we
+        can assume the users know what they are doing"""
+        for schema_change in self.read_schema_changes:
+            if (
+                isinstance(schema_change, ManualMemberChange)
+                and (schema_change.name == dropped_member.klassname)
+                and (schema_change.old_member.name == dropped_member.member.name)
+                and (schema_change.new_member.name == added_member.member.name)
+                and (schema_change.old_member.full_type == dropped_member.member.full_type)
+                and (schema_change.new_member.full_type == added_member.member.full_type)
+            ):
+                # remove the dropping and addition from changes and add the
+                # manual change
+                schema_changes.remove(dropped_member)
+                schema_changes.remove(added_member)
+                schema_changes.append(schema_change)
+                return True
+
+        return False
+
     def filter_types_with_adds_and_drops(self, added_members, dropped_members):
         """Filter all additions and removals and return pairs of additions /
         removals that happen on the same datatype"""
@@ -410,13 +445,18 @@ class DataModelComparator:
         same_type_adds_drops = self.filter_types_with_adds_and_drops(
             added_members, dropped_members
         )
+
         for added_member, dropped_member in same_type_adds_drops:
-            if not self.check_rename(added_member, dropped_member, schema_changes):
+            non_trivial = self.check_non_trivial_member_change(
+                added_member, dropped_member, schema_changes
+            )
+            rename = self.check_rename(added_member, dropped_member, schema_changes)
+            if not non_trivial and not rename:
                 self.warnings.append(
-                    f"Definition '{dropped_member.klassname}' has a potential "
-                    f"rename: '{dropped_member.member.name}' -> "
-                    f"'{added_member.member.name}' of type "
-                    f"'{dropped_member.member.full_type}'."
+                    f"Definition '{dropped_member.klassname}' has a potentially "
+                    f"problematic schema evolution from '{dropped_member.member.name}' "
+                    f"({dropped_member.member.full_type}) -> '{added_member.member.name}' "
+                    f"({added_member.member.full_type})."
                 )
 
     def heuristics(self):
@@ -539,7 +579,7 @@ class DataModelComparator:
 
     def read_evolution_file(self) -> None:
         """read and parse evolution file"""
-        supported_operations = ("member_rename", "class_renamed_to")
+        supported_operations = ("member_rename", "class_renamed_to", "manual_evolution")
         with open(self.evolution_file, "r", encoding="utf-8") as stream:
             content = yaml.load(stream, yaml.SafeLoader)
             from_schema_version = content["from_schema_version"]
@@ -553,6 +593,7 @@ class DataModelComparator:
                 )
 
             if "evolutions" in content:
+                parser = MemberParser()
                 for klassname, value in content["evolutions"].items():
                     # now let's go through the various supported evolutions
                     for operation, details in value.items():
@@ -566,6 +607,11 @@ class DataModelComparator:
                             self.read_schema_changes.append(schema_change)
                         elif operation == "class_renamed_to":
                             schema_change = RenamedDataType(klassname, details)
+                            self.read_schema_changes.append(schema_change)
+                        elif operation == "manual_evolution":
+                            old_member = parser.parse(details["from"], require_description=False)
+                            new_member = parser.parse(details["to"], require_description=False)
+                            schema_change = ManualMemberChange(klassname, old_member, new_member)
                             self.read_schema_changes.append(schema_change)
 
 

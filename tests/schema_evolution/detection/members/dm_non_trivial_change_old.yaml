@@ -1,0 +1,12 @@
+schema_version: 2
+
+components:
+  Vector3d:
+    Members: [float x, float y, float z]
+
+datatypes:
+  TypeWithNonTrivialMemberChange:
+    Description: "A type with a non-trivial member change"
+    Author: "Thomas Madlener"
+    Members:
+      - Vector3d full3D // old version has a 3D vector
