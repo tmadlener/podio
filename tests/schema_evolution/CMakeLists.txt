@@ -15,6 +15,16 @@ PODIO_ADD_ROOT_IO_DICT(TestDataModel_v3Dict TestDataModel_v3 "${headers}" ${CMAK
 
 PODIO_ADD_SIO_IO_BLOCKS(TestDataModel_v3 "${headers}" "${sources}")
 
+add_library(manualDatamodelEvolution SHARED
+  src/ManualMemberEvolution.cc
+)
+target_link_libraries(manualDatamodelEvolution PUBLIC podio::podio TestDataModel_v3)
+
+set(evolution_headers
+  ${PROJECT_SOURCE_DIR}/tests/schema_evolution/src/OldExampleForManualSchemaEvolutionData.h
+)
+PODIO_ADD_ROOT_IO_DICT(manualDatamodelEvolutionDict manualDatamodelEvolution "${evolution_headers}" src/selection.xml)
+
 #--- Helper function to create a test in an environment that is suitable to
 #--- read data in a new schema version
 function(PODIO_CREATE_READ_NEW_DATA_TEST sourcefile additional_libs)

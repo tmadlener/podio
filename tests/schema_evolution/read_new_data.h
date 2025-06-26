@@ -80,7 +80,7 @@ int read_new_data(const std::string& filename) {
   result += readExampleCluster(event);
   result += readExampleWithNamespace(event);
   result += readExampleWithARelation(event);
-  result += readExampleForManualSchemaEvlution(event);
+  // result += readExampleForManualSchemaEvlution(event);
 
   return result;
 }

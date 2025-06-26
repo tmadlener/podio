@@ -177,11 +177,11 @@ class ManualMemberChange(SchemaChange):
     """Class representing a non-trivial evolution for a member"""
 
     def __init__(self, name, old_member, new_member):
-        self.name = name
         self.old_member = old_member
         self.new_member = new_member
+        self.klassname = name
         super().__init__(
-            f"'{self.name}': member '{self.old_member.name}' ({self.old_member.full_type}) will be manually evolved to '{self.new_member.name}' ({self.new_member.full_type})"
+            f"'{self.klassname}': member '{self.old_member.name}' ({self.old_member.full_type}) will be manually evolved to '{self.new_member.name}' ({self.new_member.full_type})"
         )
 
 
@@ -216,7 +216,7 @@ def root_filter(schema_changes):
     """
     relevant_schema_changes = []
     for schema_change in schema_changes:
-        if isinstance(schema_change, RenamedMember):
+        if isinstance(schema_change, (RenamedMember, ManualMemberChange)):
             relevant_schema_changes.append(schema_change)
     return relevant_schema_changes
 
@@ -414,7 +414,7 @@ class DataModelComparator:
         for schema_change in self.read_schema_changes:
             if (
                 isinstance(schema_change, ManualMemberChange)
-                and (schema_change.name == dropped_member.klassname)
+                and (schema_change.klassname == dropped_member.klassname)
                 and (schema_change.old_member.name == dropped_member.member.name)
                 and (schema_change.new_member.name == added_member.member.name)
                 and (schema_change.old_member.full_type == dropped_member.member.full_type)
@@ -636,4 +636,4 @@ if __name__ == "__main__":
     comparator.compare()
     if not comparator.print_comparison():
         sys.exit(1)
-    # print(comparator.get_changed_schemata(schema_filter=root_filter))
+    print(comparator.get_changed_schemata(schema_filter=root_filter))

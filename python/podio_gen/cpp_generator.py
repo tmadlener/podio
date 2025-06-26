@@ -9,7 +9,7 @@ from collections import defaultdict
 from collections.abc import Mapping
 
 from podio_schema_evolution import DataModelComparator
-from podio_schema_evolution import RenamedMember, root_filter, RootIoRule
+from podio_schema_evolution import RenamedMember, root_filter, RootIoRule, ManualMemberChange
 from podio_gen.generator_base import ClassGeneratorBaseMixin, write_file_if_changed
 from podio_gen.generator_utils import DataType, DataModelJSONEncoder
 
@@ -374,11 +374,14 @@ have resolvable schema evolution incompatibilities:"
                     print(warning)
                 sys.exit(-1)
 
+            print(comparator.schema_changes)
             # now go through all the io_handlers and see what we have to do
             if "ROOT" in self.io_handlers:
                 for item in root_filter(comparator.schema_changes):
+                    print(item)
                     # add whatever is relevant to our ROOT schema evolution
                     self.root_schema_dict.setdefault(item.klassname, []).append(item)
+                    print(item.klassname, self.root_schema_dict)
 
     def _preprocess_schema_evolution_datatype(self, name, datatype):
         """Preprocess this datatype (and generate the necessary code) in case
@@ -476,7 +479,7 @@ have resolvable schema evolution incompatibilities:"
         """Prepare the IORules to be put in the Reflex dictionary"""
         for type_name, schema_changes in self.root_schema_dict.items():
             for schema_change in schema_changes:
-                if isinstance(schema_change, RenamedMember):
+                if isinstance(schema_change, (RenamedMember, ManualMemberChange)):
                     # find out the type of the renamed member
                     component = self.datamodel.components.get(type_name)
                     is_datatype = False
