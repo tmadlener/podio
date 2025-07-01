@@ -176,10 +176,11 @@ class DroppedMultiRelation(SchemaChange):
 class ManualMemberChange(SchemaChange):
     """Class representing a non-trivial evolution for a member"""
 
-    def __init__(self, name, old_member, new_member):
+    def __init__(self, name, old_member, new_member, evolution):
         self.old_member = old_member
         self.new_member = new_member
         self.klassname = name
+        self.manual_evolution = evolution
         super().__init__(
             f"'{self.klassname}': member '{self.old_member.name}' ({self.old_member.full_type}) will be manually evolved to '{self.new_member.name}' ({self.new_member.full_type})"
         )
@@ -613,7 +614,9 @@ class DataModelComparator:
                         elif operation == "manual_evolution":
                             old_member = parser.parse(details["from"], require_description=False)
                             new_member = parser.parse(details["to"], require_description=False)
-                            schema_change = ManualMemberChange(klassname, old_member, new_member)
+                            schema_change = ManualMemberChange(
+                                klassname, old_member, new_member, details["with_evolution"]
+                            )
                             self.read_schema_changes.append(schema_change)
 
 

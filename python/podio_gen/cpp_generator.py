@@ -489,7 +489,7 @@ have resolvable schema evolution incompatibilities:"
                     member_type = None
                     for member in component["Members"]:
                         if member.name == schema_change.new_member.name:
-                            member_type = member.full_type
+                            member_type = schema_change.old_member.full_type
                     if member_type is None:
                         raise ValueError(
                             "Could not find type for renamed member"
@@ -506,7 +506,10 @@ have resolvable schema evolution incompatibilities:"
                     iorule.version = self.old_schema_version
                     iorule.source = f"{member_type} {schema_change.old_member.name}"
                     iorule.target = schema_change.new_member.name
-                    iorule.code = f"{iorule.target} = onfile.{schema_change.old_member.name};"
+                    if isinstance(schema_change, ManualMemberChange):
+                        iorule.code = f"{schema_change.manual_evolution};"
+                    else:
+                        iorule.code = f"{iorule.target} = onfile.{schema_change.old_member.name};"
                     self.root_schema_iorules.add(iorule)
                 else:
                     raise NotImplementedError(

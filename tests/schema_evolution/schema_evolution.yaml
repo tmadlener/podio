@@ -21,3 +21,4 @@ evolutions:
     manual_evolution:
       from: CompWithInit oldMember
       to: int newMember
+      with_evolution: newMember = onfile.oldMember.i
