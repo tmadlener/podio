@@ -420,13 +420,13 @@ have resolvable schema evolution incompatibilities:"
                 for evolution in evolutions:
                     if (
                         isinstance(evolution, RenamedMember)
-                        and member.name == evolution.member_name_new
+                        and member.name == evolution.new_member.name
                     ):
                         # We have a member that has been renamed. We just need to
                         # make sure we get a version of the Data class with the old
                         # name
                         needs_schema_evolution = True
-                        member.name = evolution.member_name_old
+                        member.name = evolution.old_member.name
 
         if needs_schema_evolution:
             print(f"  Preparing explicit schema evolution for {name}")
@@ -448,8 +448,8 @@ have resolvable schema evolution incompatibilities:"
             for schema_evolution in schema_evolutions:
                 if isinstance(schema_evolution, RenamedMember):
                     for member in component["Members"]:
-                        if member.name == schema_evolution.member_name_new:
-                            member.name = schema_evolution.member_name_old
+                        if member.name == schema_evolution.new_member.name:
+                            member.name = schema_evolution.old_member.name
                     component["class"] = DataType(_versioned(name, self.old_schema_version))
                 else:
                     raise NotImplementedError
@@ -488,7 +488,7 @@ have resolvable schema evolution incompatibilities:"
                         component = self.datamodel.datatypes[type_name]
                     member_type = None
                     for member in component["Members"]:
-                        if member.name == schema_change.member_name_new:
+                        if member.name == schema_change.new_member.name:
                             member_type = member.full_type
                     if member_type is None:
                         raise ValueError(
@@ -504,9 +504,9 @@ have resolvable schema evolution incompatibilities:"
                         iorule.targetClass = f"{type_name}Data"
 
                     iorule.version = self.old_schema_version
-                    iorule.source = f"{member_type} {schema_change.member_name_old}"
-                    iorule.target = schema_change.member_name_new
-                    iorule.code = f"{iorule.target} = onfile.{schema_change.member_name_old};"
+                    iorule.source = f"{member_type} {schema_change.old_member.name}"
+                    iorule.target = schema_change.new_member.name
+                    iorule.code = f"{iorule.target} = onfile.{schema_change.old_member.name};"
                     self.root_schema_iorules.add(iorule)
                 else:
                     raise NotImplementedError(

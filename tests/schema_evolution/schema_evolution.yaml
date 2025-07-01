@@ -6,16 +6,16 @@ evolutions:
 
   ex2::NamespaceStruct:
     member_rename:
-      - y
-      - y_new
+      from: int y
+      to: int y_new
 
   EventInfo:
     class_renamed_to: EventInfoNewName
 
   ExampleCluster:
     member_rename:
-      - energy
-      - newEnergyName
+      from: double energy
+      to: double newEnergyName
 
   ExampleForManualSchemaEvolution:
     manual_evolution:

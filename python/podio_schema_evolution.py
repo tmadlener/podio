@@ -107,13 +107,13 @@ class ChangedMemberType(SchemaChange):
 class RenamedMember(SchemaChange):
     """Class representing a renamed member"""
 
-    def __init__(self, name, member_name_old, member_name_new):
-        self.member_name_old = member_name_old
-        self.member_name_new = member_name_new
+    def __init__(self, name, old_member, new_member):
+        self.old_member = old_member
+        self.new_member = new_member
         self.klassname = name
         super().__init__(
-            f"'{self.klassname}': member '{self.member_name_old}' renamed to "
-            f"'{self.member_name_new}'."
+            f"'{self.klassname}': member '{self.old_member.name}' renamed to "
+            f"'{self.new_member.name}'."
         )
 
 
@@ -394,8 +394,8 @@ class DataModelComparator:
             if (
                 isinstance(schema_change, RenamedMember)
                 and (schema_change.klassname == dropped_member.klassname)
-                and (schema_change.member_name_old == dropped_member.member.name)
-                and (schema_change.member_name_new == added_member.member.name)
+                and (schema_change.old_member.name == dropped_member.member.name)
+                and (schema_change.new_member.name == added_member.member.name)
             ):
                 # remove the dropping/adding from the schema changes
                 # and replace it by the rename
@@ -603,7 +603,9 @@ class DataModelComparator:
                                 " or not supported"
                             )
                         if operation == "member_rename":
-                            schema_change = RenamedMember(klassname, details[0], details[1])
+                            old_member = parser.parse(details["from"], require_description=False)
+                            new_member = parser.parse(details["to"], require_description=False)
+                            schema_change = RenamedMember(klassname, old_member, new_member)
                             self.read_schema_changes.append(schema_change)
                         elif operation == "class_renamed_to":
                             schema_change = RenamedDataType(klassname, details)
