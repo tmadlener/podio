@@ -72,11 +72,13 @@
 <li class="toctree-l3"><a class="reference internal" href="../datamodel_syntax.html#explicit-definition-of-methods">Explicit definition of methods</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../datamodel_syntax.html#definition-of-custom-interfaces">Definition of custom interfaces</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../datamodel_syntax.html#definition-of-custom-interfaces">Definition of custom interfaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datamodel_syntax.html#definition-of-links">Definition of links</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../datamodel_syntax.html#assigning-to-interface-types">Assigning to interface types</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../datamodel_syntax.html#global-options">Global options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datamodel_syntax.html#embedding-a-datamodel-version">Embedding a datamodel version</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../datamodel_syntax.html#extending-a-datamodel-using-types-from-an-upstream-datamodel">Extending a datamodel / using types from an upstream datamodel</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../datamodel_syntax.html#potential-pitfalls">Potential pitfalls</a></li>
 </ul>
@@ -88,12 +90,25 @@
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#object-creation-and-storage">Object Creation and Storage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#object-references">Object References</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#looping-through-collections">Looping through Collections</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples.html#cloneing-objects">Cloneing objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples.html#cloning-objects">Cloning objects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#support-for-notebook-pattern">Support for Notebook-Pattern</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#podio-frame-container"><code class="docutils literal notranslate"><span class="pre">podio::Frame</span></code> container</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#object-retrieval">Object Retrieval</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples.html#user-defined-meta-data">User defined Meta Data</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../examples.html#python-interface">Python Interface</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../reading_writing.html">ROOT Support in Podio</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reading_writing.html#c">C++</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../reading_writing.html#reading">Reading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reading_writing.html#writing">Writing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../reading_writing.html#python">Python</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../reading_writing.html#id1">Reading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reading_writing.html#id2">Writing</a></li>
 </ul>
 </li>
 </ul>
@@ -126,6 +141,20 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../links.html">Linking unrelated objects with each other</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../links.html#link-basics"><code class="docutils literal notranslate"><span class="pre">Link</span></code> basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../links.html#how-to-use-links">How to use <code class="docutils literal notranslate"><span class="pre">Link</span></code>s</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../links.html#enabling-i-o-capabilities-for-links">Enabling I/O capabilities for <code class="docutils literal notranslate"><span class="pre">Link</span></code>s</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../links.html#the-linknavigator-utility">The <code class="docutils literal notranslate"><span class="pre">LinkNavigator</span></code> utility</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../links.html#implementation-details">Implementation details</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../links.html#file-structure">File structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../links.html#default-and-mutable-link-classes">Default and <code class="docutils literal notranslate"><span class="pre">Mutable</span></code> <code class="docutils literal notranslate"><span class="pre">Link</span></code> classes</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../storage_details.html">Storage details of files produced by podio</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../storage_details.html#root">ROOT</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../storage_details.html#storage-of-collection-data">Storage of Collection data</a></li>
@@ -139,6 +168,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../cmake.html">Building a new data model library with CMake</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../cmake.html#exported-cmake-functions-and-macros">Exported CMake functions and macros</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../cmake.html#a-simple-example">A simple example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cmake.html#more-advanced-data-model-generation">More advanced data model generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cmake.html#example-usage-of-advanced-options">Example usage of Advanced options</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced_topics.html">Advanced Topics</a><ul>
@@ -208,8 +239,9 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../collections_as_container.html#collection-iterators-and-standard-iterator-adaptors">Collection iterators and standard iterator adaptors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../collections_as_container.html#collection-as-a-range">Collection as a <em>range</em></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../collections_as_container.html#collection-and-standard-algorithms">Collection and standard algorithms</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../collections_as_container.html#standard-range-algorithms">Standard range algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../collections_as_container.html#collection-and-standard-range-algorithms">Collection and standard range algorithms</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../cpp_api/api.html">C++ API documentation</a><ul>
@@ -224,6 +256,10 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../cpp_api/class/classpodio_1_1_collection_i_d_table.html">Class podio::CollectionIDTable</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../cpp_api/class/classpodio_1_1_collection_i_d_table.html#_CPPv4N5podio17CollectionIDTableE"><code class="docutils literal notranslate"><span class="pre">CollectionIDTable</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../cpp_api/class/classpodio_1_1_data_source.html">Class podio::DataSource</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../cpp_api/class/classpodio_1_1_data_source.html#_CPPv4N5podio10DataSourceE"><code class="docutils literal notranslate"><span class="pre">DataSource</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../cpp_api/class/classpodio_1_1_datamodel_definition_collector.html">Class podio::DatamodelDefinitionCollector</a><ul>
@@ -248,6 +284,34 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../cpp_api/class/classpodio_1_1_i_collection_provider.html">Class podio::ICollectionProvider</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../cpp_api/class/classpodio_1_1_i_collection_provider.html#_CPPv4N5podio19ICollectionProviderE"><code class="docutils literal notranslate"><span class="pre">ICollectionProvider</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../cpp_api/class/classpodio_1_1_link_collection.html">Class podio::LinkCollection</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../cpp_api/class/classpodio_1_1_link_collection.html#_CPPv4I00EN5podio14LinkCollectionE"><code class="docutils literal notranslate"><span class="pre">LinkCollection</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../cpp_api/class/classpodio_1_1_link_collection_data.html">Class podio::LinkCollectionData</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../cpp_api/class/classpodio_1_1_link_collection_data.html#_CPPv4I00EN5podio18LinkCollectionDataE"><code class="docutils literal notranslate"><span class="pre">LinkCollectionData</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../cpp_api/class/classpodio_1_1_link_collection_iterator_t.html">Class podio::LinkCollectionIteratorT</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../cpp_api/class/classpodio_1_1_link_collection_iterator_t.html#_CPPv4I00_bEN5podio23LinkCollectionIteratorTE"><code class="docutils literal notranslate"><span class="pre">LinkCollectionIteratorT</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../cpp_api/class/classpodio_1_1_link_navigator.html">Class podio::LinkNavigator</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../cpp_api/class/classpodio_1_1_link_navigator.html#_CPPv4I0EN5podio13LinkNavigatorE"><code class="docutils literal notranslate"><span class="pre">LinkNavigator</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../cpp_api/class/classpodio_1_1_link_obj.html">Class podio::LinkObj</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../cpp_api/class/classpodio_1_1_link_obj.html#_CPPv4I00EN5podio7LinkObjE"><code class="docutils literal notranslate"><span class="pre">LinkObj</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../cpp_api/class/classpodio_1_1_link_s_i_o_block.html">Class podio::LinkSIOBlock</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../cpp_api/class/classpodio_1_1_link_s_i_o_block.html#_CPPv4I00EN5podio12LinkSIOBlockE"><code class="docutils literal notranslate"><span class="pre">LinkSIOBlock</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../cpp_api/class/classpodio_1_1_link_t.html">Class podio::LinkT</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../cpp_api/class/classpodio_1_1_link_t.html#_CPPv4I00_bEN5podio5LinkTE"><code class="docutils literal notranslate"><span class="pre">LinkT</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../cpp_api/class/classpodio_1_1_object_i_d.html">Class podio::ObjectID</a><ul>
@@ -299,7 +363,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../cpp_api/class/classpodio_1_1_s_i_o_block_user_data.html">Class podio::SIOBlockUserData</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../cpp_api/class/classpodio_1_1_s_i_o_block_user_data.html#_CPPv4I00EN5podio16SIOBlockUserDataE"><code class="docutils literal notranslate"><span class="pre">SIOBlockUserData</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cpp_api/class/classpodio_1_1_s_i_o_block_user_data.html#_CPPv4I_21SupportedUserDataTypeEN5podio16SIOBlockUserDataE"><code class="docutils literal notranslate"><span class="pre">SIOBlockUserData</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../cpp_api/class/classpodio_1_1_s_i_o_collection_i_d_table_block.html">Class podio::SIOCollectionIDTableBlock</a><ul>
@@ -369,8 +433,8 @@
 <li class="toctree-l4"><a class="reference internal" href="../cpp_api/struct/structpodio_1_1_frame_1_1_frame_model.html#_CPPv4I0EN5podio5Frame10FrameModelE"><code class="docutils literal notranslate"><span class="pre">FrameModel</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../cpp_api/struct/structpodio_1_1_r_n_tuple_reader_1_1_collection_info.html">Struct podio::RNTupleReader::CollectionInfo</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../cpp_api/struct/structpodio_1_1_r_n_tuple_reader_1_1_collection_info.html#_CPPv4N5podio13RNTupleReader14CollectionInfoE"><code class="docutils literal notranslate"><span class="pre">CollectionInfo</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cpp_api/struct/structpodio_1_1_link_data.html">Struct podio::LinkData</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../cpp_api/struct/structpodio_1_1_link_data.html#_CPPv4N5podio8LinkDataE"><code class="docutils literal notranslate"><span class="pre">LinkData</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../cpp_api/struct/structpodio_1_1_r_n_tuple_writer_1_1_category_info.html">Struct podio::RNTupleWriter::CategoryInfo</a><ul>
@@ -429,12 +493,24 @@
 <li class="toctree-l4"><a class="reference internal" href="../cpp_api/struct/structpodio_1_1root__utils_1_1_collection_branches.html#_CPPv4N5podio10root_utils18CollectionBranchesE"><code class="docutils literal notranslate"><span class="pre">CollectionBranches</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../cpp_api/struct/structpodio_1_1root__utils_1_1_collection_write_info.html">Struct podio::root_utils::CollectionWriteInfo</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../cpp_api/struct/structpodio_1_1root__utils_1_1_collection_write_info.html#_CPPv4N5podio10root_utils19CollectionWriteInfoE"><code class="docutils literal notranslate"><span class="pre">CollectionWriteInfo</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../cpp_api/struct/structpodio_1_1root__utils_1_1_param_storage.html">Struct podio::root_utils::ParamStorage</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../cpp_api/struct/structpodio_1_1root__utils_1_1_param_storage.html#_CPPv4I0EN5podio10root_utils12ParamStorageE"><code class="docutils literal notranslate"><span class="pre">ParamStorage</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../cpp_api/struct/structpodio_1_1utils_1_1_maybe_shared_ptr_1_1_control_block.html">Struct podio::utils::MaybeSharedPtr::ControlBlock</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../cpp_api/struct/structpodio_1_1utils_1_1_maybe_shared_ptr_1_1_control_block.html#_CPPv4N5podio5utils14MaybeSharedPtr12ControlBlockE"><code class="docutils literal notranslate"><span class="pre">ControlBlock</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../cpp_api/struct/structpodio_1_1utils_1_1_type_list.html">Struct podio::utils::TypeList</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../cpp_api/struct/structpodio_1_1utils_1_1_type_list.html#_CPPv4IDpEN5podio5utils8TypeListE"><code class="docutils literal notranslate"><span class="pre">TypeList</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../cpp_api/struct/structpodio_1_1utils_1_1static__concatenate.html">Struct podio::utils::static_concatenate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../cpp_api/struct/structpodio_1_1utils_1_1static__concatenate.html#_CPPv4I_DpRKNSt11string_viewEEN5podio5utils18static_concatenateE"><code class="docutils literal notranslate"><span class="pre">static_concatenate</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../cpp_api/struct/structpodio_1_1version_1_1_version.html">Struct podio::version::Version</a><ul>
@@ -444,6 +520,14 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../cpp_api/namespacelist.html">Namespace list</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../cpp_api/namespace/namespace_r_o_o_t.html">Namespace ROOT</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../cpp_api/namespace/namespace_r_o_o_t.html#_CPPv44ROOT"><code class="docutils literal notranslate"><span class="pre">ROOT</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../cpp_api/namespace/namespace_r_o_o_t_1_1_r_d_f.html">Namespace ROOT::RDF</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../cpp_api/namespace/namespace_r_o_o_t_1_1_r_d_f.html#_CPPv4N4ROOT3RDFE"><code class="docutils literal notranslate"><span class="pre">RDF</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../cpp_api/namespace/namespacepodio.html">Namespace podio</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../cpp_api/namespace/namespacepodio.html#_CPPv45podio"><code class="docutils literal notranslate"><span class="pre">podio</span></code></a></li>
 </ul>
@@ -454,6 +538,10 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../cpp_api/namespace/namespacepodio_1_1det.html">Namespace podio::det</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../cpp_api/namespace/namespacepodio_1_1det.html#_CPPv4N5podio3detE"><code class="docutils literal notranslate"><span class="pre">det</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../cpp_api/namespace/namespacepodio_1_1root__compat.html">Namespace podio::root_compat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../cpp_api/namespace/namespacepodio_1_1root__compat.html#_CPPv4N5podio11root_compatE"><code class="docutils literal notranslate"><span class="pre">root_compat</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../cpp_api/namespace/namespacepodio_1_1root__utils.html">Namespace podio::root_utils</a><ul>
@@ -496,6 +584,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#podio.base_writer.BaseWriterMixin"><code class="docutils literal notranslate"><span class="pre">BaseWriterMixin</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#module-podio.data_source">podio.data_source module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-podio.frame">podio.frame module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#podio.frame.Frame"><code class="docutils literal notranslate"><span class="pre">Frame</span></code></a></li>
 </ul>
@@ -523,6 +612,15 @@
 <li class="toctree-l4"><a class="reference internal" href="#podio.sio_io.Writer"><code class="docutils literal notranslate"><span class="pre">Writer</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#module-podio.utils">podio.utils module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#podio.utils.convert_to_str_paths"><code class="docutils literal notranslate"><span class="pre">convert_to_str_paths()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#podio.utils.expand_glob"><code class="docutils literal notranslate"><span class="pre">expand_glob()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-podio.version">podio.version module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#podio.version.parse"><code class="docutils literal notranslate"><span class="pre">parse()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#module-podio">Module contents</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#podio.Frame"><code class="docutils literal notranslate"><span class="pre">Frame</span></code></a></li>
 </ul>
@@ -532,6 +630,7 @@
 <li class="toctree-l2"><a class="reference internal" href="podio_class_generator.html">podio_class_generator module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="podio_class_generator.html#podio_class_generator.clang_format_file"><code class="docutils literal notranslate"><span class="pre">clang_format_file()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="podio_class_generator.html#podio_class_generator.has_clang_format"><code class="docutils literal notranslate"><span class="pre">has_clang_format()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="podio_class_generator.html#podio_class_generator.parse_version"><code class="docutils literal notranslate"><span class="pre">parse_version()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="podio_class_generator.html#podio_class_generator.read_upstream_edm"><code class="docutils literal notranslate"><span class="pre">read_upstream_edm()</span></code></a></li>
 </ul>
 </li>
@@ -574,20 +673,29 @@
 <li class="toctree-l3"><a class="reference internal" href="podio_schema_evolution.html#podio_schema_evolution.AddedComponent"><code class="docutils literal notranslate"><span class="pre">AddedComponent</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="podio_schema_evolution.html#podio_schema_evolution.AddedDatatype"><code class="docutils literal notranslate"><span class="pre">AddedDatatype</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="podio_schema_evolution.html#podio_schema_evolution.AddedMember"><code class="docutils literal notranslate"><span class="pre">AddedMember</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="podio_schema_evolution.html#podio_schema_evolution.ChangedMember"><code class="docutils literal notranslate"><span class="pre">ChangedMember</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="podio_schema_evolution.html#podio_schema_evolution.AddedMultiRelation"><code class="docutils literal notranslate"><span class="pre">AddedMultiRelation</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="podio_schema_evolution.html#podio_schema_evolution.AddedSingleRelation"><code class="docutils literal notranslate"><span class="pre">AddedSingleRelation</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="podio_schema_evolution.html#podio_schema_evolution.AddedVectorMember"><code class="docutils literal notranslate"><span class="pre">AddedVectorMember</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="podio_schema_evolution.html#podio_schema_evolution.ChangedMemberType"><code class="docutils literal notranslate"><span class="pre">ChangedMemberType</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="podio_schema_evolution.html#podio_schema_evolution.DataModelComparator"><code class="docutils literal notranslate"><span class="pre">DataModelComparator</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="podio_schema_evolution.html#podio_schema_evolution.DataModelComparator.check_rename"><code class="docutils literal notranslate"><span class="pre">DataModelComparator.check_rename()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="podio_schema_evolution.html#podio_schema_evolution.DataModelComparator.compare"><code class="docutils literal notranslate"><span class="pre">DataModelComparator.compare()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="podio_schema_evolution.html#podio_schema_evolution.DataModelComparator.filter_types_with_adds_and_drops"><code class="docutils literal notranslate"><span class="pre">DataModelComparator.filter_types_with_adds_and_drops()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="podio_schema_evolution.html#podio_schema_evolution.DataModelComparator.get_changed_schemata"><code class="docutils literal notranslate"><span class="pre">DataModelComparator.get_changed_schemata()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="podio_schema_evolution.html#podio_schema_evolution.DataModelComparator.heuristics"><code class="docutils literal notranslate"><span class="pre">DataModelComparator.heuristics()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="podio_schema_evolution.html#podio_schema_evolution.DataModelComparator.heuristics_members"><code class="docutils literal notranslate"><span class="pre">DataModelComparator.heuristics_members()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="podio_schema_evolution.html#podio_schema_evolution.DataModelComparator.print_comparison"><code class="docutils literal notranslate"><span class="pre">DataModelComparator.print_comparison()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="podio_schema_evolution.html#podio_schema_evolution.DataModelComparator.read"><code class="docutils literal notranslate"><span class="pre">DataModelComparator.read()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="podio_schema_evolution.html#podio_schema_evolution.DataModelComparator.read_evolution_file"><code class="docutils literal notranslate"><span class="pre">DataModelComparator.read_evolution_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="podio_schema_evolution.html#podio_schema_evolution.DataModelComparator.unsupported_changes"><code class="docutils literal notranslate"><span class="pre">DataModelComparator.unsupported_changes</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="podio_schema_evolution.html#podio_schema_evolution.DroppedComponent"><code class="docutils literal notranslate"><span class="pre">DroppedComponent</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="podio_schema_evolution.html#podio_schema_evolution.DroppedDatatype"><code class="docutils literal notranslate"><span class="pre">DroppedDatatype</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="podio_schema_evolution.html#podio_schema_evolution.DroppedMember"><code class="docutils literal notranslate"><span class="pre">DroppedMember</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="podio_schema_evolution.html#podio_schema_evolution.DroppedMultiRelation"><code class="docutils literal notranslate"><span class="pre">DroppedMultiRelation</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="podio_schema_evolution.html#podio_schema_evolution.DroppedSingleRelation"><code class="docutils literal notranslate"><span class="pre">DroppedSingleRelation</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="podio_schema_evolution.html#podio_schema_evolution.DroppedVectorMember"><code class="docutils literal notranslate"><span class="pre">DroppedVectorMember</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="podio_schema_evolution.html#podio_schema_evolution.RenamedDataType"><code class="docutils literal notranslate"><span class="pre">RenamedDataType</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="podio_schema_evolution.html#podio_schema_evolution.RenamedMember"><code class="docutils literal notranslate"><span class="pre">RenamedMember</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="podio_schema_evolution.html#podio_schema_evolution.RootIoRule"><code class="docutils literal notranslate"><span class="pre">RootIoRule</span></code></a></li>
@@ -650,6 +758,15 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="podio.pythonizations.html#module-podio.pythonizations.freeze_class">podio.pythonizations.freeze_class module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="podio.pythonizations.html#podio.pythonizations.freeze_class.FreezeClassPythonizer"><code class="docutils literal notranslate"><span class="pre">FreezeClassPythonizer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="podio.pythonizations.html#podio.pythonizations.freeze_class.FreezeClassPythonizer.filter"><code class="docutils literal notranslate"><span class="pre">FreezeClassPythonizer.filter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="podio.pythonizations.html#podio.pythonizations.freeze_class.FreezeClassPythonizer.modify"><code class="docutils literal notranslate"><span class="pre">FreezeClassPythonizer.modify()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="podio.pythonizations.html#podio.pythonizations.freeze_class.FreezeClassPythonizer.priority"><code class="docutils literal notranslate"><span class="pre">FreezeClassPythonizer.priority()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="podio.pythonizations.html#module-podio.pythonizations">Module contents</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="podio.pythonizations.html#podio.pythonizations.load_pythonizations"><code class="docutils literal notranslate"><span class="pre">load_pythonizations()</span></code></a></li>
 </ul>
@@ -691,6 +808,37 @@ setup.</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="podio.base_reader.BaseReaderMixin.current_file_version">
+<span class="sig-name descname"><span class="pre">current_file_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edm_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#podio.base_reader.BaseReaderMixin.current_file_version" title="Link to this definition"></a></dt>
+<dd><p>Get the (build) version that was used to write this file</p>
+<p>If called without argument or None, the podio build version is returned
+otherwise the build version of the datamodel</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>edm_name</strong> (<em>str</em><em>, </em><em>optional</em>) – The package name of the datamodel</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The build version of podio or the build</dt><dd><p>version of the datamodel (if available) that was used to write
+this file</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>podio.version.Version</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>KeyError</strong> – If the datamodel does not have a version stored</p></li>
+<li><p><strong>RuntimeError</strong> – If the reader is a legacy reader and a datamodel
+    version is requested</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="podio.base_reader.BaseReaderMixin.datamodel_definitions">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">datamodel_definitions</span></span><a class="headerlink" href="#podio.base_reader.BaseReaderMixin.datamodel_definitions" title="Link to this definition"></a></dt>
@@ -707,11 +855,15 @@ setup.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="podio.base_reader.BaseReaderMixin.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">category</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#podio.base_reader.BaseReaderMixin.get" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">category</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coll_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#podio.base_reader.BaseReaderMixin.get" title="Link to this definition"></a></dt>
 <dd><p>Get an iterator with access functionality for a given category.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>category</strong> (<em>str</em>) – The name of the desired category</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>category</strong> (<em>str</em>) – The name of the desired category</p></li>
+<li><p><strong>coll_names</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – The list of collections to read (optional,
+all available collections will by default)</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><dl class="simple">
@@ -823,6 +975,10 @@ write. If None, all collections are written</p></li>
 
 </dd></dl>
 
+</section>
+<section id="module-podio.data_source">
+<span id="podio-data-source-module"></span><h2>podio.data_source module<a class="headerlink" href="#module-podio.data_source" title="Link to this heading"></a></h2>
+<p>Python module for creating ROOT RDataFrame with files containing podio Frames</p>
 </section>
 <section id="module-podio.frame">
 <span id="podio-frame-module"></span><h2>podio.frame module<a class="headerlink" href="#module-podio.frame" title="Link to this heading"></a></h2>
@@ -1051,7 +1207,7 @@ pretty much face-value and there are only limited checks for this.</p></li>
 <p>Module defining the Frame iterator used by the Reader interface</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="podio.frame_iterator.FrameCategoryIterator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">podio.frame_iterator.</span></span><span class="sig-name descname"><span class="pre">FrameCategoryIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#podio.frame_iterator.FrameCategoryIterator" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">podio.frame_iterator.</span></span><span class="sig-name descname"><span class="pre">FrameCategoryIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coll_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#podio.frame_iterator.FrameCategoryIterator" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Iterator for iterating over all Frames of a given category available from a
 reader as well as accessing specific entries</p>
@@ -1061,6 +1217,8 @@ reader as well as accessing specific entries</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>reader</strong> (<a class="reference internal" href="#podio.root_io.Reader" title="podio.root_io.Reader"><em>Reader</em></a>) – Any podio reader offering access to Frames</p></li>
 <li><p><strong>category</strong> (<em>str</em>) – The category name of the Frames to be iterated over</p></li>
+<li><p><strong>coll_names</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – The list of collections to read (optional,
+all available collections will by default)</p></li>
 </ul>
 </dd>
 </dl>
@@ -1094,15 +1252,17 @@ reader as well as accessing specific entries</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="podio.reading.get_reader">
-<span class="sig-prename descclassname"><span class="pre">podio.reading.</span></span><span class="sig-name descname"><span class="pre">get_reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#podio.reading.get_reader" title="Link to this definition"></a></dt>
-<dd><p>Get an appropriate reader for the passed file.</p>
+<span class="sig-prename descclassname"><span class="pre">podio.reading.</span></span><span class="sig-name descname"><span class="pre">get_reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filenames</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#podio.reading.get_reader" title="Link to this definition"></a></dt>
+<dd><p>Get an appropriate reader for the passed files.</p>
+<p>The reader is inferred from the first file if multiple are given.
+All files are assumed to be of the same I/O format.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – The input file</p>
+<dd class="field-odd"><p><strong>filenames</strong> (<em>str</em><em> or </em><em>list</em><em>[</em><em>str</em><em>]</em>) – The input file(s)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><dl class="simple">
-<dt>an initialized reader that</dt><dd><p>is able to process the input file.</p>
+<dt>an initialized reader that</dt><dd><p>is able to process the input file(s).</p>
 </dd>
 </dl>
 </p>
@@ -1111,8 +1271,11 @@ reader as well as accessing specific entries</p>
 <dd class="field-odd"><p>root_io.[Legacy]<a class="reference internal" href="#podio.root_io.Reader" title="podio.root_io.Reader">Reader</a>, sio_io.[Legacy]<a class="reference internal" href="#podio.root_io.Reader" title="podio.root_io.Reader">Reader</a></p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> – If the file cannot be recognized, or if podio has not been
-    built with the necessary backend I/O support</p>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If the files cannot be recognized, or if podio has not been
+    built with the necessary backend I/O support</p></li>
+<li><p><strong>IndexError</strong> – If filenames is an empty list</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -1131,7 +1294,7 @@ Frame based I/O into Frames for a more seamless transition.</p>
 <p>Create a reader that reads from the passed file(s).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>filenames</strong> (<em>str</em><em> or </em><em>list</em><em>[</em><em>str</em><em>]</em>) – file(s) to open and read data from</p>
+<dd class="field-odd"><p><strong>filenames</strong> (<em>str</em><em> or </em><em>list</em><em>[</em><em>str</em><em>] or </em><em>Path</em><em> or </em><em>list</em><em>[</em><em>Path</em><em>]</em>) – file(s) to open and read data from</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1144,7 +1307,7 @@ Frame based I/O into Frames for a more seamless transition.</p>
 <p>Create an RNTuple reader that reads from the passed file(s).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>filenames</strong> (<em>str</em><em> or </em><em>list</em><em>[</em><em>str</em><em>]</em>) – file(s) to open and read data from</p>
+<dd class="field-odd"><p><strong>filenames</strong> (<em>str</em><em> or </em><em>list</em><em>[</em><em>str</em><em>] or </em><em>Path</em><em> or </em><em>list</em><em>[</em><em>Path</em><em>]</em>) – file(s) to open and read data from</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1157,7 +1320,7 @@ Frame based I/O into Frames for a more seamless transition.</p>
 <p>Create a writer for writing files</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – The name of the output file</p>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em><em> or </em><em>Path</em>) – The name of the output file</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1170,7 +1333,7 @@ Frame based I/O into Frames for a more seamless transition.</p>
 <p>Create a reader that reads from the passed file(s).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>filenames</strong> (<em>str</em><em> or </em><em>list</em><em>[</em><em>str</em><em>]</em>) – file(s) to open and read data from</p>
+<dd class="field-odd"><p><strong>filenames</strong> (<em>str</em><em> or </em><em>list</em><em>[</em><em>str</em><em>] or </em><em>Path</em><em> or </em><em>list</em><em>[</em><em>Path</em><em>]</em>) – file(s) to open and read data from</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1183,7 +1346,7 @@ Frame based I/O into Frames for a more seamless transition.</p>
 <p>Create a writer for writing files</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – The name of the output file</p>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em><em> or </em><em>Path</em>) – The name of the output file</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1202,7 +1365,7 @@ Frame based I/O into Frames for a more seamless transition.</p>
 <p>Create a reader that reads from the passed file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – File to open and read data from</p>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em><em> or </em><em>Path</em>) – File to open and read data from.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1215,7 +1378,7 @@ Frame based I/O into Frames for a more seamless transition.</p>
 <p>Create a reader that reads from the passed file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – File to open and read data from</p>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em><em> or </em><em>Path</em>) – File to open and read data from.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1224,13 +1387,79 @@ Frame based I/O into Frames for a more seamless transition.</p>
 <dt class="sig sig-object py" id="podio.sio_io.Writer">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">podio.sio_io.</span></span><span class="sig-name descname"><span class="pre">Writer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#podio.sio_io.Writer" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#podio.base_writer.BaseWriterMixin" title="podio.base_writer.BaseWriterMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseWriterMixin</span></code></a></p>
-<p>Writer class for writing podio root files</p>
-<p>Create a writer for writing files</p>
+<p>Writer class for writing podio root files.</p>
+<p>Create a writer for writing files.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – The name of the output file</p>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em><em> or </em><em>Path</em>) – The name of the output file.</p>
 </dd>
 </dl>
+</dd></dl>
+
+</section>
+<section id="module-podio.utils">
+<span id="podio-utils-module"></span><h2>podio.utils module<a class="headerlink" href="#module-podio.utils" title="Link to this heading"></a></h2>
+<p>utility functionality for podio</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="podio.utils.convert_to_str_paths">
+<span class="sig-prename descclassname"><span class="pre">podio.utils.</span></span><span class="sig-name descname"><span class="pre">convert_to_str_paths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filenames</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#podio.utils.convert_to_str_paths" title="Link to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Converts filenames to string paths, handling both string and pathlib.Path objects and</dt><dd><p>iterables of such objects.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filenames</strong> (<em>str</em><em>, </em><em>Path</em><em>, or </em><em>Iterable</em><em>[</em><em>str</em><em> | </em><em>Path</em><em>]</em>) – A single filepath or an iterable of</p></li>
+<li><p><strong>object</strong> (<em>filepaths to convert to str</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of filepaths as strings.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="podio.utils.expand_glob">
+<span class="sig-prename descclassname"><span class="pre">podio.utils.</span></span><span class="sig-name descname"><span class="pre">expand_glob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#podio.utils.expand_glob" title="Link to this definition"></a></dt>
+<dd><p>Expands a given glob pattern into a list of matching file paths.</p>
+<p>This function takes a glob pattern as input and returns a list of strings
+containing the paths that match the pattern. It supports standard glob rules
+extended with tilde expansion and brace expansion. If the pattern doesn’t
+contain any wildcards, it is placed in the returned list as is. Paths that
+cannot be accessed are displayed on stderr, but the expansion process is not
+aborted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pattern</strong> (<em>str</em>) – The glob pattern to expand.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of strings containing the matching file paths.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of str</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>cppyy.gbl.std.runtime_error</strong> – If no matches are found or if there is an error during glob</p></li>
+<li><p><strong>expansion.</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-podio.version">
+<span id="podio-version-module"></span><h2>podio.version module<a class="headerlink" href="#module-podio.version" title="Link to this heading"></a></h2>
+<p>Module that facilitates working with the podio::version::Version</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="podio.version.parse">
+<span class="sig-prename descclassname"><span class="pre">podio.version.</span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#podio.version.parse" title="Link to this definition"></a></dt>
+<dd><p>Construct a version from either a list of integers or a version string</p>
 </dd></dl>
 
 </section>
