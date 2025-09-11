@@ -11,6 +11,7 @@
 
 {{ utils.namespace_open(class.namespace) }}
 
+namespace v{{ schema_version }} {
 {{ macros.class_description(class.bare_type, Description, Author, postfix='Data') }}
 class {{ class.bare_type }}Data {
 public:
@@ -23,11 +24,10 @@ public:
   unsigned int {{ member.name }}_end{};
 {% endfor %}
 };
-
-
-namespace v{{ schema_version }} {
-using {{ class.bare_type }}Data = {{ class.full_type }}Data;
 } // namespace v{{ schema_version }}
+
+// Declare the current version as the canonical one for the whole datamodel
+using {{ class.bare_type }}Data = v{{ schema_version }}::{{ class.bare_type }}Data;
 
 {% if old_versions %}
 // Definition for older versions

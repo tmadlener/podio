@@ -7,7 +7,8 @@ from pythonizations import load_pythonizations  # pylint: disable=import-error
 
 # load all available pythonizations to the classes in a namespace
 # loading pythonizations changes the state of cppyy backend shared by all the tests in a process
-load_pythonizations("ex2")
+# NOTE: That we have to explicitly specify the version namespace here
+load_pythonizations("ex2::v2")
 
 
 class AttributeCreationTest(unittest.TestCase):

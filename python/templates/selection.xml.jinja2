@@ -22,6 +22,12 @@
         </ioread>
 {% endmacro %}
 
+{% macro iorule_rename(class_def, current_version, suffix="") %}
+{% set namespace = class_def.class.namespace + '::' if class_def.class.namespace else '' %}
+{% set old_class_name = namespace + 'v' + class_def.version|string + '::' + class_def.class.bare_type + suffix %}
+    <ioread sourceClass="{{ old_class_name }}" targetClass="{{ namespace }}v{{ current_version }}::{{ class_def.class.bare_type }}{{ suffix }}"/>
+{% endmacro %}
+
 <lcgdict>
     <selection>
 
@@ -62,5 +68,13 @@
 {% for iorule in iorules %}
 {{ ioread(iorule) }}
 {% endfor %}
+
+{% for component in old_schema_components %}
+{{ iorule_rename(component, version) }}
+{% endfor %}
+{% for datatype in old_schema_datatypes %}
+{{ iorule_rename(datatype, version, suffix="Data") }}
+{% endfor %}
+
 
 </lcgdict>
