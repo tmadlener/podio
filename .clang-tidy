@@ -23,6 +23,7 @@ Checks: -*,
   readability-redundant-string-cstr,
   readability-static-definition-in-anonymous-namespace,
   readability-uniqueptr-delete-release,
+  bugprone-dangling-handle,
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
 CheckOptions:
