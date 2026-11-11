@@ -1,0 +1,23 @@
+[
+  {
+    "name": "master (development)",
+    "version": "master",
+    "url": "https://tmadlener.github.io/podio/master/"
+  },
+  {
+    "name": "v99-99-99 (latest)",
+    "version": "v99-99-99",
+    "url": "https://tmadlener.github.io/podio/v99-99-99/",
+    "preferred": true
+  },
+  {
+    "name": "v00-99",
+    "version": "v00-99",
+    "url": "https://tmadlener.github.io/podio/v00-99/"
+  },
+  {
+    "name": "v00-00-00",
+    "version": "v00-00-00",
+    "url": "https://tmadlener.github.io/podio/v00-00-00/"
+  }
+]
